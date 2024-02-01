@@ -9,5 +9,10 @@ function initializeConfig() {
 
 initializeConfig();
 
-export const dbHost = process.env.DB_HOST;
-export const dbPort = process.env.DB_PORT;
+export const db = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
+    pass: process.env.DB_PASS,
+    name: process.env.DB_NAME
+};

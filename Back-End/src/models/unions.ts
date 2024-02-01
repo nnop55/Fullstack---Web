@@ -1,3 +1,7 @@
-import { Request, Response } from 'express';
 
-export type ApiResponseType = (req: Request, res: Response) => any;
+export interface User {
+    user_id: number,
+    name: string,
+    surname: string,
+    password: string
+}
