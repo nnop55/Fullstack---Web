@@ -1,47 +1,45 @@
-import { Sequelize } from "sequelize";
-import { db } from "../config";
-
-
+import mysql from 'mysql'
+import { DBParams } from "../interface/interfaces";
 
 export class Database {
-    private static instance: Database;
-    private sequelize: Sequelize | null = null;
+    private connection: mysql.Connection | null = null;
 
-    private constructor() {
-        this.connect();
+    constructor(private dbParams: DBParams) {
     }
 
-    public static getInstance(): Database {
-        if (!this.instance) {
-            this.instance = new Database();
-        }
-        return this.instance;
-    }
+    public async connect(): Promise<void> {
+        if (!this.connection) {
+            this.connection = mysql.createConnection({
+                host: this.dbParams.host,
+                user: this.dbParams.username,
+                password: this.dbParams.pass,
+                database: this.dbParams.name
+            });
 
-    private connect() {
-        if (db['name'] && db['username']) {
-            this.sequelize = new Sequelize(
-                db['name'],
-                db['username'],
-                db['pass'],
-                {
-                    host: db['host'],
-                    dialect: 'mysql'
-                }
-            );
-
-            this.sequelize.authenticate()
-                .then(() => {
-                    console.log('Connection has been established successfully.');
-                })
-                .catch((error) => {
-                    console.error('Unable to connect to the database:', error);
+            try {
+                await new Promise<void>((resolve, reject) => {
+                    this.connection!.connect((err) => {
+                        if (err) {
+                            console.error('Error connecting to database:', err);
+                            reject(err);
+                        } else {
+                            console.log('Connected to MySQL database');
+                            resolve();
+                        }
+                    });
                 });
+            } catch (error) {
+                throw error;
+            }
         }
     }
 
-    public getSequelize(): Sequelize | null {
-        return this.sequelize;
+    public setQuery(query: string, params: any[], callback: (error: mysql.MysqlError | null, results?: any) => void) {
+        if (!this.connection) {
+            this.connect();
+        }
+
+        this.connection!.query(query, params, callback);
     }
 }
 
