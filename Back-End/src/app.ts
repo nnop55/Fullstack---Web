@@ -1,23 +1,27 @@
-import express, { Express } from 'express';
+import express from 'express';
 import { AppHelper } from './services/app-helper';
 import { Database } from './data-access/database';
-import { dbParams } from "./config";
+import { SessionSecretKey, dbParams } from "./config";
 import { DBParams } from './interface/interfaces';
 import bodyParser from 'body-parser';
+import session from 'express-session';
 
 const databaseParams: DBParams = dbParams;
 
-export class App extends AppHelper {
-    app: Express = express()
-    db: Database = new Database(databaseParams);
-
-
+class App extends AppHelper {
     constructor() {
-        super()
+        const appInstance = express()
+        const dbInstance = new Database(databaseParams);
+        super(appInstance, dbInstance)
+        this.app = appInstance
+        this.db = dbInstance
 
-        this.app.use(bodyParser.json());
-
-        this.setup()
+        this.app.use(bodyParser.json(), session({
+            secret: SessionSecretKey!,
+            resave: false,
+            saveUninitialized: false
+        }));
+        this.setupRoutes()
 
         const PORT = process.env.PORT || 3000;
         this.db.connect()
@@ -35,10 +39,11 @@ export class App extends AppHelper {
 
     }
 
-    async setup() {
-        await this.loginUser(this.app, this.db)
-        await this.registerUser(this.app, this.db)
-        await this.getUsers(this.app, this.db)
+    async setupRoutes() {
+        await this.loginUser()
+        await this.registerUser()
+        await this.getUsers()
+        await this.logoutUser()
     }
 
 }

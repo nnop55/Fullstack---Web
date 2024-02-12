@@ -14,5 +14,9 @@ export const dbParams = {
     port: process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     pass: process.env.DB_PASS,
-    name: process.env.DB_NAME
+    database: process.env.DB_NAME
 };
+
+export const JWTSecretKey = process.env.JWT_SECRET
+export const SessionSecretKey = process.env.SESSION_SECRET
+export const MailerPass = process.env.MAILER_PASS

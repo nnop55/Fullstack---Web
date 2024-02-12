@@ -10,5 +10,9 @@ export interface DBParams {
     host: string | undefined;
     username: string | undefined;
     pass: string | undefined;
-    name: string | undefined;
+    database: string | undefined;
+}
+
+export interface CustomSession {
+    user?: { email: string };
 }

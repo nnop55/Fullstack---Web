@@ -13,7 +13,7 @@ export class Database {
                 host: this.dbParams.host,
                 user: this.dbParams.username,
                 password: this.dbParams.pass,
-                database: this.dbParams.name
+                database: this.dbParams.database
             });
 
             try {
@@ -23,7 +23,6 @@ export class Database {
                             console.error('Error connecting to database:', err);
                             reject(err);
                         } else {
-                            console.log('Connected to MySQL database');
                             resolve();
                         }
                     });
