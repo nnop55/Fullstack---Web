@@ -14,22 +14,34 @@ export class Mailer {
 
     constructor() { }
 
-    public async sentMail(email: string, verifyCode: number, res: Response) {
+    public async sentMail(email: string, verifyCode: string, res: Response) {
         const mailMessage = {
             from: 'appchat194@gmail.com',
             to: email,
-            subject: 'Verify code from chat application',
+            subject: 'Verify code from parking application',
             text: 'Code: ' + verifyCode
         };
 
-        this.transporter.sendMail(mailMessage, function (error, success) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Nodemailer Email sent: ' + success.response);
-                res.status(200).json({ message: 'Verification code sent successfully' });
-            }
-        });
+        try {
+            return await new Promise<void>((resolve, reject) => {
+                this.transporter.sendMail(mailMessage, (error, success) => {
+                    if (error) {
+                        console.log(error);
+                        reject(error)
+                        return
+                    }
+                    resolve();
+                    console.log('Nodemailer Email sent: ' + success.response);
+                    res.status(200).json({ message: 'Verification code sent successfully' });
+
+                });
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ error: 'Failed to verify' });
+        }
+
+
     }
 
     public transporterVerify() {

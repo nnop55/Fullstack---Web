@@ -10,18 +10,18 @@ export class AppHelper {
 
     constructor(protected app: Express, protected db: Database) {
         this.token = new Token()
-        this.authorization = new Auth(this.token);
+        this.authorization = new Auth(this.token, db);
     }
 
     public async loginUser() {
         this.app.post('/auth/login', async (req: Request, res: Response) => {
-            await this.authorization.login(req, res, this.db)
+            await this.authorization.login(req, res)
         })
     }
 
     public async registerUser() {
         this.app.post('/auth/register', async (req: Request, res: Response) => {
-            await this.authorization.register(req, res, this.db)
+            await this.authorization.register(req, res)
         })
     }
 
@@ -33,7 +33,13 @@ export class AppHelper {
 
     public async getUsers() {
         this.app.get('/get-users', this.token.verifyToken, async (req: Request, res: Response) => {
-            await this.authorization.getUsers(req, res, this.db)
+            await this.authorization.getUsers(req, res)
+        })
+    }
+
+    public async verifyEmail() {
+        this.app.post('/auth/verify-email', this.token.verifyToken, async (req: Request, res: Response) => {
+            await this.authorization.sentCodeToEmail(req, res)
         })
     }
 

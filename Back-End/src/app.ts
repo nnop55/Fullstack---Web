@@ -44,6 +44,7 @@ class App extends AppHelper {
         await this.registerUser()
         await this.getUsers()
         await this.logoutUser()
+        await this.verifyEmail()
     }
 
 }
