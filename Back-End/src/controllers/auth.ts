@@ -1,26 +1,56 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import bcrypt from "bcrypt"
 import { Database } from '../data-access/database';
 import { CustomSession } from '../interface/interfaces';
-import { Token } from '../services/token';
-import { Mailer } from '../services/mailer';
-import { VerificationEvent } from '../subscribers/vericiation-event';
+import { TokenService } from '../services/token-service';
+import { MailerService } from '../services/mailer-service';
+import { VerificationEvent } from '../events/vericiation-event';
 
 export class Auth {
 
-    private mailer: Mailer
+    private mailer: MailerService
     private verificationEvent: VerificationEvent
+    public router: Router
 
-    constructor(private token: Token, private db: Database) {
-        this.mailer = new Mailer()
+    constructor(private token: TokenService, private db: Database) {
+        this.mailer = new MailerService()
         this.verificationEvent = new VerificationEvent(db)
-        this.mailer.transporterVerify()
+        this.router = Router()
+        this.mailer.transporterVerify().then(() => {
+            this.initRoutes()
+        }).catch((error) => {
+            console.error('Failed to execute USER routes', error);
+        })
+    }
+
+    initRoutes() {
+        this.router.post('/login', (req, res) => {
+            this.login(req, res)
+        });
+        this.router.post('/register', (req, res) => {
+            this.register(req, res)
+        });
+        this.router.post('/logout', this.token.verifyToken, (req, res) => {
+            this.logout(req, res)
+        });
+        this.router.post('/verify-email', (req, res) => {
+            this.sentCodeToEmail(req, res)
+        });
+        this.router.get('/get-users', this.token.verifyToken, (req, res) => {
+            this.getUsers(req, res)
+        });
     }
 
     public async login(req: Request, res: Response): Promise<void> {
-        const { email, password } = req.body;
-        const sql = 'SELECT * FROM users WHERE email = ?';
         try {
+            const { email, password } = req.body;
+            const sql = 'SELECT * FROM users WHERE email = ?';
+
+            if (!email || !password) {
+                res.status(401).json({ error: 'Email and password are required' });
+                return;
+            }
+
             return await new Promise<void>((resolve, reject) => {
                 this.db.setQuery(sql, [email], (err, result) => {
                     if (err) {
@@ -42,7 +72,7 @@ export class Auth {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ error: 'Failed to login' });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
 
     }
@@ -68,11 +98,16 @@ export class Auth {
     }
 
     public async register(req: Request, res: Response): Promise<void> {
-        const { fullName, password, email } = req.body;
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        const sql = `INSERT INTO users (email, full_name, password, balance) VALUES (?, ?, ?, ?)`;
-
         try {
+            const { fullName, password, email } = req.body;
+            const hashedPassword = bcrypt.hashSync(password, 10);
+            const sql = `INSERT INTO users (email, full_name, password, balance) VALUES (?, ?, ?, ?)`;
+
+            if (!email || !password || !fullName) {
+                res.status(401).json({ error: 'All fields are required' });
+                return;
+            }
+
             return await new Promise<void>((resolve, reject) => {
                 this.db.setQuery(sql, [email, fullName, hashedPassword, 100], (err, result) => {
                     if (err) {
@@ -87,15 +122,21 @@ export class Auth {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ error: 'Failed to register user' });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
-        const { email } = req.body;
-        const verification = Math.floor(100000 + Math.random() * 900000).toString();
-        const sql = 'UPDATE users SET code = ? WHERE email = ?';
         try {
+            const { email } = req.body;
+            const verification = Math.floor(100000 + Math.random() * 900000).toString();
+            const sql = 'UPDATE users SET code = ? WHERE email = ?';
+
+            if (!email) {
+                res.status(401).json({ error: 'Email is required' });
+                return;
+            }
+
             return await new Promise<void>((resolve, reject) => {
                 this.db.setQuery(sql, [verification, email], async (err, result) => {
                     if (err) {
@@ -116,13 +157,13 @@ export class Auth {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ error: 'Failed to verify' });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
-    public async passwordRecover(req: Request, res: Response): Promise<void> {
-        const verification = Math.floor(100000 + Math.random() * 900000).toString();
-    }
+    // public async passwordRecover(req: Request, res: Response): Promise<void> {
+    //     const verification = Math.floor(100000 + Math.random() * 900000).toString();
+    // }
 
 
     public async getUsers(req: Request, res: Response): Promise<void> {
@@ -139,7 +180,7 @@ export class Auth {
             res.status(201).json({ data: result });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ error: 'Failed to fetch users' });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 

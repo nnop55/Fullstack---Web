@@ -11,8 +11,8 @@ export class VerificationEvent {
             if (data['status'] != 1) {
                 return
             }
-            const sql = 'UPDATE users SET code = ? WHERE email = ?';
             try {
+                const sql = 'UPDATE users SET code = ? WHERE email = ?';
                 return await new Promise<void>((resolve, reject) => {
                     setTimeout(() => {
                         this.db.setQuery(sql, [null, data['email']], async (err, result) => {

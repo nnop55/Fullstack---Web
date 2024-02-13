@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 import { MailerPass } from "../config";
 import { Response } from "express";
 
-export class Mailer {
+export class MailerService {
 
     private transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -44,14 +44,22 @@ export class Mailer {
 
     }
 
-    public transporterVerify() {
-        this.transporter.verify(function (error, success) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Server validation done and ready for messages.')
-            }
-        });
+    public async transporterVerify() {
+        try {
+            return await new Promise<void>((resolve, reject) => {
+                this.transporter.verify(function (error, success) {
+                    if (error) {
+                        reject(error)
+                        return
+                    }
+                    resolve()
+                    console.log('Server validation done and ready for messages.')
+
+                });
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 }

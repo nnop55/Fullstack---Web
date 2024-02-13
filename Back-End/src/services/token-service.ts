@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken"
 import { JWTSecretKey } from '../config';
 
-export class Token {
+export class TokenService {
     constructor() { }
 
     public verifyToken(req: Request, res: Response, next: NextFunction) {
