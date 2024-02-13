@@ -4,7 +4,7 @@ import { Database } from '../data-access/database';
 import { CustomSession } from '../interface/interfaces';
 import { TokenService } from '../services/token-service';
 import { MailerService } from '../services/mailer-service';
-import { VerificationEvent } from '../events/vericiation-event';
+import { VerificationEvent } from '../events/verification-event';
 
 export class Auth {
 
