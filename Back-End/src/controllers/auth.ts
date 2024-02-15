@@ -109,15 +109,22 @@ export class Auth {
             }
 
             return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(sql, [email, fullName, hashedPassword, 100], (err, result) => {
-                    if (err) {
-                        console.error('Error registering user:', err);
-                        reject(err)
-                        return;
+                this.db.setQuery(`SELECT * FROM users WHERE email = ?`, [email], (err, result) => {
+                    if (result.length > 0) {
+                        res.status(409).json({ message: 'User already registered with this email' });
+                        return
                     }
-                    resolve();
+                    this.db.setQuery(sql, [email, fullName, hashedPassword, 100], (err, result) => {
+                        if (err) {
+                            console.error('Error registering user:', err);
+                            reject(err)
+                            return;
+                        }
+                        resolve();
+                    })
+                    res.status(201).json({ message: 'User registered successfully' });
                 })
-                res.status(201).json({ message: 'User registered successfully' });
+
             })
 
         } catch (err) {
