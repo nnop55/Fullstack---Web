@@ -15,14 +15,15 @@ export class MailerService {
     constructor() { }
 
     public async sentMail(email: string, verifyCode: string, res: Response) {
-        const mailMessage = {
-            from: 'appchat194@gmail.com',
-            to: email,
-            subject: 'Verify code from parking application',
-            text: 'Code: ' + verifyCode
-        };
-
         try {
+            const mailMessage = {
+                from: 'appchat194@gmail.com',
+                to: email,
+                subject: 'Verify code from parking application',
+                text: 'Code: ' + verifyCode
+            };
+
+
             return await new Promise<void>((resolve, reject) => {
                 this.transporter.sendMail(mailMessage, (error, success) => {
                     if (error) {

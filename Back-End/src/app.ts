@@ -31,17 +31,9 @@ class App {
         const PORT = process.env.PORT || 3000;
 
         this.db.connect()
-            .then(() => {
-                console.log('Database connection successful');
-
-                this.app.listen(PORT, () => {
-                    console.log(`Server is running`);
-                });
-            })
-            .catch((error) => {
-                console.error('Failed to connect to the database:', error);
-                process.exit(1);
-            });
+        this.app.listen(PORT, () => {
+            console.log(`Server is running`);
+        });
 
     }
 
