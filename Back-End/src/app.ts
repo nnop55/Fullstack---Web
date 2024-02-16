@@ -5,12 +5,12 @@ import { DBParams } from './interface/interfaces';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import { TokenService } from './services/token-service';
-import { Auth } from './controllers/auth';
+import { AuthRouter, authRouter } from './routers/auth-router';
 
 const databaseParams: DBParams = dbParams;
 
 class App {
-    private auth: Auth
+    private auth: AuthRouter
     private token: TokenService
     private app: Express
     private db: Database
@@ -19,7 +19,7 @@ class App {
         this.app = express()
         this.db = new Database(databaseParams)
         this.token = new TokenService()
-        this.auth = new Auth(this.token, this.db);
+        this.auth = new AuthRouter(this.token, this.db);
 
         this.uses()
         this.setupRoutes()
@@ -47,7 +47,7 @@ class App {
     }
 
     setupRoutes() {
-        this.app.use('/auth', this.auth.router);
+        this.app.use('/auth', authRouter);
     }
 
 }

@@ -14,7 +14,7 @@ export class MailerService {
 
     constructor() { }
 
-    public async sentMail(email: string, verifyCode: string, res: Response) {
+    public async sentMail(email: string, verifyCode: string) {
         try {
             const mailMessage = {
                 from: 'appchat194@gmail.com',
@@ -33,13 +33,11 @@ export class MailerService {
                     }
                     resolve();
                     console.log('Nodemailer Email sent: ' + success.response);
-                    res.status(200).json({ message: 'Verification code sent successfully' });
 
                 });
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ error: 'Failed to verify' });
+            console.error(err)
         }
 
 
