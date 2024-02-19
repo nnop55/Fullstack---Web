@@ -12,7 +12,9 @@ export class MailerService {
         }
     });
 
-    constructor() { }
+    constructor() {
+        this.transporterVerify()
+    }
 
     public async sentMail(email: string, verifyCode: string) {
         try {

@@ -15,7 +15,6 @@ export class AuthController {
     constructor(protected token: TokenMiddleware, protected db: Database) {
         this.mailer = new MailerService()
         this.verificationEvent = new VerificationEvent(db)
-        this.mailer.transporterVerify()
     }
 
 
