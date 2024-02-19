@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { Auth } from "../controllers/auth";
-import { TokenService } from "../services/token-service";
+import { AuthController } from "../controllers/auth-controller";
+import { TokenMiddleware } from "../middleware/token-middleware";
 import { Database } from "../data-access/database";
 
 export const authRouter = Router()
 
-export class AuthRouter extends Auth {
-    constructor(protected token: TokenService, protected db: Database) {
+export class AuthRouter extends AuthController {
+    constructor(protected token: TokenMiddleware, protected db: Database) {
         super(token, db)
         this.initRoutes()
     }

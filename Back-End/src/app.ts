@@ -1,24 +1,23 @@
 import express, { Express } from 'express';
 import { Database } from './data-access/database';
 import { SessionSecretKey, dbParams } from "./config";
-import { DBParams } from './interface/interfaces';
-import bodyParser from 'body-parser';
+import { DBParams } from './utils/interfaces';
 import session from 'express-session';
-import { TokenService } from './services/token-service';
+import { TokenMiddleware } from './middleware/token-middleware';
 import { AuthRouter, authRouter } from './routers/auth-router';
 
 const databaseParams: DBParams = dbParams;
 
 class App {
     private auth: AuthRouter
-    private token: TokenService
+    private token: TokenMiddleware
     private app: Express
     private db: Database
 
     constructor() {
         this.app = express()
         this.db = new Database(databaseParams)
-        this.token = new TokenService()
+        this.token = new TokenMiddleware()
         this.auth = new AuthRouter(this.token, this.db);
 
         this.uses()
@@ -38,7 +37,7 @@ class App {
     }
 
     uses() {
-        this.app.use(bodyParser.json());
+        this.app.use(express.json());
         this.app.use(session({
             secret: SessionSecretKey!,
             resave: false,

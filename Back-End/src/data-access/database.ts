@@ -1,5 +1,5 @@
 import mysql from 'mysql'
-import { DBParams } from "../interface/interfaces";
+import { DBParams } from "../utils/interfaces";
 
 export class Database {
     private connection: mysql.Connection | null = null;

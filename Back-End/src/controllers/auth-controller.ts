@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 import bcrypt from "bcrypt"
 import { Database } from '../data-access/database';
-import { CustomSession } from '../interface/interfaces';
-import { TokenService } from '../services/token-service';
+import { CustomSession } from '../utils/interfaces';
+import { TokenMiddleware } from '../middleware/token-middleware';
 import { MailerService } from '../services/mailer-service';
 import { VerificationEvent } from '../events/verification-event';
 
-export class Auth {
+export class AuthController {
 
     private mailer: MailerService
     private verificationEvent: VerificationEvent
 
 
-    constructor(protected token: TokenService, protected db: Database) {
+    constructor(protected token: TokenMiddleware, protected db: Database) {
         this.mailer = new MailerService()
         this.verificationEvent = new VerificationEvent(db)
         this.mailer.transporterVerify()
