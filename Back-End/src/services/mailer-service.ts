@@ -17,50 +17,36 @@ export class MailerService {
     }
 
     public async sentMail(email: string, verifyCode: string) {
-        try {
-            const mailMessage = {
-                from: 'appchat194@gmail.com',
-                to: email,
-                subject: 'Verify code from parking application',
-                text: 'Code: ' + verifyCode
-            };
+        const mailMessage = {
+            from: 'appchat194@gmail.com',
+            to: email,
+            subject: 'Verify code from parking application',
+            text: 'Code: ' + verifyCode
+        };
 
+        return await new Promise<void>((resolve, reject) => {
+            this.transporter.sendMail(mailMessage, (error, success) => {
+                if (error) {
+                    console.log(error);
+                    reject(error)
+                    return
+                }
+                resolve();
+                console.log('Nodemailer Email sent: ' + success.response);
 
-            return await new Promise<void>((resolve, reject) => {
-                this.transporter.sendMail(mailMessage, (error, success) => {
-                    if (error) {
-                        console.log(error);
-                        reject(error)
-                        return
-                    }
-                    resolve();
-                    console.log('Nodemailer Email sent: ' + success.response);
-
-                });
-            })
-        } catch (err) {
-            console.error(err)
-        }
-
-
+            });
+        })
     }
 
-    public async transporterVerify() {
-        try {
-            return await new Promise<void>((resolve, reject) => {
-                this.transporter.verify(function (error, success) {
-                    if (error) {
-                        reject(error)
-                        return
-                    }
-                    resolve()
-                    console.log('Server validation done and ready for messages.')
+    public transporterVerify() {
+        this.transporter.verify(function (error, success) {
+            if (error) {
+                console.error("Mail service failed")
+                return
+            }
+            console.log('Server validation done and ready for messages.')
+        });
 
-                });
-            })
-        } catch (err) {
-            console.log(err);
-        }
     }
 
 }

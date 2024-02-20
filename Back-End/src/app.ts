@@ -1,42 +1,26 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import { Database } from './data-access/database';
 import { SessionSecretKey, dbParams } from "./config";
-import { DBParams } from './utils/interfaces';
 import session from 'express-session';
-import { TokenMiddleware } from './middleware/token-middleware';
-import { AuthRouter, authRouter } from './routers/auth-router';
-
-const databaseParams: DBParams = dbParams;
+import { AuthRouter } from './routers/auth-router';
 
 class App {
-    private auth: AuthRouter
-    private token: TokenMiddleware
-    private app: Express
-    private db: Database
+    private app: Express;
+    private db: Database;
 
     constructor() {
-        this.app = express()
-        this.db = new Database(databaseParams)
-        this.token = new TokenMiddleware()
-        this.auth = new AuthRouter(this.token, this.db);
+        this.app = express();
+        this.db = new Database(dbParams);
 
-        this.uses()
-        this.setupRoutes()
-
-        this.app.all("*", (req, res) => {
-            res.status(404).send("Not Found");
-        });
+        this.setupMiddleware();
+        this.setupRoutes();
+        this.setupErrorHandling();
 
         const PORT = process.env.PORT || 3000;
-
-        this.db.connect()
-        this.app.listen(PORT, () => {
-            console.log(`Server is running`);
-        });
-
+        this.startServer(PORT);
     }
 
-    uses() {
+    private setupMiddleware() {
         this.app.use(express.json());
         this.app.use(session({
             secret: SessionSecretKey!,
@@ -45,10 +29,35 @@ class App {
         }));
     }
 
-    setupRoutes() {
-        this.app.use('/auth', authRouter);
+    private setupRoutes() {
+        const authRouter = new AuthRouter(this.db);
+        this.app.use('/auth', authRouter.getRouter());
     }
 
+    private setupErrorHandling() {
+        this.app.all("*", (req, res) => {
+            res.status(404).send("Not Found");
+        });
+
+        this.app.use((
+            err: Error, req: Request,
+            res: Response, next: NextFunction) => {
+            console.error(err.stack);
+            res.status(500).send('Internal Server Error');
+        });
+    }
+
+    private startServer(port: number | string) {
+        this.db.connect()
+            .then(() => {
+                this.app.listen(port, () => {
+                    console.log(`Server is running on port ${port}`);
+                });
+            })
+            .catch(err => {
+                console.error('Error connecting to database:', err);
+            });
+    }
 }
 
 new App();

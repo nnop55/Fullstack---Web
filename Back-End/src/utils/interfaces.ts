@@ -4,6 +4,7 @@ export interface User {
     full_name: string,
     email: string,
     password: string
+    code: number
 }
 
 export interface DBParams {
@@ -15,4 +16,9 @@ export interface DBParams {
 
 export interface CustomSession {
     user?: { email: string };
+}
+
+export interface ValidationResult {
+    field: string;
+    message: string;
 }

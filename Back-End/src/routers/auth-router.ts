@@ -1,37 +1,31 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth-controller";
-import { TokenMiddleware } from "../middleware/token-middleware";
+import { verifyToken } from "../middleware/token-middleware";
 import { Database } from "../data-access/database";
+import { validateEmailInput, validateLoginInput, validateRegisterInput } from "../middleware/validator-middleware";
 
-export const authRouter = Router()
+export class AuthRouter {
+    private router: Router;
+    private authController: AuthController;
 
-export class AuthRouter extends AuthController {
-    constructor(protected token: TokenMiddleware, protected db: Database) {
-        super(token, db)
-        this.initRoutes()
+    constructor(private db: Database) {
+        this.router = Router();
+        this.authController = new AuthController(this.db);
+        this.initRoutes();
     }
 
-    initRoutes() {
-        authRouter.post('/login', (req, res) => {
-            this.login(req, res)
-        });
-        authRouter.post('/register', (req, res) => {
-            this.register(req, res)
-        });
-        authRouter.post('/logout', this.token.verifyToken, (req, res) => {
-            this.logout(req, res)
-        });
-        authRouter.post('/verify-email', (req, res) => {
-            this.sentCodeToEmail(req, res)
-        });
-        authRouter.get('/get-users', this.token.verifyToken, (req, res) => {
-            this.getUsers(req, res)
-        });
-        authRouter.post('/verify-code', (req, res) => {
-            this.verifyCode(req, res)
-        });
-        authRouter.post('/recover-password', (req, res) => {
-            this.passwordRecover(req, res)
-        });
+    private initRoutes() {
+        this.router.post('/login', validateLoginInput, (req, res) => this.authController.login(req, res));
+        this.router.post('/register', validateRegisterInput, (req, res) => this.authController.register(req, res));
+        this.router.post('/logout', verifyToken, (req, res) => this.authController.logout(req, res));
+        this.router.post('/verify-email', validateEmailInput, (req, res) => this.authController.sentCodeToEmail(req, res));
+        this.router.get('/get-users', verifyToken, (req, res) => this.authController.getUsers(req, res));
+        this.router.post('/verify-code', (req, res) => this.authController.verifyCode(req, res));
+        this.router.post('/recover-password', (req, res) => this.authController.passwordRecover(req, res));
     }
+
+    public getRouter(): Router {
+        return this.router;
+    }
+
 }

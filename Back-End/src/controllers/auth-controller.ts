@@ -2,19 +2,14 @@ import { Request, Response } from 'express';
 import bcrypt from "bcrypt"
 import { Database } from '../data-access/database';
 import { CustomSession } from '../utils/interfaces';
-import { TokenMiddleware } from '../middleware/token-middleware';
-import { MailerService } from '../services/mailer-service';
-import { VerificationEvent } from '../events/verification-event';
+import { AuthRepository } from '../repositories/auth-repository';
+import { getToken } from '../middleware/token-middleware';
 
 export class AuthController {
 
-    private mailer: MailerService
-    private verificationEvent: VerificationEvent
-
-
-    constructor(protected token: TokenMiddleware, protected db: Database) {
-        this.mailer = new MailerService()
-        this.verificationEvent = new VerificationEvent(db)
+    private authRepository: AuthRepository
+    constructor(private db: Database) {
+        this.authRepository = new AuthRepository(db)
     }
 
 
@@ -22,32 +17,17 @@ export class AuthController {
     public async login(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body;
-            const sql = 'SELECT * FROM users WHERE email = ?';
+            const user = await this.authRepository.findByEmail(email);
 
-            if (!email || !password) {
-                res.status(401).json({ error: 'Email and password are required' });
+            if (!user || !bcrypt.compareSync(password, user.password)) {
+                res.status(400).json({ error: 'Invalid email or password' });
                 return;
             }
 
-            return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(sql, [email], (err, result) => {
-                    if (err) {
-                        console.error('Error logging in:', err);
-                        reject(err)
-                        return;
-                    }
-                    resolve();
+            const accessToken = getToken({ id: user.id, email: user.email });
+            (req.session as CustomSession).user = { email }
 
-                    if (result.length === 0 || !bcrypt.compareSync(password, result[0].password)) {
-                        res.status(401).json({ error: 'Invalid email or password' });
-                        return;
-                    }
-                    const user = { id: result[0].id, email: result[0].email }
-                    const accessToken = this.token.accessToken(user);
-                    (req.session as CustomSession).user = { email };
-                    res.status(201).json({ accessToken });
-                });
-            })
+            res.status(201).json({ accessToken });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -64,9 +44,9 @@ export class AuthController {
                         reject(error)
                         return;
                     }
+                    res.status(200).json({ message: 'Logout successful' });
                     resolve();
                 });
-                res.status(200).json({ message: 'Logout successful' });
             })
 
         } catch (err) {
@@ -79,38 +59,14 @@ export class AuthController {
         try {
             const { fullName, password, email } = req.body;
             const hashedPassword = bcrypt.hashSync(password, 10);
-            const sql = `INSERT INTO users (email, full_name, password, balance) VALUES (?, ?, ?, ?)`;
+            const user = await this.authRepository.findByEmail(email);
 
-            if (!email || !password || !fullName) {
-                res.status(401).json({ error: 'All fields are required' });
+            if (user) {
+                res.status(409).json({ message: 'User already registered with this email' });
                 return;
             }
-
-            return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(`SELECT * FROM users WHERE email = ?`, [email], (err, result) => {
-                    if (err) {
-                        console.error('Error checking user:', err);
-                        reject(err)
-                        return;
-                    }
-                    if (result.length > 0) {
-                        res.status(409).json({ message: 'User already registered with this email' });
-                        return
-                    }
-
-                    this.db.setQuery(sql, [email, fullName, hashedPassword, 100], (err, result) => {
-                        if (err) {
-                            console.error('Error registering user:', err);
-                            reject(err)
-                            return;
-                        }
-                        resolve();
-                    })
-                    res.status(201).json({ message: 'User registered successfully' });
-                })
-
-            })
-
+            await this.authRepository.insertUser(email, fullName, hashedPassword)
+            res.status(201).json({ message: 'User registered successfully' });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -120,47 +76,15 @@ export class AuthController {
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.body;
-            const verification = Math.floor(100000 + Math.random() * 900000).toString();
-            const sql = 'UPDATE users SET code = ? WHERE email = ?';
+            const user = await this.authRepository.findByEmail(email);
 
-            if (!email) {
-                res.status(401).json({ error: 'Email is required' });
+            if (!user) {
+                res.status(400).json({ message: 'Invalid email' });
                 return;
             }
-
-            return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(`SELECT * FROM users WHERE email = ?`, [email], (err, result) => {
-                    if (err) {
-                        console.error('Error checking user:', err);
-                        reject(err)
-                        return;
-                    }
-
-                    if (result.length < 1) {
-                        res.status(401).json({ message: 'Invalid email' });
-                        return
-                    }
-
-                    this.db.setQuery(sql, [verification, email], async (err, result) => {
-                        if (err) {
-                            console.error('Error logging in:', err);
-                            reject(err)
-                            return;
-                        }
-                        resolve();
-
-                        await this.mailer.sentMail(email, verification)
-                            .then(() => {
-                                this.verificationEvent.emitEvent(email)
-                                res.status(200).json({ message: 'Check email, code is valid for 3 min' });
-                            })
-                            .catch((err) => {
-                                res.status(500).json({ error: 'Failed to verify' });
-                            })
-                    });
-                })
-
-            })
+            await this.authRepository.sendVerification(email)
+            res.status(200).json({ message: 'Check email, code is valid for 3 min' });
+            //res.status(400).json({ error: 'Failed to verify' });
 
         } catch (err) {
             console.log(err)
@@ -171,30 +95,19 @@ export class AuthController {
     public async verifyCode(req: Request, res: Response): Promise<void> {
         try {
             const { email, code } = req.body;
-            const sql = 'SELECT * FROM users WHERE email = ?';
+            const user = await this.authRepository.findByEmail(email)
 
-            return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(sql, [email], (err, result) => {
-                    if (err) {
-                        console.error('Error checking user:', err);
-                        reject(err)
-                        return;
-                    }
+            if (!user) {
+                res.status(400).json({ message: 'Invalid email' });
+                return
+            }
 
-                    if (result.length < 1) {
-                        res.status(401).json({ message: 'Invalid email' });
-                        return
-                    }
+            if (code != user.code) {
+                res.status(400).json({ message: 'Incorrect code' });
+                return
+            }
 
-                    if (code != result[0].code) {
-                        res.status(401).json({ message: 'Incorrect code' });
-                        return
-                    }
-
-                    res.status(200).json({ message: 'Success' });
-                })
-            })
-
+            res.status(200).json({ message: 'Success' });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -205,21 +118,8 @@ export class AuthController {
         try {
             const { email, password } = req.body;
             const hashedPassword = bcrypt.hashSync(password, 10);
-            const sql = 'UPDATE users SET password = ? WHERE email = ?';
-
-            return await new Promise<void>((resolve, reject) => {
-                this.db.setQuery(sql, [hashedPassword, email], async (err, result) => {
-                    if (err) {
-                        console.error('Error logging in:', err);
-                        reject(err)
-                        return;
-                    }
-                    resolve();
-
-                    res.status(200).json({ message: 'Successfully changed' });
-                });
-            })
-
+            await this.authRepository.changePassword(email, hashedPassword)
+            res.status(200).json({ message: 'Successfully changed' });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -229,15 +129,8 @@ export class AuthController {
 
     public async getUsers(req: Request, res: Response): Promise<void> {
         try {
-            const result = await new Promise<void>((resolve, reject) => {
-                this.db.setQuery('SELECT * FROM users', [], (err, result) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve(result)
-                })
-            })
+            console.log(req.session)
+            const result = await this.authRepository.getAllUser()
             res.status(201).json({ data: result });
         } catch (err) {
             console.log(err)
