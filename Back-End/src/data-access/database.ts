@@ -9,29 +9,25 @@ export class Database {
 
     public async connect(): Promise<void> {
         if (!this.connection) {
-            try {
-                this.connection = mysql.createConnection({
-                    host: this.dbParams.host,
-                    user: this.dbParams.username,
-                    password: this.dbParams.pass,
-                    database: this.dbParams.database
-                });
+            this.connection = mysql.createConnection({
+                host: this.dbParams.host,
+                user: this.dbParams.username,
+                password: this.dbParams.pass,
+                database: this.dbParams.database
+            });
 
 
-                await new Promise<void>((resolve, reject) => {
-                    this.connection!.connect((err) => {
-                        if (err) {
-                            reject(err);
-                            return
-                        }
-                        resolve();
-                        console.log('Database connection successful');
-                    });
+            await new Promise<void>((resolve, reject) => {
+                this.connection!.connect((err) => {
+                    if (err) {
+                        reject(err);
+                        return
+                    }
+                    resolve();
+                    console.log('Database connection successful');
                 });
-            } catch (error) {
-                console.error('Error connecting to database:', error);
-                process.exit(1);
-            }
+            });
+
         }
     }
 

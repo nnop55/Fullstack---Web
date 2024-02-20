@@ -11,24 +11,19 @@ export class VerificationEvent {
             if (data['status'] != 1) {
                 return
             }
-            try {
-                const sql = 'UPDATE users SET code = ? WHERE email = ?';
-                return await new Promise<void>((resolve, reject) => {
-                    setTimeout(() => {
-                        this.db.setQuery(sql, [null, data['email']], async (err, result) => {
-                            if (err) {
-                                console.error('Error logging in:', err);
-                                reject(err)
-                                return;
-                            }
-                            resolve();
-                        });
-                    }, 180000)
-                })
-
-            } catch (err) {
-                console.log(err)
-            }
+            const sql = 'UPDATE users SET code = ? WHERE email = ?';
+            return await new Promise<void>((resolve, reject) => {
+                setTimeout(() => {
+                    this.db.setQuery(sql, [null, data['email']], async (err, result) => {
+                        if (err) {
+                            console.error('Error logging in:', err);
+                            reject(err)
+                            return;
+                        }
+                        resolve();
+                    });
+                }, 180000)
+            })
         })
     }
 
