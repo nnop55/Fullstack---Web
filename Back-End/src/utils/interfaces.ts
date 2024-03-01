@@ -14,10 +14,6 @@ export interface DBParams {
     database: string | undefined;
 }
 
-export interface CustomSession {
-    user?: { email: string };
-}
-
 export interface ValidationResult {
     field: string;
     message: string;

@@ -1,16 +1,14 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import { Database } from './data-access/database';
-import { SessionSecretKey, dbParams } from "./config";
+import { SessionSecretKey } from "./config";
 import session from 'express-session';
-import { AuthRouter } from './routers/auth-router';
+import { AuthRouter } from './routers/auth.router';
+import { connectDB } from './services/database-service';
 
 class App {
     private app: Express;
-    private db: Database;
 
     constructor() {
         this.app = express();
-        this.db = new Database(dbParams);
 
         this.setupMiddleware();
         this.setupRoutes();
@@ -30,7 +28,7 @@ class App {
     }
 
     private setupRoutes() {
-        const authRouter = new AuthRouter(this.db);
+        const authRouter = new AuthRouter();
         this.app.use('/auth', authRouter.getRouter());
     }
 
@@ -48,7 +46,7 @@ class App {
     }
 
     private startServer(port: number | string) {
-        this.db.connect()
+        connectDB()
             .then(() => {
                 this.app.listen(port, () => {
                     console.log(`Server is running on port ${port}`);

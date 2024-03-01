@@ -1,10 +1,10 @@
 import EventEmitter from "events";
-import { Database } from "../data-access/database";
+import { setQuery } from "../services/database-service";
 
 export class VerificationEvent {
     private event: EventEmitter
 
-    constructor(private db: Database) {
+    constructor() {
         this.event = new EventEmitter()
 
         this.event.on('verifySuccess', async (data) => {
@@ -14,7 +14,7 @@ export class VerificationEvent {
             const sql = 'UPDATE users SET code = ? WHERE email = ?';
             return await new Promise<void>((resolve, reject) => {
                 setTimeout(() => {
-                    this.db.setQuery(sql, [null, data['email']], async (err, result) => {
+                    setQuery(sql, [null, data['email']], async (err, result) => {
                         if (err) {
                             console.error('Error logging in:', err);
                             reject(err)

@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
 import bcrypt from "bcrypt"
-import { Database } from '../data-access/database';
-import { CustomSession } from '../utils/interfaces';
 import { AuthRepository } from '../repositories/auth-repository';
 import { getToken } from '../middleware/token-middleware';
 
 export class AuthController {
 
     private authRepository: AuthRepository
-    constructor(private db: Database) {
-        this.authRepository = new AuthRepository(db)
+    constructor() {
+        this.authRepository = new AuthRepository()
     }
 
 
@@ -25,7 +23,6 @@ export class AuthController {
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-            (req.session as CustomSession).user = { email }
 
             res.status(201).json({ accessToken });
         } catch (err) {
@@ -37,18 +34,9 @@ export class AuthController {
 
     public async logout(req: Request, res: Response): Promise<void> {
         try {
-            return await new Promise<void>((resolve, reject) => {
-                req.session.destroy((error) => {
-                    if (error) {
-                        console.error('Error:', error);
-                        reject(error)
-                        return;
-                    }
-                    res.status(200).json({ message: 'Logout successful' });
-                    resolve();
-                });
-            })
-
+            const token = req.headers.authorization?.split(' ')[1];
+            await this.authRepository.saveTokenToBlacklist(token!)
+            res.status(200).json({ message: 'Logout successful' });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -129,9 +117,8 @@ export class AuthController {
 
     public async getUsers(req: Request, res: Response): Promise<void> {
         try {
-            console.log(req.session)
             const result = await this.authRepository.getAllUser()
-            res.status(201).json({ data: result });
+            res.status(200).json({ data: result });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
