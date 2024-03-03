@@ -25,19 +25,6 @@ export class AuthRepository {
         });
     }
 
-    public saveTokenToBlacklist(token: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            setQuery('INSERT INTO tokens_blacklist (access_token) VALUES (?)',
-                [token], (err: any, result: any) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve();
-                });
-        });
-    }
-
     public insertUser(email: string, fullName: string, hashedPassword: string): Promise<void> {
         const sql = `INSERT INTO users (email, full_name, password, balance) VALUES (?, ?, ?, ?)`;
         return new Promise<void>((resolve, reject) => {

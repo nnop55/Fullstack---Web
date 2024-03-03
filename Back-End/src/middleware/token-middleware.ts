@@ -12,8 +12,9 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
         return res.status(401).json({ error: 'Unauthorized: Access token is missing' });
     }
 
-    jwt.verify(token, JWTSecretKey!, (err, decoded) => {
+    jwt.verify(token, JWTSecretKey!, async (err, decoded) => {
         if (err) {
+            await TokenRepository.deleteToken(token!)
             return res.status(401).json({ error: 'Unauthorized: Invalid access token' });
         }
 
@@ -26,12 +27,12 @@ export function getToken(user: { id: number, email: string }) {
     return jwt.sign(user, JWTSecretKey!, { expiresIn: '6h' });
 }
 
-export async function tokenIsInBlacklist(req: Request, res: Response, next: NextFunction) {
+export async function tokenIsValid(req: Request, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.split(' ')[1];
 
     try {
-        const isBlacklist = await TokenRepository.findToken(token!)
-        if (isBlacklist) {
+        const isValid = await TokenRepository.findToken(token!)
+        if (!isValid) {
             res.status(401).json({ error: 'Unauthorized: Invalid access token' });
             return
         }

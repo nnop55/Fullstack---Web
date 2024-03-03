@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from "bcrypt"
 import { AuthRepository } from '../repositories/auth-repository';
 import { getToken } from '../middleware/token-middleware';
+import { TokenRepository } from '../repositories/token-repository';
 
 export class AuthController {
 
@@ -23,7 +24,7 @@ export class AuthController {
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-
+            await TokenRepository.tokenInstance(accessToken)
             res.status(201).json({ accessToken });
         } catch (err) {
             console.log(err)
@@ -35,7 +36,7 @@ export class AuthController {
     public async logout(req: Request, res: Response): Promise<void> {
         try {
             const token = req.headers.authorization?.split(' ')[1];
-            await this.authRepository.saveTokenToBlacklist(token!)
+            await TokenRepository.deleteToken(token!)
             res.status(200).json({ message: 'Logout successful' });
         } catch (err) {
             console.log(err)
