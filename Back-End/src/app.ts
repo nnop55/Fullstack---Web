@@ -20,11 +20,11 @@ class App {
 
     private setupMiddleware() {
         this.app.use(express.json());
-        this.app.use(session({
-            secret: SessionSecretKey!,
-            resave: false,
-            saveUninitialized: false
-        }));
+        // this.app.use(session({
+        //     secret: SessionSecretKey!,
+        //     resave: false,
+        //     saveUninitialized: false
+        // }));
     }
 
     private setupRoutes() {

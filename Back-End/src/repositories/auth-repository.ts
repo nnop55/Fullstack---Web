@@ -1,14 +1,11 @@
 import { setQuery } from "../services/database-service";
-import { VerificationEvent } from "../events/verification-event";
 import { MailerService } from "../services/mailer-service";
 import { User } from "../utils/interfaces";
 
 export class AuthRepository {
-    // private verificationEvent: VerificationEvent
     private mailer: MailerService
 
     constructor() {
-        // this.verificationEvent = new VerificationEvent(db)
         this.mailer = new MailerService()
     }
 
@@ -53,14 +50,22 @@ export class AuthRepository {
                     resolve();
 
                     await this.mailer.sentMail(email, verification)
-                        .then(() => {
-                            // this.verificationEvent.emitEvent(email)
-                        }).catch((err: any) => {
-                            console.error(err)
-                        })
-
                 });
 
+        })
+    }
+
+    public clearCodeColumn(email: string): Promise<void> {
+        const sql = 'UPDATE users SET code = ? WHERE email = ?';
+        return new Promise<void>((resolve, reject) => {
+            setQuery(sql, [null, email], async (err, result) => {
+                if (err) {
+                    console.error('Error updating in:', err);
+                    reject(err)
+                    return;
+                }
+                resolve();
+            });
         })
     }
 

@@ -18,6 +18,12 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
             return res.status(401).json({ error: 'Unauthorized: Invalid access token' });
         }
 
+        const isValid = await TokenRepository.findToken(token!)
+        if (!isValid) {
+            res.status(401).json({ error: 'Unauthorized: Invalid access token' });
+            return
+        }
+
         (req as any).user = decoded;
         next();
     });
@@ -27,17 +33,3 @@ export function getToken(user: { id: number, email: string }) {
     return jwt.sign(user, JWTSecretKey!, { expiresIn: '6h' });
 }
 
-export async function tokenIsValid(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.split(' ')[1];
-
-    try {
-        const isValid = await TokenRepository.findToken(token!)
-        if (!isValid) {
-            res.status(401).json({ error: 'Unauthorized: Invalid access token' });
-            return
-        }
-        next();
-    } catch (err) {
-        res.status(500).send('Internal Server Error');
-    }
-};

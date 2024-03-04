@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
-import bcrypt from "bcrypt"
 import { AuthRepository } from '../repositories/auth-repository';
-import { getToken } from '../middleware/token-middleware';
+import { getToken } from '../middleware/token.middleware';
 import { TokenRepository } from '../repositories/token-repository';
+import { ITokenRepository } from '../utils/interfaces';
 
 export class AuthController {
 
     private authRepository: AuthRepository
-    constructor() {
-        this.authRepository = new AuthRepository()
+    constructor(private repository: AuthRepository,
+        private token: ITokenRepository, private bcrypt: any) {
+        this.authRepository = this.repository
     }
 
 
@@ -18,13 +19,13 @@ export class AuthController {
             const { email, password } = req.body;
             const user = await this.authRepository.findByEmail(email);
 
-            if (!user || !bcrypt.compareSync(password, user.password)) {
+            if (!user || !this.bcrypt.compareSync(password, user.password)) {
                 res.status(400).json({ error: 'Invalid email or password' });
                 return;
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-            await TokenRepository.tokenInstance(accessToken)
+            await this.token.tokenInstance(accessToken)
             res.status(201).json({ accessToken });
         } catch (err) {
             console.log(err)
@@ -47,7 +48,7 @@ export class AuthController {
     public async register(req: Request, res: Response): Promise<void> {
         try {
             const { fullName, password, email } = req.body;
-            const hashedPassword = bcrypt.hashSync(password, 10);
+            const hashedPassword = this.bcrypt.hashSync(password, 10);
             const user = await this.authRepository.findByEmail(email);
 
             if (user) {
@@ -73,8 +74,6 @@ export class AuthController {
             }
             await this.authRepository.sendVerification(email)
             res.status(200).json({ message: 'Check email, code is valid for 3 min' });
-            //res.status(400).json({ error: 'Failed to verify' });
-
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -97,6 +96,7 @@ export class AuthController {
             }
 
             res.status(200).json({ message: 'Success' });
+            await this.authRepository.clearCodeColumn(email)
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -106,7 +106,7 @@ export class AuthController {
     public async passwordRecover(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body;
-            const hashedPassword = bcrypt.hashSync(password, 10);
+            const hashedPassword = this.bcrypt.hashSync(password, 10);
             await this.authRepository.changePassword(email, hashedPassword)
             res.status(200).json({ message: 'Successfully changed' });
         } catch (err) {

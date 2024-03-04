@@ -18,3 +18,7 @@ export interface ValidationResult {
     field: string;
     message: string;
 }
+
+export interface ITokenRepository {
+    tokenInstance(token: string): Promise<void>;
+}
