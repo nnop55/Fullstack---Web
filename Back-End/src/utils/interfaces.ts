@@ -19,10 +19,6 @@ export interface ValidationResult {
     message: string;
 }
 
-export interface ITokenRepository {
-    tokenInstance(token: string): Promise<void>;
-}
-
 export interface IBcrypt {
     compareSync(pass: string, hashedPass: string): boolean;
     hashSync(pass: string, length: number): string;
