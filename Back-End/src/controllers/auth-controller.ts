@@ -22,7 +22,7 @@ export class AuthController {
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-            await TokenRepository.insertTokenInstance(accessToken)
+            await TokenRepository.insertTokenInstance(accessToken, user.id)
             res.status(201).json({ accessToken });
         } catch (err) {
             console.log(err)

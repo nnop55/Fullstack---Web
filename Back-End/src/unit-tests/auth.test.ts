@@ -36,12 +36,8 @@ jest.mock('../repositories/auth-repository.ts', () => {
 
 jest.mock('../repositories/token-repository.ts', () => {
     class MockTokenRepository {
-        public static async insertTokenInstance(email: string): Promise<string | null> {
-            if (email === 'valid@example.com') {
-                return 'mockAccessToken';
-            } else {
-                return null;
-            }
+        public static async insertTokenInstance(email: string, id: number): Promise<void> {
+            Promise.resolve()
         }
     }
 
