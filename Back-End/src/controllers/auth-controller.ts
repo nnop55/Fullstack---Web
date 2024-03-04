@@ -93,7 +93,6 @@ export class AuthController {
             }
 
             res.status(200).json({ message: 'Success' });
-            await this.authRepository.clearCodeColumn(email)
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -105,6 +104,7 @@ export class AuthController {
             const { email, password } = req.body;
             const hashedPassword = this.bcrypt.hashSync(password, 10);
             await this.authRepository.changePassword(email, hashedPassword)
+            await this.authRepository.clearCodeColumn(email)
             res.status(200).json({ message: 'Successfully changed' });
         } catch (err) {
             console.log(err)
