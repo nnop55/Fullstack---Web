@@ -1,12 +1,10 @@
 import { setQuery } from "../services/database-service";
-import { MailerService } from "../services/mailer-service";
+import { sentMail } from "../services/mailer-service";
 import { User } from "../utils/interfaces";
 
 export class AuthRepository {
-    private mailer: MailerService
 
     constructor() {
-        this.mailer = new MailerService()
     }
 
     public findByEmail(email: string): Promise<User | null> {
@@ -49,7 +47,7 @@ export class AuthRepository {
                     }
                     resolve();
 
-                    await this.mailer.sentMail(email, verification)
+                    await sentMail(email, verification)
                 });
 
         })
