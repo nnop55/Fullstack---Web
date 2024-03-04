@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import { AuthRepository } from '../repositories/auth-repository';
 import { getToken } from '../middleware/token.middleware';
 import { TokenRepository } from '../repositories/token-repository';
-import { ITokenRepository } from '../utils/interfaces';
+import { IBcrypt, ITokenRepository } from '../utils/interfaces';
 
 export class AuthController {
 
     private authRepository: AuthRepository
     constructor(private repository: AuthRepository,
-        private token: ITokenRepository, private bcrypt: any) {
+        private token: ITokenRepository, private bcrypt: IBcrypt) {
         this.authRepository = this.repository
     }
 
