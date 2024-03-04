@@ -1,11 +1,6 @@
 import { setQuery } from "../services/database-service";
 
 export class TokenRepository {
-
-    public static instance() {
-        return TokenRepository
-    }
-
     public static findToken(token: string): Promise<string | null> {
         return new Promise<string | null>((resolve, reject) => {
             setQuery('SELECT * FROM tokens WHERE access_token = ?',

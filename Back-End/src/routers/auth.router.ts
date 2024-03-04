@@ -2,22 +2,15 @@ import { Router } from "express";
 import { AuthController } from "../controllers/auth-controller";
 import { verifyToken } from "../middleware/token.middleware";
 import { validateEmailInput, validateLoginInput, validateRegisterInput } from "../middleware/validator.middleware";
-import { AuthRepository } from "../repositories/auth-repository";
-import { TokenRepository } from "../repositories/token-repository";
 import bcrypt from "bcrypt"
-import { ITokenRepository } from "../utils/interfaces";
 
 export class AuthRouter {
     private router: Router;
     private authController: AuthController;
-    private authRepository: AuthRepository;
-    private tokenRepository: ITokenRepository;
 
     constructor() {
         this.router = Router();
-        this.authRepository = new AuthRepository()
-        this.tokenRepository = TokenRepository.instance()
-        this.authController = new AuthController(this.authRepository, this.tokenRepository, bcrypt);
+        this.authController = new AuthController(bcrypt);
         this.initRoutes();
     }
 

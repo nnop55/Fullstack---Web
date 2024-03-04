@@ -2,17 +2,14 @@ import { Request, Response } from 'express';
 import { AuthRepository } from '../repositories/auth-repository';
 import { getToken } from '../middleware/token.middleware';
 import { TokenRepository } from '../repositories/token-repository';
-import { IBcrypt, ITokenRepository } from '../utils/interfaces';
+import { IBcrypt } from '../utils/interfaces';
 
 export class AuthController {
 
     private authRepository: AuthRepository
-    constructor(private repository: AuthRepository,
-        private token: ITokenRepository, private bcrypt: IBcrypt) {
-        this.authRepository = this.repository
+    constructor(private bcrypt: IBcrypt) {
+        this.authRepository = new AuthRepository()
     }
-
-
 
     public async login(req: Request, res: Response): Promise<void> {
         try {
@@ -25,7 +22,7 @@ export class AuthController {
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-            await this.token.tokenInstance(accessToken)
+            await TokenRepository.tokenInstance(accessToken)
             res.status(201).json({ accessToken });
         } catch (err) {
             console.log(err)
