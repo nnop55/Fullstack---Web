@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthRepository } from '../repositories/auth-repository';
-import { getToken } from '../middleware/token.middleware';
 import { TokenRepository } from '../repositories/token-repository';
 import { IBcrypt } from '../utils/interfaces';
+import { getToken } from '../utils/token';
 
 export class AuthController {
 

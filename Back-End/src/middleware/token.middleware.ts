@@ -29,7 +29,5 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     });
 };
 
-export function getToken(user: { id: number, email: string }) {
-    return jwt.sign(user, JWTSecretKey!, { expiresIn: '6h' });
-}
+
 
