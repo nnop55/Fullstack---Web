@@ -1,7 +1,7 @@
 
 export interface User {
     id: number,
-    full_name: string,
+    fullName: string,
     email: string,
     password: string
     code: number
@@ -22,4 +22,10 @@ export interface ValidationResult {
 export interface IBcrypt {
     compareSync(pass: string, hashedPass: string): boolean;
     hashSync(pass: string, length: number): string;
+}
+
+export interface Car {
+    type: string,
+    mark: string,
+    licenseNumber: string
 }

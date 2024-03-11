@@ -1,4 +1,4 @@
-import { ValidationResult } from "./interfaces";
+import { Car, ValidationResult } from "./interfaces";
 
 export class Validator {
 
@@ -52,5 +52,22 @@ export class Validator {
     public static isValidEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    }
+
+    public static validateCarInput(car: Car): ValidationResult[] {
+        const errors: ValidationResult[] = [];
+
+        if (!car['type']) {
+            errors.push({ field: 'type', message: 'Type is required' });
+        }
+
+        if (!car['mark']) {
+            errors.push({ field: 'mark', message: 'Mark is required' });
+        }
+        if (!car['licenseNumber']) {
+            errors.push({ field: 'licenseNumber', message: 'License Number is required' });
+        }
+
+        return errors;
     }
 }

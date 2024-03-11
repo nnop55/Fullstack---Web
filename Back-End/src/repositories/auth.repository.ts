@@ -4,8 +4,7 @@ import { User } from "../utils/interfaces";
 
 export class AuthRepository {
 
-    constructor() {
-    }
+    constructor() { }
 
     public findByEmail(email: string): Promise<User | null> {
         return new Promise((resolve, reject) => {

@@ -39,3 +39,14 @@ export function validateEmailInput(req: Request, res: Response, next: NextFuncti
     next();
 }
 
+export function validateCarInput(req: Request, res: Response, next: NextFunction): void {
+    const { type, mark, licenseNumber } = req.body;
+    const validationErrors: ValidationResult[] = Validator.validateCarInput({ type, mark, licenseNumber });
+
+    if (validationErrors.length > 0) {
+        res.status(400).json({ errors: validationErrors });
+        return;
+    }
+
+    next();
+}
