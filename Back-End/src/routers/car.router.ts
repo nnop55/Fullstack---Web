@@ -16,6 +16,7 @@ export class CarRouter {
 
     private initRoutes() {
         this.router.post('/add', validateCarInput, verifyToken, (req, res) => this.carController.addCar(req, res));
+        this.router.delete('/delete/:carId', verifyToken, (req, res) => this.carController.deleteCar(req, res));
     }
 
     public getRouter(): Router {

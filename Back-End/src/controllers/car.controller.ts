@@ -20,4 +20,22 @@ export class CarController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    public async deleteCar(req: Request, res: Response): Promise<void> {
+        try {
+            const { carId } = req.params
+            const car = await this.carRepository.findCarById(parseInt(carId))
+
+            if (!car) {
+                res.status(404).json({ error: 'Car not found' });
+                return;
+            }
+
+            await this.carRepository.deleteCar(parseInt(carId))
+            res.status(202).json({ message: "Successfully deleted" })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }
