@@ -18,5 +18,4 @@ export const dbParams = {
 };
 
 export const JWTSecretKey = process.env.JWT_SECRET
-export const SessionSecretKey = process.env.SESSION_SECRET
 export const MailerPass = process.env.MAILER_PASS

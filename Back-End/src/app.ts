@@ -1,8 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import { SessionSecretKey } from "./config";
-import session from 'express-session';
 import { AuthRouter } from './routers/auth.router';
-import { connectDB } from './services/database-service';
+import { connectDB } from './services/database.service';
 
 class App {
     private app: Express;
@@ -20,11 +18,6 @@ class App {
 
     private setupMiddleware() {
         this.app.use(express.json());
-        // this.app.use(session({
-        //     secret: SessionSecretKey!,
-        //     resave: false,
-        //     saveUninitialized: false
-        // }));
     }
 
     private setupRoutes() {

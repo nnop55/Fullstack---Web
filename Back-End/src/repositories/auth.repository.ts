@@ -1,5 +1,5 @@
-import { setQuery } from "../services/database-service";
-import { sentMail } from "../services/mailer-service";
+import { setQuery } from "../services/database.service";
+import { sentMail } from "../services/mailer.service";
 import { User } from "../utils/interfaces";
 
 export class AuthRepository {

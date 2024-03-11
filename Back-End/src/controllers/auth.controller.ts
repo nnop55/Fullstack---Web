@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { AuthRepository } from '../repositories/auth-repository';
-import { TokenRepository } from '../repositories/token-repository';
+import { AuthRepository } from '../repositories/auth.repository';
+import { TokenRepository } from '../repositories/token.repository';
 import { IBcrypt } from '../utils/interfaces';
 import { getToken } from '../utils/token';
 

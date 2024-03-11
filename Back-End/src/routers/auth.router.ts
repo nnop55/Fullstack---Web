@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthController } from "../controllers/auth-controller";
+import { AuthController } from "../controllers/auth.controller";
 import { verifyToken } from "../middleware/token.middleware";
 import { validateEmailInput, validateLoginInput, validateRegisterInput } from "../middleware/validator.middleware";
 import bcrypt from "bcrypt"

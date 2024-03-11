@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken"
 import { JWTSecretKey } from '../config';
-import { TokenRepository } from '../repositories/token-repository';
+import { TokenRepository } from '../repositories/token.repository';
 
 
 

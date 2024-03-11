@@ -1,4 +1,4 @@
-import { setQuery } from "../services/database-service";
+import { setQuery } from "../services/database.service";
 
 export class TokenRepository {
     public static findToken(token: string): Promise<string | null> {
