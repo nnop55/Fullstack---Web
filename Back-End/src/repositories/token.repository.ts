@@ -3,7 +3,10 @@ import { setQuery } from "../services/database.service";
 export class TokenRepository {
     public static findToken(token: string): Promise<string | null> {
         return new Promise<string | null>((resolve, reject) => {
-            setQuery('SELECT * FROM tokens WHERE access_token = ?',
+            setQuery(`SELECT tokens.*, users.* 
+                    FROM tokens 
+                    LEFT JOIN users ON tokens.user_id = users.id
+                    WHERE tokens.access_token = ?`,
                 [token], (err: any, result: any) => {
                     if (err) {
                         console.error('Error finding token:', err);

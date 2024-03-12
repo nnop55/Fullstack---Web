@@ -18,13 +18,13 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
             return res.status(401).json({ error: 'Unauthorized: Invalid access token' });
         }
 
-        const isValid = await TokenRepository.findToken(token!)
-        if (!isValid) {
+        const userInstance = await TokenRepository.findToken(token!)
+        if (!userInstance) {
             res.status(401).json({ error: 'Unauthorized: Invalid access token' });
             return
         }
 
-        (req as any).user = decoded;
+        (req as any).user = userInstance;
         next();
     });
 };

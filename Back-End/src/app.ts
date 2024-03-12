@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import { AuthRouter } from './routers/auth.router';
 import { connectDB } from './services/database.service';
 import { CarRouter } from './routers/car.router';
+import { ParkingRouter } from './routers/parking.router';
 
 class App {
     private app: Express;
@@ -24,8 +25,10 @@ class App {
     private setupRoutes() {
         const authRouter = new AuthRouter();
         const carRouter = new CarRouter()
+        const parkingRouter = new ParkingRouter()
         this.app.use('/auth', authRouter.getRouter());
         this.app.use('/car', carRouter.getRouter());
+        this.app.use('/parking', parkingRouter.getRouter());
     }
 
     private setupErrorHandling() {
