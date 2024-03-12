@@ -15,11 +15,12 @@ export class AuthRouter {
     }
 
     private initRoutes() {
+        this.router.get('/', verifyToken, (req, res) => this.authController.getUsers(req, res));
+        this.router.get('/:userId', verifyToken, (req, res) => this.authController.getUserById(req, res));
         this.router.post('/login', validateLoginInput, (req, res) => this.authController.login(req, res));
         this.router.post('/register', validateRegisterInput, (req, res) => this.authController.register(req, res));
         this.router.post('/logout', verifyToken, (req, res) => this.authController.logout(req, res));
         this.router.post('/verify-email', validateEmailInput, (req, res) => this.authController.sentCodeToEmail(req, res));
-        this.router.get('/get-users', verifyToken, (req, res) => this.authController.getUsers(req, res));
         this.router.post('/verify-code', (req, res) => this.authController.verifyCode(req, res));
         this.router.post('/recover-password', (req, res) => this.authController.passwordRecover(req, res));
     }

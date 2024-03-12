@@ -47,4 +47,17 @@ export class CarRepository {
 
         })
     }
+
+    public getAllCar(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            setQuery('SELECT * FROM cars', [],
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(result)
+                })
+        })
+    }
 }

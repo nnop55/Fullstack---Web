@@ -94,6 +94,19 @@ export class AuthRepository {
                 })
         })
     }
+
+    public findUserById(id: number): Promise<User | null> {
+        return new Promise((resolve, reject) => {
+            setQuery('SELECT * FROM users WHERE id = ?',
+                [id], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(result.length > 0 ? result[0] : null);
+                });
+        });
+    }
 }
 
 

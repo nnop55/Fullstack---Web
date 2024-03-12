@@ -123,4 +123,21 @@ export class AuthController {
         }
     }
 
+    public async getUserById(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId } = req.params
+            const user = await this.authRepository.findUserById(parseInt(userId))
+
+            if (!user) {
+                res.status(400).json({ error: 'User not found' });
+                return;
+            }
+
+            res.status(200).json({ data: user });
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
 }

@@ -38,4 +38,31 @@ export class CarController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    public async getCarById(req: Request, res: Response): Promise<void> {
+        try {
+            const { carId } = req.params
+            const car = await this.carRepository.findCarById(parseInt(carId))
+
+            if (!car) {
+                res.status(404).json({ error: 'Car not found' });
+                return;
+            }
+
+            res.status(202).json({ data: car })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    public async getCars(req: Request, res: Response): Promise<void> {
+        try {
+            const result = await this.carRepository.getAllCar()
+            res.status(200).json({ data: result });
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }
