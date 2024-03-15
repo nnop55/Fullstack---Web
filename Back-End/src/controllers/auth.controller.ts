@@ -62,7 +62,7 @@ export class AuthController {
 
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
         try {
-            const { email } = req.body;
+            const { email, fromProfile } = req.body;
             const user = await this.authRepository.findByEmail(email);
 
             if (!user) {
@@ -70,9 +70,13 @@ export class AuthController {
                 return;
             }
             await this.authRepository.sendVerification(email)
-            const accessToken = getToken({ id: user.id, email: user.email }, '10m');
-            await TokenRepository.insertTokenInstance(accessToken, user.id)
-            res.status(200).json({ message: 'Check email, code is valid for 3 min', accessToken });
+            if (!fromProfile) {
+                const accessToken = getToken({ id: user.id, email: user.email }, '10m');
+                await TokenRepository.insertTokenInstance(accessToken, user.id)
+                res.status(200).json({ message: 'Check email, code is valid for 3 min', accessToken });
+                return
+            }
+            res.status(200).json({ message: 'Check email, code is valid for 3 min' });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
