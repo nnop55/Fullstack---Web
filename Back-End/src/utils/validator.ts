@@ -21,17 +21,36 @@ export class Validator {
     public static validateRegisterInput(email: string, password: string, fullName: string): ValidationResult[] {
         const errors: ValidationResult[] = [];
 
+        if (!fullName) {
+            errors.push({ field: 'fullName', message: 'Fullname is required' });
+        }
+
         if (!email) {
             errors.push({ field: 'email', message: 'Email is required' });
         } else if (!this.isValidEmail(email)) {
             errors.push({ field: 'email', message: 'Invalid email format' });
         }
 
-        if (!fullName) {
-            errors.push({ field: 'fullName', message: 'Fullname is required' });
-        }
         if (!password) {
             errors.push({ field: 'password', message: 'Password is required' });
+        } else if (!this.isValidPassword(password)) {
+            errors.push({ field: 'password', message: 'Invalid password format' });
+        }
+
+        return errors;
+    }
+
+    public static validateEditProfileInput(email: string, fullName: string): ValidationResult[] {
+        const errors: ValidationResult[] = [];
+
+        if (email) {
+            if (!this.isValidEmail(email)) {
+                errors.push({ field: 'email', message: 'Invalid email format' });
+            }
+        }
+
+        if (!fullName && !email) {
+            errors.push({ field: 'email or fullName', message: 'Email or Fullname required' });
         }
 
         return errors;
@@ -47,6 +66,11 @@ export class Validator {
         }
 
         return errors;
+    }
+
+    public static isValidPassword(password: string): boolean {
+        const passwordlRegex = /^(?=.*[0-9])[^\s]{6,}$/;
+        return passwordlRegex.test(password);
     }
 
     public static isValidEmail(email: string): boolean {

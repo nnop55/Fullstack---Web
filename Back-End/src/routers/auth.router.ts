@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
 import { verifyToken } from "../middleware/token.middleware";
-import { validateEmailInput, validateLoginInput, validateRegisterInput } from "../middleware/validator.middleware";
+import { validateEditProfileInput, validateEmailInput, validateLoginInput, validateRegisterInput } from "../middleware/validator.middleware";
 import bcrypt from "bcrypt"
 
 export class AuthRouter {
@@ -23,6 +23,7 @@ export class AuthRouter {
         this.router.post('/verify-email', validateEmailInput, (req, res) => this.authController.sentCodeToEmail(req, res));
         this.router.post('/verify-code', verifyToken, (req, res) => this.authController.verifyCode(req, res));
         this.router.post('/recover-password', verifyToken, (req, res) => this.authController.passwordRecover(req, res));
+        this.router.put('/edit/:userId', verifyToken, validateEditProfileInput, (req, res) => this.authController.editUser(req, res));
     }
 
     public getRouter(): Router {

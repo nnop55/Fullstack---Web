@@ -1,6 +1,6 @@
 import { setQuery } from "../services/database.service";
 
-export class ParkingRepository {
+export class ParkingService {
 
     constructor() { }
 

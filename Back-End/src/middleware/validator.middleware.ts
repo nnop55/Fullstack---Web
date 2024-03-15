@@ -27,6 +27,18 @@ export function validateRegisterInput(req: Request, res: Response, next: NextFun
     next();
 }
 
+export function validateEditProfileInput(req: Request, res: Response, next: NextFunction): void {
+    const { email, fullName } = req.body;
+    const validationErrors: ValidationResult[] = Validator.validateEditProfileInput(email, fullName);
+
+    if (validationErrors.length > 0) {
+        res.status(400).json({ errors: validationErrors });
+        return;
+    }
+
+    next();
+}
+
 export function validateEmailInput(req: Request, res: Response, next: NextFunction): void {
     const { email } = req.body;
     const validationErrors: ValidationResult[] = Validator.validateEmailInput(email);

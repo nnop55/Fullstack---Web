@@ -1,17 +1,17 @@
-import { ParkingRepository } from "../repositories/parking.repository";
+import { ParkingService } from "../services/parking.service";
 import { Request, Response } from 'express';
 
 export class ParkingController {
 
-    private parkingRepository: ParkingRepository
+    private parkingService: ParkingService
 
     constructor() {
-        this.parkingRepository = new ParkingRepository()
+        this.parkingService = new ParkingService()
     }
 
     public async getParkingZones(req: Request, res: Response): Promise<void> {
         try {
-            const result = await this.parkingRepository.getAllZones()
+            const result = await this.parkingService.getAllZones()
             res.status(200).json({ data: result });
         } catch (err) {
             console.log(err)

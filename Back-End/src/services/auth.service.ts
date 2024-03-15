@@ -2,7 +2,7 @@ import { setQuery } from "../services/database.service";
 import { sentMail } from "../services/mailer.service";
 import { User } from "../utils/interfaces";
 
-export class AuthRepository {
+export class AuthService {
 
     constructor() { }
 
@@ -106,6 +106,26 @@ export class AuthRepository {
                         return;
                     }
                     resolve(result.length > 0 ? result[0] : null);
+                });
+        });
+    }
+
+    // TODO
+    public updateUserById(id: number, email: string, fullName: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            let fields = []
+            let sql = ''
+            // if(!email){
+            //     sql = `UPDATE users full_name = ? WHERE id = ?`
+            //     fields.push(fullName)
+            // }else if ()
+            setQuery(`UPDATE users SET email = ?, full_name = ? WHERE id = ?`,
+                [email, fullName, id], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
                 });
         });
     }

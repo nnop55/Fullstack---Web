@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import { CarRepository } from '../repositories/car.repository';
+import { CarService } from '../services/car.service';
 
 
 export class CarController {
 
-    private carRepository: CarRepository
+    private carService: CarService
 
     constructor() {
-        this.carRepository = new CarRepository()
+        this.carService = new CarService()
     }
 
     public async addCar(req: Request, res: Response): Promise<void> {
         try {
             const { mark, type, licenseNumber } = req.body;
-            await this.carRepository.insertCar({ mark, type, licenseNumber }, (req as any).user['id'])
+            await this.carService.insertCar({ mark, type, licenseNumber }, (req as any).user['id'])
             res.status(201).json({ mark, type, licenseNumber })
         } catch (error) {
             console.log(error)
@@ -33,14 +33,14 @@ export class CarController {
     public async deleteCar(req: Request, res: Response): Promise<void> {
         try {
             const { carId } = req.params
-            const car = await this.carRepository.findCarById(parseInt(carId))
+            const car = await this.carService.findCarById(parseInt(carId))
 
             if (!car) {
                 res.status(404).json({ error: 'Car not found' });
                 return;
             }
 
-            await this.carRepository.deleteCar(parseInt(carId))
+            await this.carService.deleteCar(parseInt(carId))
             res.status(202).json({ message: "Successfully deleted" })
         } catch (error) {
             console.log(error)
@@ -51,7 +51,7 @@ export class CarController {
     public async getCarById(req: Request, res: Response): Promise<void> {
         try {
             const { carId } = req.params
-            const car = await this.carRepository.findCarById(parseInt(carId))
+            const car = await this.carService.findCarById(parseInt(carId))
 
             if (!car) {
                 res.status(404).json({ error: 'Car not found' });
@@ -67,7 +67,7 @@ export class CarController {
 
     public async getCars(req: Request, res: Response): Promise<void> {
         try {
-            const result = await this.carRepository.getAllCar()
+            const result = await this.carService.getAllCar()
             res.status(200).json({ data: result });
         } catch (err) {
             console.log(err)

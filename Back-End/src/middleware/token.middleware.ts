@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken"
 import { JWTSecretKey } from '../config';
-import { TokenRepository } from '../repositories/token.repository';
+import { TokenService } from '../services/token.service';
 
 
 
@@ -14,11 +14,11 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
 
     jwt.verify(token, JWTSecretKey!, async (err, decoded) => {
         if (err) {
-            await TokenRepository.deleteToken(token!)
+            await TokenService.deleteToken(token!)
             return res.status(401).json({ error: 'Unauthorized: Invalid access token' });
         }
 
-        const userInstance = await TokenRepository.findToken(token!)
+        const userInstance = await TokenService.findToken(token!)
         if (!userInstance) {
             res.status(401).json({ error: 'Unauthorized: Invalid access token' });
             return

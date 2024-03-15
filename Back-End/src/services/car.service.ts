@@ -1,7 +1,7 @@
 import { setQuery } from "../services/database.service";
 import { Car } from "../utils/interfaces";
 
-export class CarRepository {
+export class CarService {
 
     constructor() { }
 

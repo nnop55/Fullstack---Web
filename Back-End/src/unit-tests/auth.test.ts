@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 
 
-jest.mock('../repositories/auth-repository.ts', () => {
+jest.mock('../services/auth-repository.ts', () => {
     class MockAuthRepository {
         async findByEmail(email: string) {
             if (email === 'valid@example.com') {
@@ -34,14 +34,14 @@ jest.mock('../repositories/auth-repository.ts', () => {
     return { AuthRepository: MockAuthRepository };
 });
 
-jest.mock('../repositories/token-repository.ts', () => {
-    class MockTokenRepository {
+jest.mock('../services/token-repository.ts', () => {
+    class MockTokenService {
         public static async insertTokenInstance(email: string, id: number): Promise<void> {
             Promise.resolve()
         }
     }
 
-    return { TokenRepository: MockTokenRepository };
+    return { TokenService: MockTokenService };
 });
 
 jest.mock('../middleware/token.middleware.ts', () => ({

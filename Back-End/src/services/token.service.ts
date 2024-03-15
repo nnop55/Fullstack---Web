@@ -1,6 +1,6 @@
 import { setQuery } from "../services/database.service";
 
-export class TokenRepository {
+export class TokenService {
     public static findToken(token: string): Promise<string | null> {
         return new Promise<string | null>((resolve, reject) => {
             setQuery(`SELECT tokens.*, users.* 

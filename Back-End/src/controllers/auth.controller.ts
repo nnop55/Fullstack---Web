@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
-import { AuthRepository } from '../repositories/auth.repository';
-import { TokenRepository } from '../repositories/token.repository';
+import { AuthService } from '../services/auth.service';
+import { TokenService } from '../services/token.service';
 import { IBcrypt } from '../utils/interfaces';
 import { getToken } from '../utils/token';
 
 export class AuthController {
 
-    private authRepository: AuthRepository
+    private authService: AuthService
     constructor(private bcrypt: IBcrypt) {
-        this.authRepository = new AuthRepository()
+        this.authService = new AuthService()
     }
 
     public async login(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body;
-            const user = await this.authRepository.findByEmail(email);
+            const user = await this.authService.findByEmail(email);
 
             if (!user || !this.bcrypt.compareSync(password, user.password)) {
                 res.status(400).json({ error: 'Invalid email or password' });
@@ -22,8 +22,29 @@ export class AuthController {
             }
 
             const accessToken = getToken({ id: user.id, email: user.email });
-            await TokenRepository.insertTokenInstance(accessToken, user.id)
+            await TokenService.insertTokenInstance(accessToken, user.id)
             res.status(201).json({ accessToken });
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+    }
+
+
+    // TODO
+    public async editUser(req: Request, res: Response): Promise<void> {
+        try {
+            let { email, fullName } = req.body;
+            const user = (req as any).user;
+
+            await this.authService.updateUserById(
+                parseInt(req.params.userId),
+                email,
+                fullName
+            )
+
+            res.status(200).json({ message: "Success" });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -34,7 +55,7 @@ export class AuthController {
     public async logout(req: Request, res: Response): Promise<void> {
         try {
             const token = req.headers.authorization?.split(' ')[1];
-            await TokenRepository.deleteToken(token!)
+            await TokenService.deleteToken(token!)
             res.status(200).json({ message: 'Logout successful' });
         } catch (err) {
             console.log(err)
@@ -46,13 +67,13 @@ export class AuthController {
         try {
             const { fullName, password, email } = req.body;
             const hashedPassword = this.bcrypt.hashSync(password, 10);
-            const user = await this.authRepository.findByEmail(email);
+            const user = await this.authService.findByEmail(email);
 
             if (user) {
                 res.status(409).json({ message: 'User already registered with this email' });
                 return;
             }
-            await this.authRepository.insertUser(email, fullName, hashedPassword)
+            await this.authService.insertUser(email, fullName, hashedPassword)
             res.status(201).json({ message: 'User registered successfully' });
         } catch (err) {
             console.log(err)
@@ -63,16 +84,16 @@ export class AuthController {
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
         try {
             const { email, fromProfile } = req.body;
-            const user = await this.authRepository.findByEmail(email);
+            const user = await this.authService.findByEmail(email);
 
             if (!user) {
                 res.status(400).json({ message: 'Invalid email' });
                 return;
             }
-            await this.authRepository.sendVerification(email)
+            await this.authService.sendVerification(email)
             if (!fromProfile) {
                 const accessToken = getToken({ id: user.id, email: user.email }, '10m');
-                await TokenRepository.insertTokenInstance(accessToken, user.id)
+                await TokenService.insertTokenInstance(accessToken, user.id)
                 res.status(200).json({ message: 'Check email, code is valid for 3 min', accessToken });
                 return
             }
@@ -97,7 +118,7 @@ export class AuthController {
                 return
             }
 
-            await this.authRepository.clearCodeColumn(user.email)
+            await this.authService.clearCodeColumn(user.email)
 
             res.status(200).json({ message: 'Success' });
         } catch (err) {
@@ -117,7 +138,7 @@ export class AuthController {
             }
 
             const hashedPassword = this.bcrypt.hashSync(password, 10);
-            await this.authRepository.changePassword(user.email, hashedPassword)
+            await this.authService.changePassword(user.email, hashedPassword)
             res.status(200).json({ message: 'Successfully changed' });
         } catch (err) {
             console.log(err)
@@ -128,7 +149,7 @@ export class AuthController {
 
     public async getUsers(req: Request, res: Response): Promise<void> {
         try {
-            const result = await this.authRepository.getAllUser()
+            const result = await this.authService.getAllUser()
             res.status(200).json({ data: result });
         } catch (err) {
             console.log(err)
@@ -139,7 +160,7 @@ export class AuthController {
     public async getUserById(req: Request, res: Response): Promise<void> {
         try {
             const { userId } = req.params
-            const user = await this.authRepository.findUserById(parseInt(userId))
+            const user = await this.authService.findUserById(parseInt(userId))
 
             if (!user) {
                 res.status(400).json({ error: 'User not found' });
