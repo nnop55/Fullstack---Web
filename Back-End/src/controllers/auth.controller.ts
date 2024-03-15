@@ -93,6 +93,8 @@ export class AuthController {
                 return
             }
 
+            await this.authRepository.clearCodeColumn(user.email)
+
             res.status(200).json({ message: 'Success' });
         } catch (err) {
             console.log(err)
@@ -103,10 +105,15 @@ export class AuthController {
     public async passwordRecover(req: Request, res: Response): Promise<void> {
         try {
             const { password } = req.body;
-            const email = (req as any).user.email;
+            const user = (req as any).user;
+
+            if (user.code !== null) {
+                res.status(400).json({ message: 'Invalid verification' });
+                return
+            }
+
             const hashedPassword = this.bcrypt.hashSync(password, 10);
-            await this.authRepository.changePassword(email, hashedPassword)
-            await this.authRepository.clearCodeColumn(email)
+            await this.authRepository.changePassword(user.email, hashedPassword)
             res.status(200).json({ message: 'Successfully changed' });
         } catch (err) {
             console.log(err)
