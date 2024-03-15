@@ -21,6 +21,15 @@ export class CarController {
         }
     }
 
+    public async editCar(req: Request, res: Response): Promise<void> {
+        try {
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
     public async deleteCar(req: Request, res: Response): Promise<void> {
         try {
             const { carId } = req.params

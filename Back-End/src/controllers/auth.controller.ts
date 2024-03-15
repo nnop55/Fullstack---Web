@@ -70,7 +70,9 @@ export class AuthController {
                 return;
             }
             await this.authRepository.sendVerification(email)
-            res.status(200).json({ message: 'Check email, code is valid for 3 min' });
+            const accessToken = getToken({ id: user.id, email: user.email }, '10m');
+            await TokenRepository.insertTokenInstance(accessToken, user.id)
+            res.status(200).json({ message: 'Check email, code is valid for 3 min', accessToken });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });
@@ -79,9 +81,8 @@ export class AuthController {
 
     public async verifyCode(req: Request, res: Response): Promise<void> {
         try {
-            const { email, code } = req.body;
-            const user = await this.authRepository.findByEmail(email)
-
+            const { code } = req.body;
+            const user = (req as any).user;
             if (!user) {
                 res.status(400).json({ message: 'Invalid email' });
                 return
@@ -101,7 +102,8 @@ export class AuthController {
 
     public async passwordRecover(req: Request, res: Response): Promise<void> {
         try {
-            const { email, password } = req.body;
+            const { password } = req.body;
+            const email = (req as any).user.email;
             const hashedPassword = this.bcrypt.hashSync(password, 10);
             await this.authRepository.changePassword(email, hashedPassword)
             await this.authRepository.clearCodeColumn(email)
