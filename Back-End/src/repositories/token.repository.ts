@@ -38,7 +38,10 @@ export class TokenRepository {
 
     public static insertTokenInstance(token: string, id: number): Promise<void> {
         return new Promise((resolve, reject) => {
-            setQuery('INSERT INTO tokens (access_token, user_id) VALUES (?, ?)',
+            setQuery(`INSERT INTO tokens (access_token, user_id) 
+                        VALUES (?, ?)
+                        ON DUPLICATE KEY UPDATE 
+                            access_token = VALUES(access_token)`,
                 [token, id], (err: any, result: any) => {
                     if (err) {
                         reject(err);
