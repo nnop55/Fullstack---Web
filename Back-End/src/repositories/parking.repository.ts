@@ -6,7 +6,7 @@ export class ParkingRepository {
 
     public getAllZones(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            setQuery('SELECT * FROM parking_zones', [],
+            setQuery(`SELECT * FROM parking_zones`, [],
                 (err, result) => {
                     if (err) {
                         reject(err);

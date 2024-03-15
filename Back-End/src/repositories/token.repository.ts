@@ -22,7 +22,7 @@ export class TokenRepository {
 
     public static deleteToken(token: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            setQuery('DELETE FROM tokens WHERE access_token = ?',
+            setQuery(`DELETE FROM tokens WHERE access_token = ?`,
                 [token], (err: any, result: any) => {
                     if (err) {
                         console.error('Error finding token:', err);
