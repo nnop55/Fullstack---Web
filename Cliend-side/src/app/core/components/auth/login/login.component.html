@@ -1,0 +1,14 @@
+<form (ngSubmit)="submitForm(form)" [formGroup]="form">
+  <div class="form-item">
+    <app-text-input
+      [placeholder]="'E-mail'"
+      formControlName="email"
+    ></app-text-input>
+  </div>
+  <div class="form-item">
+    <app-text-input
+      [placeholder]="'Password'"
+      formControlName="password"
+    ></app-text-input>
+  </div>
+</form>
