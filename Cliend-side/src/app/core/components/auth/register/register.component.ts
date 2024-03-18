@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   };
 
   submitForm(form: FormGroup) {
+    console.log(form.value)
     if (this.form.invalid) {
       return
     }

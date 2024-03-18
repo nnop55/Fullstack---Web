@@ -1,0 +1,22 @@
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button {
+  &-default {
+    border: 1px solid rgb(58, 140, 228);
+    color: rgb(58, 140, 228);
+    background-color: transparent;
+    font-size: 15px;
+    padding: 10px 20px;
+    transition: 200ms;
+
+    &:hover {
+      background-color: rgb(58, 140, 228);
+      color: #fff;
+    }
+  }
+}

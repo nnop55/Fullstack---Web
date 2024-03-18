@@ -1,7 +1,7 @@
 <button
   [disabled]="disabled"
   (click)="emitClick()"
-  [class]="className"
+  class="button-default {{ className }}"
   [type]="btnType"
 >
   {{ label }}

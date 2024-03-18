@@ -1,0 +1,48 @@
+.input-box {
+  width: 285px;
+  position: relative;
+  margin: 5px 0;
+
+  input {
+    padding: 16px 16px 10px;
+    width: 87%;
+    font-size: 16px;
+    background-color: transparent;
+    outline: none;
+    border: 2px solid rgb(168 204 243);
+    border-radius: 5px;
+    transition: 300ms;
+
+    &:focus {
+      + label {
+        transform: translate(-5px, -10px) scale(0.8);
+        color: rgb(58, 140, 228);
+      }
+      border-color: rgb(58, 140, 228);
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 25%;
+    left: 10px;
+    transition: 300ms;
+    z-index: -1;
+    color: dimgrey;
+  }
+
+  &.error {
+    input {
+      border-color: #fd6c6c;
+    }
+
+    label {
+      color: #fd6c6c !important;
+    }
+  }
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+  transform: translate(-5px, -10px) scale(0.8);
+}

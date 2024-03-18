@@ -1,8 +1,10 @@
-<input
-  [class]="className"
-  [type]="inpType"
-  [placeholder]="placeholder"
-  (input)="onInputChange($event)"
-  (blur)="onBlur()"
-  [value]="innerValue"
-/>
+<div class="input-box {{ className }}">
+  <input
+    [type]="inpType"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()"
+    [value]="innerValue"
+    name="input"
+  />
+  <label for="input">{{ placeholder }}</label>
+</div>
