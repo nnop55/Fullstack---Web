@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
 export function requireRole(req: Request, res: Response, next: NextFunction) {
-    const userRole = (req as any).user.role;
+    const user = (req as any).user;
 
-    if (userRole !== 'admin') {
+    if (!user.hasOwnProperty('role') || user.role !== 'admin') {
         return res.status(403).json({ message: 'Unauthorized' });
     }
 

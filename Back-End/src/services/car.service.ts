@@ -1,11 +1,11 @@
 import { setQuery } from "../services/database.service";
-import { Car } from "../utils/interfaces";
+import { Car, CarRes } from "../utils/interfaces";
 
 export class CarService {
 
     constructor() { }
 
-    public findCarById(carId: number): Promise<Car | null> {
+    public findCarById(carId: number): Promise<CarRes | null> {
         return new Promise((resolve, reject) => {
             setQuery(`SELECT * FROM cars WHERE id = ?`,
                 [carId], (err: any, result: any) => {
@@ -18,11 +18,11 @@ export class CarService {
         });
     }
 
-    public insertCar(car: Car, userId: number): Promise<void> {
+    public insertCar(car: Car): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             setQuery(`INSERT INTO cars (type, mark, license_number, user_id) 
                         VALUES (?, ?, ?, ?)`,
-                [car['type'], car['mark'], car['licenseNumber'], userId], (err: any, result: any) => {
+                [car['type'], car['mark'], car['licenseNumber'], car['userId']], (err: any, result: any) => {
                     if (err) {
                         console.error('Error inserting car:', err);
                         reject(err)
@@ -60,5 +60,21 @@ export class CarService {
                     resolve(result)
                 })
         })
+    }
+
+    public updateCarById(id: number, mark: string, type: string, licenseNumber: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setQuery(`UPDATE cars SET 
+                    mark = ?, type = ?, 
+                    license_number = ? 
+                    WHERE id = ?`,
+                [mark, type, licenseNumber, id], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+        });
     }
 }

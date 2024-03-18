@@ -28,5 +28,18 @@ export interface Car {
     type: string,
     mark: string,
     licenseNumber: string
+    userId?: number
 }
 
+export interface CarRes {
+    type: string,
+    mark: string,
+    license_number: string
+    user_id?: number
+}
+
+export interface Zone {
+    name: string,
+    address: string,
+    price: string
+}

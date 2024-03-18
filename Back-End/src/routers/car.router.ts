@@ -18,6 +18,7 @@ export class CarRouter {
         this.router.get('/:carId', verifyToken, (req, res) => this.carController.getCarById(req, res));
         this.router.get('/', verifyToken, (req, res) => this.carController.getCars(req, res));
         this.router.post('/add', validateCarInput, verifyToken, (req, res) => this.carController.addCar(req, res));
+        this.router.put('/edit/:carId', verifyToken, (req, res) => this.carController.editCar(req, res));
         this.router.delete('/delete/:carId', verifyToken, (req, res) => this.carController.deleteCar(req, res));
     }
 

@@ -110,15 +110,8 @@ export class AuthService {
         });
     }
 
-    // TODO
     public updateUserById(id: number, email: string, fullName: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            let fields = []
-            let sql = ''
-            // if(!email){
-            //     sql = `UPDATE users full_name = ? WHERE id = ?`
-            //     fields.push(fullName)
-            // }else if ()
             setQuery(`UPDATE users SET email = ?, full_name = ? WHERE id = ?`,
                 [email, fullName, id], (err: any, result: any) => {
                     if (err) {

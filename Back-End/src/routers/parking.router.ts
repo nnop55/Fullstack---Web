@@ -14,7 +14,8 @@ export class ParkingRouter {
     }
 
     private initRoutes() {
-        this.router.get('/', verifyToken, requireRole, (req, res) => this.parkingController.getParkingZones(req, res));
+        this.router.get('/', verifyToken, (req, res) => this.parkingController.getParkingZones(req, res));
+        this.router.post('/add', verifyToken, requireRole, (req, res) => this.parkingController.insertParkingZones(req, res));
     }
 
     public getRouter(): Router {

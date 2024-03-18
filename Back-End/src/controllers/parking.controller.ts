@@ -18,4 +18,15 @@ export class ParkingController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    public async insertParkingZones(req: Request, res: Response): Promise<void> {
+        try {
+            const { name, address, price } = req.body;
+            await this.parkingService.insertZone({ name, address, price })
+            res.status(201).json({ name, address, price })
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }

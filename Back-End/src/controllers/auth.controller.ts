@@ -32,16 +32,21 @@ export class AuthController {
     }
 
 
-    // TODO
     public async editUser(req: Request, res: Response): Promise<void> {
         try {
             let { email, fullName } = req.body;
             const user = (req as any).user;
+            const userId = parseInt(req.params.userId);
+
+            if (userId !== user['id']) {
+                res.status(400).json({ message: "Invalid input" });
+                return;
+            }
 
             await this.authService.updateUserById(
-                parseInt(req.params.userId),
-                email,
-                fullName
+                userId,
+                email ?? user.email,
+                fullName ?? user.fullName
             )
 
             res.status(200).json({ message: "Success" });
