@@ -1,3 +1,8 @@
-<button [disabled]="disabled" (click)="emitClick()" [class]="className">
+<button
+  [disabled]="disabled"
+  (click)="emitClick()"
+  [class]="className"
+  [type]="btnType"
+>
   {{ label }}
 </button>
