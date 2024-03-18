@@ -23,7 +23,7 @@ export class AuthController {
 
             const accessToken = getToken({ id: user.id, email: user.email });
             await TokenService.insertTokenInstance(accessToken, user.id)
-            res.status(201).json({ accessToken });
+            res.status(201).json({ accessToken, role: user.role });
         } catch (err) {
             console.log(err)
             res.status(500).json({ error: 'Internal Server Error' });

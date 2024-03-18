@@ -5,6 +5,7 @@ export interface User {
     email: string,
     password: string
     code: number
+    role: string
 }
 
 export interface DBParams {
