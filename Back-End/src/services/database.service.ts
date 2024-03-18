@@ -28,7 +28,10 @@ export async function connectDB(): Promise<void> {
     }
 }
 
-export function setQuery(query: string, params: any[], callback: (error: mysql.MysqlError | null, results?: any) => void) {
+export function setQuery(
+    query: string,
+    params: any[],
+    callback: (error: mysql.MysqlError | null, results?: any) => void) {
     connection!.query(query, params, callback);
 }
 
