@@ -1,1 +1,8 @@
-<p>text-input works!</p>
+<input
+  [class]="className"
+  [type]="inpType"
+  [placeholder]="placeholder"
+  (input)="onInputChange($event)"
+  (blur)="onBlur()"
+  [value]="innerValue"
+/>
