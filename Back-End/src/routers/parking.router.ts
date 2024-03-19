@@ -26,7 +26,7 @@ class ParkingRouter {
             asyncHandler((req: Request, res: Response) =>
                 ParkingController.insertParkingZones(req, res))
         );
-        this.router.post('/edit/:zoneId',
+        this.router.put('/edit/:zoneId',
             verifyToken,
             requireRole,
             asyncHandler((req: Request, res: Response) =>
