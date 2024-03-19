@@ -15,7 +15,6 @@ const routes: Routes = [
       { path: 'signup', component: AuthComponent }
     ]
   },
-  { path: '**', redirectTo: '/not-found' },
   {
     path: 'client',
     loadChildren: () => import('./client/client.module').then(m => m.ClientModule),
@@ -26,6 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
     canActivate: [authGuard, adminGuard]
   },
+  { path: '**', redirectTo: '/not-found' },
 ];
 
 @NgModule({
