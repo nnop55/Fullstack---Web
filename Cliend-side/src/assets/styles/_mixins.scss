@@ -1,0 +1,23 @@
+@import "/src/assets/styles/variables";
+
+@mixin buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+@mixin oppositeContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  gap: 5px;
+  a {
+    color: $gray;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  p {
+    color: $gray;
+    margin: 0;
+  }
+}

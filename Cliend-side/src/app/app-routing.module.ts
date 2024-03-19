@@ -6,9 +6,15 @@ import { adminGuard } from './core/guards/admin.guard';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth', pathMatch: "full" },
-  { path: 'auth', component: AuthComponent },
+  { path: '', redirectTo: '/auth/signup', pathMatch: "full" },
   { path: 'not-found', component: NotFoundComponent },
+  {
+    path: 'auth',
+    children: [
+      { path: 'signin', component: AuthComponent },
+      { path: 'signup', component: AuthComponent }
+    ]
+  },
   { path: '**', redirectTo: '/not-found' },
   {
     path: 'client',

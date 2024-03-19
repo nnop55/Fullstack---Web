@@ -1,0 +1,15 @@
+@import "/src/assets/styles/mixins";
+
+section {
+  h2 {
+    text-align: center;
+  }
+
+  .opposite-form {
+    @include oppositeContainer;
+  }
+
+  .btn {
+    @include buttonContainer;
+  }
+}

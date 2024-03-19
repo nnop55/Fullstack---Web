@@ -19,7 +19,7 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() inpType: 'number' | 'text' = 'text';
   @Input() className: string = '';
 
-  private _innerValue: any = '';
+  private _innerValue: any;
 
   private onChangeCallback: (_: any) => void = () => { };
   private onTouchedCallback: () => void = () => { };

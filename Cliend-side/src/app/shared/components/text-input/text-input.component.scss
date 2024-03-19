@@ -1,7 +1,10 @@
+@import "/src/assets/styles/variables";
+
 .input-box {
   width: 285px;
   position: relative;
   margin: 5px 0;
+  z-index: 10;
 
   input {
     padding: 16px 16px 10px;
@@ -9,16 +12,20 @@
     font-size: 16px;
     background-color: transparent;
     outline: none;
-    border: 2px solid rgb(168 204 243);
+    border: 2px solid $lighter-blue;
     border-radius: 5px;
     transition: 300ms;
 
     &:focus {
       + label {
         transform: translate(-5px, -10px) scale(0.8);
-        color: rgb(58, 140, 228);
+        color: $light-blue;
       }
-      border-color: rgb(58, 140, 228);
+      border-color: $light-blue;
+    }
+
+    &:not(:placeholder-shown) + label {
+      transform: translate(-5px, -10px) scale(0.8);
     }
   }
 
@@ -28,21 +35,23 @@
     left: 10px;
     transition: 300ms;
     z-index: -1;
-    color: dimgrey;
+    color: $gray;
   }
 
   &.error {
     input {
-      border-color: #fd6c6c;
+      border-color: $error;
     }
 
     label {
-      color: #fd6c6c !important;
+      color: $error !important;
     }
   }
 }
-//TODO
-input:focus + label,
-input:not(:placeholder-shown) + label {
-  transform: translate(-5px, -10px) scale(0.8);
+
+@media screen and (max-width: 768px) {
+  .input-box {
+    width: 245px !important;
+    font-size: 14px !important;
+  }
 }

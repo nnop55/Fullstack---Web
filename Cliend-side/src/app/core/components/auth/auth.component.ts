@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -7,12 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  mode: 'login' | 'register' = 'register'
+  router: Router = inject(Router)
+  mode: 'signin' | 'signup' = 'signup'
 
   ngOnInit(): void {
-
+    this.onRoute()
   }
 
-
+  onRoute() {
+    const url = (this.router.url).split('/')
+    this.mode = (url[url.length - 1] as 'signin' | 'signup')
+  }
 
 }

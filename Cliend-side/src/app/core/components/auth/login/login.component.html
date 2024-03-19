@@ -1,17 +1,25 @@
-<form (ngSubmit)="submitForm(form)" [formGroup]="form">
-  <div class="form-item">
-    <app-text-input
-      [placeholder]="'E-mail'"
-      formControlName="email"
-    ></app-text-input>
+<section>
+  <h2>Sign in to your account</h2>
+
+  <form (ngSubmit)="submitForm(form)" [formGroup]="form">
+    <div class="form-item">
+      <app-text-input
+        [placeholder]="'E-mail'"
+        formControlName="email"
+      ></app-text-input>
+    </div>
+    <div class="form-item">
+      <app-text-input
+        [placeholder]="'Password'"
+        formControlName="password"
+      ></app-text-input>
+    </div>
+    <div class="btn">
+      <app-button [btnType]="'submit'" [label]="'sign in'"></app-button>
+    </div>
+  </form>
+  <div class="opposite-form">
+    <p>New here?</p>
+    <a routerLink="/auth/signup">Sign Up</a>
   </div>
-  <div class="form-item">
-    <app-text-input
-      [placeholder]="'Password'"
-      formControlName="password"
-    ></app-text-input>
-  </div>
-  <div class="btn">
-    <app-button [btnType]="'submit'" [label]="'Register'"></app-button>
-  </div>
-</form>
+</section>

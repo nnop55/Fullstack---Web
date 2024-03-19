@@ -1,3 +1,5 @@
+@import "/src/assets/styles/variables";
+
 button {
   outline: none;
   border: none;
@@ -7,16 +9,16 @@ button {
 
 .button {
   &-default {
-    border: 1px solid rgb(58, 140, 228);
-    color: rgb(58, 140, 228);
+    border: 1px solid $light-blue;
+    color: $light-blue;
     background-color: transparent;
     font-size: 15px;
     padding: 10px 20px;
     transition: 200ms;
 
     &:hover {
-      background-color: rgb(58, 140, 228);
-      color: #fff;
+      background-color: $light-blue;
+      color: $white;
     }
   }
 }
