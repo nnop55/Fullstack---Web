@@ -33,6 +33,35 @@ class ParkingService {
 
         })
     }
+
+    public updateZoneById(id: number, name: string, address: string, price: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setQuery(`UPDATE parking_zones SET 
+                    name = ?, address = ?, 
+                    price = ? 
+                    WHERE id = ?`,
+                [name, address, price, id], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+        });
+    }
+
+    public findZoneById(zoneId: number): Promise<any> {
+        return new Promise((resolve, reject) => {
+            setQuery(`SELECT * FROM parking_zones WHERE id = ?`,
+                [zoneId], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(result.length > 0 ? result[0] : null);
+                });
+        });
+    }
 }
 
 export default new ParkingService();

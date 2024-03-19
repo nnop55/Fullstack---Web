@@ -18,7 +18,7 @@ class Index {
         this.setupRoutes();
         this.setupErrorHandling();
 
-        const PORT = process.env.PORT || 3000;
+        const PORT = process.env.PORT || 3200;
         this.startServer(PORT);
     }
 

@@ -26,6 +26,12 @@ class ParkingRouter {
             asyncHandler((req: Request, res: Response) =>
                 ParkingController.insertParkingZones(req, res))
         );
+        this.router.post('/edit/:zoneId',
+            verifyToken,
+            requireRole,
+            asyncHandler((req: Request, res: Response) =>
+                ParkingController.editParkingZones(req, res))
+        );
     }
 
     public getRouter(): Router {
