@@ -8,13 +8,13 @@ class ParkingController {
 
     public async getParkingZones(req: Request, res: Response): Promise<void> {
         const result = await ParkingService.getAllZones()
-        res.status(200).json({ data: result });
+        res.status(200).json({ code: 1, data: result });
     }
 
     public async insertParkingZones(req: Request, res: Response): Promise<void> {
         const { name, address, price } = req.body;
         await ParkingService.insertZone({ name, address, price })
-        res.status(201).json({ name, address, price })
+        res.status(201).json({ code: 1, name, address, price })
     }
 
     public async editParkingZones(req: Request, res: Response): Promise<void> {
@@ -23,7 +23,7 @@ class ParkingController {
         const zone = await ParkingService.findZoneById(zoneId)
 
         if (!zone) {
-            res.status(404).json({ error: 'Zone not found' });
+            res.status(404).json({ code: 2, error: 'Zone not found' });
             return;
         }
 
@@ -34,7 +34,7 @@ class ParkingController {
             price ?? zone.price
         )
 
-        res.status(200).json({ name, address, price })
+        res.status(200).json({ code: 1, name, address, price })
     }
 
     public async occupieParking(req: Request, res: Response): Promise<void> {
@@ -43,13 +43,13 @@ class ParkingController {
         const zone = (req as any).zone;
 
         if (zone.available == ParkingZone.occupied) {
-            res.status(400).json({ error: 'The parking area is already occupied' });
+            res.status(400).json({ code: 2, error: 'The parking area is already occupied' });
             return
         }
 
         await ParkingService.occupie(carId, zoneId)
 
-        res.status(201).json({ message: "Success" })
+        res.status(201).json({ code: 1, message: "Success" })
     }
 
     public async leaveParking(req: Request, res: Response): Promise<void> {
@@ -57,13 +57,13 @@ class ParkingController {
         const zone = (req as any).zone;
 
         if (zone.available == ParkingZone.available) {
-            res.status(400).json({ error: 'The parking area is already available' });
+            res.status(400).json({ code: 2, error: 'The parking area is already available' });
             return
         }
 
         await ParkingService.leave(zoneId)
 
-        res.status(201).json({ message: "Success" })
+        res.status(201).json({ code: 1, message: "Success" })
     }
 }
 

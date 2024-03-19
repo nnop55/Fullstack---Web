@@ -12,17 +12,17 @@ export async function checkParkingZone(req: Request, res: Response, next: NextFu
     (req as any).zone = zone;
 
     if (!car) {
-        res.status(404).json({ error: 'Car not found' });
+        res.status(404).json({ code: 2, error: 'Car not found' });
         return;
     }
 
     if (!zone) {
-        res.status(404).json({ error: 'Zone not found' });
+        res.status(404).json({ code: 2, error: 'Zone not found' });
         return;
     }
 
     if (car['user_id'] !== user['id']) {
-        res.status(400).json({ error: 'Invalid input' });
+        res.status(400).json({ code: 2, error: 'Invalid input' });
         return
     }
 

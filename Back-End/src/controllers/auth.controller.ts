@@ -14,13 +14,13 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (!user || !this.bcrypt.compareSync(password, user.password)) {
-            res.status(400).json({ error: 'Invalid email or password' });
+            res.status(400).json({ code: 2, error: 'Invalid email or password' });
             return;
         }
 
         const accessToken = getToken({ id: user.id, email: user.email });
         await TokenService.insertTokenInstance(accessToken, user.id)
-        res.status(201).json({ accessToken, role: user.role });
+        res.status(201).json({ code: 1, accessToken, role: user.role });
     }
 
 
@@ -30,7 +30,7 @@ class AuthController {
         const userId = parseInt(req.params.userId);
 
         if (userId !== user['id']) {
-            res.status(400).json({ message: "Invalid input" });
+            res.status(400).json({ code: 2, message: "Invalid input" });
             return;
         }
 
@@ -40,13 +40,13 @@ class AuthController {
             fullName ?? user.fullName
         )
 
-        res.status(200).json({ message: "Success" });
+        res.status(200).json({ code: 1, message: "Success" });
     }
 
     public async logout(req: Request, res: Response): Promise<void> {
         const token = req.headers.authorization?.split(' ')[1];
         await TokenService.deleteToken(token!)
-        res.status(200).json({ message: 'Logout successful' });
+        res.status(200).json({ code: 1, message: 'Logout successful' });
     }
 
     public async register(req: Request, res: Response): Promise<void> {
@@ -55,11 +55,11 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (user) {
-            res.status(409).json({ message: 'User already registered with this email' });
+            res.status(409).json({ code: 2, message: 'User already registered with this email' });
             return;
         }
         await AuthService.insertUser(email, fullName, hashedPassword)
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ code: 1, message: 'User registered successfully' });
     }
 
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
@@ -67,35 +67,35 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (!user) {
-            res.status(400).json({ message: 'Invalid email' });
+            res.status(400).json({ code: 2, message: 'Invalid email' });
             return;
         }
         await AuthService.sendVerification(email)
         if (!fromProfile) {
             const accessToken = getToken({ id: user.id, email: user.email }, '10m');
             await TokenService.insertTokenInstance(accessToken, user.id)
-            res.status(200).json({ message: 'Check email, code is valid for 3 min', accessToken });
+            res.status(200).json({ code: 1, message: 'Check email, code is valid for 3 min', accessToken });
             return
         }
-        res.status(200).json({ message: 'Check email, code is valid for 3 min' });
+        res.status(200).json({ code: 1, message: 'Check email, code is valid for 3 min' });
     }
 
     public async verifyCode(req: Request, res: Response): Promise<void> {
         const { code } = req.body;
         const user = (req as any).user;
         if (!user) {
-            res.status(400).json({ message: 'Invalid email' });
+            res.status(400).json({ code: 2, message: 'Invalid email' });
             return
         }
 
         if (code != user.code) {
-            res.status(400).json({ message: 'Incorrect code' });
+            res.status(400).json({ code: 2, message: 'Incorrect code' });
             return
         }
 
         await AuthService.clearCodeColumn(user.email)
 
-        res.status(200).json({ message: 'Success' });
+        res.status(200).json({ code: 1, message: 'Success' });
     }
 
     public async passwordRecover(req: Request, res: Response): Promise<void> {
@@ -103,19 +103,19 @@ class AuthController {
         const user = (req as any).user;
 
         if (user.code !== null) {
-            res.status(400).json({ message: 'Invalid verification' });
+            res.status(400).json({ code: 2, message: 'Invalid verification' });
             return
         }
 
         const hashedPassword = this.bcrypt.hashSync(password, 10);
         await AuthService.changePassword(user.email, hashedPassword)
-        res.status(200).json({ message: 'Successfully changed' });
+        res.status(200).json({ code: 1, message: 'Successfully changed' });
     }
 
 
     public async getUsers(req: Request, res: Response): Promise<void> {
         const result = await AuthService.getAllUser()
-        res.status(200).json({ data: result });
+        res.status(200).json({ code: 1, data: result });
     }
 
     public async getUserById(req: Request, res: Response): Promise<void> {
@@ -123,11 +123,11 @@ class AuthController {
         const user = await AuthService.findUserById(parseInt(userId))
 
         if (!user) {
-            res.status(400).json({ error: 'User not found' });
+            res.status(400).json({ code: 2, error: 'User not found' });
             return;
         }
 
-        res.status(200).json({ data: user });
+        res.status(200).json({ code: 1, data: user });
     }
 
 }

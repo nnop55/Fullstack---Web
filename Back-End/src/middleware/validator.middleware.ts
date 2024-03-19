@@ -8,7 +8,7 @@ export function validateLoginInput(req: Request, res: Response, next: NextFuncti
     const validationErrors: ValidationResult[] = Validator.validateLoginInput(email, password);
 
     if (validationErrors.length > 0) {
-        res.status(400).json({ errors: validationErrors });
+        res.status(400).json({ code: 2, errors: validationErrors });
         return;
     }
 
@@ -20,7 +20,7 @@ export function validateRegisterInput(req: Request, res: Response, next: NextFun
     const validationErrors: ValidationResult[] = Validator.validateRegisterInput(email, password, fullName);
 
     if (validationErrors.length > 0) {
-        res.status(400).json({ errors: validationErrors });
+        res.status(400).json({ code: 2, errors: validationErrors });
         return;
     }
 
@@ -32,7 +32,7 @@ export function validateEditProfileInput(req: Request, res: Response, next: Next
     const validationErrors: ValidationResult[] = Validator.validateEditProfileInput(email, fullName);
 
     if (validationErrors.length > 0) {
-        res.status(400).json({ errors: validationErrors });
+        res.status(400).json({ code: 2, errors: validationErrors });
         return;
     }
 
@@ -44,7 +44,7 @@ export function validateEmailInput(req: Request, res: Response, next: NextFuncti
     const validationErrors: ValidationResult[] = Validator.validateEmailInput(email);
 
     if (validationErrors.length > 0) {
-        res.status(400).json({ errors: validationErrors });
+        res.status(400).json({ code: 2, errors: validationErrors });
         return;
     }
 
@@ -56,7 +56,7 @@ export function validateCarInput(req: Request, res: Response, next: NextFunction
     const validationErrors: ValidationResult[] = Validator.validateCarInput({ type, mark, licenseNumber });
 
     if (validationErrors.length > 0) {
-        res.status(400).json({ errors: validationErrors });
+        res.status(400).json({ code: 2, errors: validationErrors });
         return;
     }
 

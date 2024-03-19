@@ -10,7 +10,7 @@ class CarController {
         const { mark, type, licenseNumber } = req.body;
         const userId = (req as any).user['id'];
         await CarService.insertCar({ mark, type, licenseNumber, userId })
-        res.status(201).json({ mark, type, licenseNumber })
+        res.status(201).json({ code: 1, mark, type, licenseNumber })
     }
 
     public async editCar(req: Request, res: Response): Promise<void> {
@@ -20,12 +20,12 @@ class CarController {
         const car = await CarService.findCarById(carId)
 
         if (!car) {
-            res.status(404).json({ error: 'Car not found' });
+            res.status(404).json({ code: 2, error: 'Car not found' });
             return;
         }
 
         if (user['id'] !== car['user_id']) {
-            res.status(400).json({ error: 'No permission' });
+            res.status(400).json({ code: 2, error: 'No permission' });
             return;
         }
 
@@ -36,7 +36,7 @@ class CarController {
             licenseNumber ?? car['license_number']
         )
 
-        res.status(200).json({ message: "Success" })
+        res.status(200).json({ code: 1, message: "Success" })
     }
 
     public async deleteCar(req: Request, res: Response): Promise<void> {
@@ -44,12 +44,12 @@ class CarController {
         const car = await CarService.findCarById(parseInt(carId))
 
         if (!car) {
-            res.status(404).json({ error: 'Car not found' });
+            res.status(404).json({ code: 2, error: 'Car not found' });
             return;
         }
 
         await CarService.deleteCar(parseInt(carId))
-        res.status(202).json({ message: "Successfully deleted" })
+        res.status(202).json({ code: 1, message: "Successfully deleted" })
     }
 
     public async getCarById(req: Request, res: Response): Promise<void> {
@@ -57,16 +57,16 @@ class CarController {
         const car = await CarService.findCarById(parseInt(carId))
 
         if (!car) {
-            res.status(404).json({ error: 'Car not found' });
+            res.status(404).json({ code: 2, error: 'Car not found' });
             return;
         }
 
-        res.status(202).json({ data: car })
+        res.status(202).json({ code: 1, data: car })
     }
 
     public async getCars(req: Request, res: Response): Promise<void> {
         const result = await CarService.getAllCar()
-        res.status(200).json({ data: result });
+        res.status(200).json({ code: 1, data: result });
     }
 }
 
