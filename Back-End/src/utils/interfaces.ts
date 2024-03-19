@@ -44,3 +44,8 @@ export interface Zone {
     address: string,
     price: string
 }
+
+export enum ParkingZone {
+    occupied,
+    available
+}

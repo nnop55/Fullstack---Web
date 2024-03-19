@@ -1,5 +1,6 @@
 import ParkingService from "../services/parking.service";
 import { Request, Response } from 'express';
+import { ParkingZone } from "../utils/interfaces";
 
 class ParkingController {
 
@@ -34,6 +35,35 @@ class ParkingController {
         )
 
         res.status(200).json({ name, address, price })
+    }
+
+    public async occupieParking(req: Request, res: Response): Promise<void> {
+        const carId = parseInt(req.params.carId)
+        const zoneId = parseInt(req.params.zoneId)
+        const zone = (req as any).zone;
+
+        if (zone.available == ParkingZone.occupied) {
+            res.status(400).json({ error: 'The parking area is already occupied' });
+            return
+        }
+
+        await ParkingService.occupie(carId, zoneId)
+
+        res.status(201).json({ message: "Success" })
+    }
+
+    public async leaveParking(req: Request, res: Response): Promise<void> {
+        const zoneId = parseInt(req.params.zoneId)
+        const zone = (req as any).zone;
+
+        if (zone.available == ParkingZone.available) {
+            res.status(400).json({ error: 'The parking area is already available' });
+            return
+        }
+
+        await ParkingService.leave(zoneId)
+
+        res.status(201).json({ message: "Success" })
     }
 }
 

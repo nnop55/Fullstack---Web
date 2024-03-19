@@ -50,6 +50,36 @@ class ParkingService {
         });
     }
 
+    public occupie(carId: number, zoneId: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setQuery(`UPDATE parking_zones SET 
+                    available = ?, car_id = ? 
+                    WHERE id = ?`,
+                [0, carId, zoneId], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+        });
+    }
+
+    public leave(zoneId: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setQuery(`UPDATE parking_zones SET 
+                    available = ?, car_id = ? 
+                    WHERE id = ?`,
+                [1, null, zoneId], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+        });
+    }
+
     public findZoneById(zoneId: number): Promise<any> {
         return new Promise((resolve, reject) => {
             setQuery(`SELECT * FROM parking_zones WHERE id = ?`,
