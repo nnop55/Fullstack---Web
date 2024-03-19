@@ -1,10 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, HostListener, Input, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss']
+  styleUrls: ['./dropdown.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DropdownComponent),
+      multi: true
+    }
+  ]
 })
 export class DropdownComponent implements ControlValueAccessor, OnInit {
 
@@ -19,6 +26,15 @@ export class DropdownComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
   }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const element = event.target as HTMLElement;
+    if (!element.closest('.custom-dropdown')) {
+      this.showOptions = false;
+    }
+  }
+
 
   onChange: any = () => { };
   onTouched: any = () => { };
@@ -47,4 +63,5 @@ export class DropdownComponent implements ControlValueAccessor, OnInit {
     this.onTouched();
     this.showOptions = false;
   }
+
 }

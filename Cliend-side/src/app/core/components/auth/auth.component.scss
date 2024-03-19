@@ -6,7 +6,7 @@
   height: 96vh;
 
   .form-container {
-    background: $white;
+    background: $dark;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
       0 4px 6px -2px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
@@ -33,7 +33,7 @@
 
 @media screen and (max-width: 1250px) {
   .form-container {
-    gap: 5px !important;
+    gap: 1rem !important;
     padding: 2rem !important;
   }
 }

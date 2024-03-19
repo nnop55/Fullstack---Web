@@ -26,6 +26,7 @@ export class TextInputComponent implements ControlValueAccessor {
 
   constructor() { }
 
+
   writeValue(value: any): void {
     if (value !== this._innerValue) {
       this._innerValue = value;
