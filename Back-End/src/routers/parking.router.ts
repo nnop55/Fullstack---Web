@@ -16,9 +16,8 @@ class ParkingRouter {
     private initRoutes() {
         this.router.get('/',
             verifyToken,
-            asyncHandler(
-                (req: Request, res: Response) =>
-                    ParkingController.getParkingZones(req, res))
+            asyncHandler((req: Request, res: Response) =>
+                ParkingController.getParkingZones(req, res))
         );
         this.router.post('/add',
             verifyToken,
