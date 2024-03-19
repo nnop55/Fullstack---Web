@@ -1,5 +1,5 @@
 import mysql from 'mysql'
-import { dbParams } from '../config';
+import { dbParams } from '../config/config';
 
 let connection: mysql.Connection | null = null;
 

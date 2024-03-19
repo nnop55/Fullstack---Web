@@ -5,7 +5,7 @@ import { CarRouter } from './routers/car.router';
 import { ParkingRouter } from './routers/parking.router';
 import { restrictAccess } from './middleware/access.middleware';
 
-class App {
+class Index {
     private app: Express;
 
     constructor() {
@@ -53,4 +53,4 @@ class App {
     }
 }
 
-new App();
+new Index();

@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import { MailerPass } from "../config";
+import { MailerPass } from "../config/config";
 
 
 const transporter = nodemailer.createTransport({

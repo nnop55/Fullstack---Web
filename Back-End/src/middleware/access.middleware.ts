@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { accessUrl } from '../config';
+import { accessUrl } from '../config/config';
 
 export function restrictAccess(req: Request, res: Response, next: NextFunction) {
     const isDevMode = process.env.NODE_ENV === 'development';
