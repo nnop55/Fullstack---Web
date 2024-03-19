@@ -1,9 +1,11 @@
-import express, { Express, Request, Response, NextFunction } from 'express';
-import { AuthRouter } from './routers/auth.router';
+import express, { Express } from 'express';
 import { connectDB } from './services/database.service';
-import { CarRouter } from './routers/car.router';
-import { ParkingRouter } from './routers/parking.router';
 import { restrictAccess } from './middleware/access.middleware';
+
+import CarRouter from './routers/car.router';
+import ParkingRouter from './routers/parking.router';
+import AuthRouter from './routers/auth.router';
+
 
 class Index {
     private app: Express;
@@ -25,12 +27,9 @@ class Index {
     }
 
     private setupRoutes() {
-        const authRouter = new AuthRouter();
-        const carRouter = new CarRouter()
-        const parkingRouter = new ParkingRouter()
-        this.app.use('/auth', authRouter.getRouter());
-        this.app.use('/car', carRouter.getRouter());
-        this.app.use('/parking', parkingRouter.getRouter());
+        this.app.use('/auth', AuthRouter.getRouter());
+        this.app.use('/car', CarRouter.getRouter());
+        this.app.use('/parking', ParkingRouter.getRouter());
     }
 
     private setupErrorHandling() {

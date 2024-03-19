@@ -2,7 +2,7 @@ import { setQuery } from "../services/database.service";
 import { sentMail } from "../services/mailer.service";
 import { User } from "../utils/interfaces";
 
-export class AuthService {
+class AuthService {
 
     constructor() { }
 
@@ -124,4 +124,4 @@ export class AuthService {
     }
 }
 
-
+export default new AuthService();

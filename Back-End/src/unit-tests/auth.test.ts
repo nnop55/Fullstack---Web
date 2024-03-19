@@ -1,4 +1,4 @@
-import { AuthController } from '../controllers/auth.controller';
+import AuthController from '../controllers/auth.controller';
 import { Request, Response } from 'express';
 
 
@@ -58,12 +58,12 @@ const bcrypt = {
 };
 
 describe('AuthController', () => {
-    let authController: AuthController;
+    let authController: typeof AuthController;
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<any>;
 
     beforeEach(() => {
-        authController = new AuthController(bcrypt);
+        authController = AuthController;
         mockRequest = { body: {} };
         mockResponse = {
             status: jest.fn(() => mockResponse),

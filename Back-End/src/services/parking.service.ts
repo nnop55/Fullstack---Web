@@ -1,7 +1,7 @@
 import { setQuery } from "../services/database.service";
 import { Zone } from "../utils/interfaces";
 
-export class ParkingService {
+class ParkingService {
 
     constructor() { }
 
@@ -34,3 +34,5 @@ export class ParkingService {
         })
     }
 }
+
+export default new ParkingService();

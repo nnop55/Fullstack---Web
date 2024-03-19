@@ -1,19 +1,15 @@
 import { Request, Response } from 'express';
-import { CarService } from '../services/car.service';
+import CarService from '../services/car.service';
 
 
-export class CarController {
+class CarController {
 
-    private carService: CarService
-
-    constructor() {
-        this.carService = new CarService()
-    }
+    constructor() { }
 
     public async addCar(req: Request, res: Response): Promise<void> {
         const { mark, type, licenseNumber } = req.body;
         const userId = (req as any).user['id'];
-        await this.carService.insertCar({ mark, type, licenseNumber, userId })
+        await CarService.insertCar({ mark, type, licenseNumber, userId })
         res.status(201).json({ mark, type, licenseNumber })
     }
 
@@ -21,7 +17,7 @@ export class CarController {
         const carId = parseInt(req.params.carId)
         const { mark, type, licenseNumber } = req.body
         const user = (req as any).user;
-        const car = await this.carService.findCarById(carId)
+        const car = await CarService.findCarById(carId)
 
         if (!car) {
             res.status(404).json({ error: 'Car not found' });
@@ -33,7 +29,7 @@ export class CarController {
             return;
         }
 
-        await this.carService.updateCarById(
+        await CarService.updateCarById(
             carId,
             mark ?? car['mark'],
             type ?? car['type'],
@@ -45,20 +41,20 @@ export class CarController {
 
     public async deleteCar(req: Request, res: Response): Promise<void> {
         const { carId } = req.params
-        const car = await this.carService.findCarById(parseInt(carId))
+        const car = await CarService.findCarById(parseInt(carId))
 
         if (!car) {
             res.status(404).json({ error: 'Car not found' });
             return;
         }
 
-        await this.carService.deleteCar(parseInt(carId))
+        await CarService.deleteCar(parseInt(carId))
         res.status(202).json({ message: "Successfully deleted" })
     }
 
     public async getCarById(req: Request, res: Response): Promise<void> {
         const { carId } = req.params
-        const car = await this.carService.findCarById(parseInt(carId))
+        const car = await CarService.findCarById(parseInt(carId))
 
         if (!car) {
             res.status(404).json({ error: 'Car not found' });
@@ -69,7 +65,9 @@ export class CarController {
     }
 
     public async getCars(req: Request, res: Response): Promise<void> {
-        const result = await this.carService.getAllCar()
+        const result = await CarService.getAllCar()
         res.status(200).json({ data: result });
     }
 }
+
+export default new CarController();

@@ -1,19 +1,17 @@
 import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
+import AuthService from '../services/auth.service';
 import { TokenService } from '../services/token.service';
 import { IBcrypt } from '../utils/interfaces';
 import { getToken } from '../utils/token';
+import bcrypt from "bcrypt"
 
-export class AuthController {
+class AuthController {
 
-    private authService: AuthService
-    constructor(private bcrypt: IBcrypt) {
-        this.authService = new AuthService()
-    }
+    constructor(private bcrypt: IBcrypt) { }
 
     public async login(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body;
-        const user = await this.authService.findByEmail(email);
+        const user = await AuthService.findByEmail(email);
 
         if (!user || !this.bcrypt.compareSync(password, user.password)) {
             res.status(400).json({ error: 'Invalid email or password' });
@@ -36,7 +34,7 @@ export class AuthController {
             return;
         }
 
-        await this.authService.updateUserById(
+        await AuthService.updateUserById(
             userId,
             email ?? user.email,
             fullName ?? user.fullName
@@ -54,25 +52,25 @@ export class AuthController {
     public async register(req: Request, res: Response): Promise<void> {
         const { fullName, password, email } = req.body;
         const hashedPassword = this.bcrypt.hashSync(password, 10);
-        const user = await this.authService.findByEmail(email);
+        const user = await AuthService.findByEmail(email);
 
         if (user) {
             res.status(409).json({ message: 'User already registered with this email' });
             return;
         }
-        await this.authService.insertUser(email, fullName, hashedPassword)
+        await AuthService.insertUser(email, fullName, hashedPassword)
         res.status(201).json({ message: 'User registered successfully' });
     }
 
     public async sentCodeToEmail(req: Request, res: Response): Promise<void> {
         const { email, fromProfile } = req.body;
-        const user = await this.authService.findByEmail(email);
+        const user = await AuthService.findByEmail(email);
 
         if (!user) {
             res.status(400).json({ message: 'Invalid email' });
             return;
         }
-        await this.authService.sendVerification(email)
+        await AuthService.sendVerification(email)
         if (!fromProfile) {
             const accessToken = getToken({ id: user.id, email: user.email }, '10m');
             await TokenService.insertTokenInstance(accessToken, user.id)
@@ -95,7 +93,7 @@ export class AuthController {
             return
         }
 
-        await this.authService.clearCodeColumn(user.email)
+        await AuthService.clearCodeColumn(user.email)
 
         res.status(200).json({ message: 'Success' });
     }
@@ -110,19 +108,19 @@ export class AuthController {
         }
 
         const hashedPassword = this.bcrypt.hashSync(password, 10);
-        await this.authService.changePassword(user.email, hashedPassword)
+        await AuthService.changePassword(user.email, hashedPassword)
         res.status(200).json({ message: 'Successfully changed' });
     }
 
 
     public async getUsers(req: Request, res: Response): Promise<void> {
-        const result = await this.authService.getAllUser()
+        const result = await AuthService.getAllUser()
         res.status(200).json({ data: result });
     }
 
     public async getUserById(req: Request, res: Response): Promise<void> {
         const { userId } = req.params
-        const user = await this.authService.findUserById(parseInt(userId))
+        const user = await AuthService.findUserById(parseInt(userId))
 
         if (!user) {
             res.status(400).json({ error: 'User not found' });
@@ -133,3 +131,5 @@ export class AuthController {
     }
 
 }
+
+export default new AuthController(bcrypt);
