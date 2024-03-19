@@ -11,6 +11,11 @@ export class RegisterComponent implements OnInit {
   form!: FormGroup;
   fb: FormBuilder = inject(FormBuilder)
 
+  options = [
+    { value: 0, label: 'User' },
+    { value: 1, label: 'Admin' }
+  ];
+
   ngOnInit(): void {
     this.initForm()
   }
@@ -19,6 +24,7 @@ export class RegisterComponent implements OnInit {
     this.form = this.fb.group({
       email: new FormControl(null, [Validators.required, Validators.email]),
       fullName: new FormControl(null, [Validators.required]),
+      role: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
     })

@@ -15,6 +15,13 @@
       ></app-text-input>
     </div>
     <div class="form-item">
+      <app-dropdown
+        [placeholder]="'Role'"
+        formControlName="role"
+        [options]="options"
+      ></app-dropdown>
+    </div>
+    <div class="form-item">
       <app-text-input
         [placeholder]="'Password'"
         formControlName="password"

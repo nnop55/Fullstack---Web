@@ -3,13 +3,19 @@ import { CommonModule } from '@angular/common';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { ButtonComponent } from './components/button/button.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
-
+const exportComponents = [
+  TextInputComponent,
+  ButtonComponent,
+  DropdownComponent,
+]
 
 @NgModule({
   declarations: [
     TextInputComponent,
-    ButtonComponent
+    ButtonComponent,
+    DropdownComponent
   ],
   imports: [
     CommonModule,
@@ -17,10 +23,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    TextInputComponent,
-    ButtonComponent,
+    ...exportComponents,
     ReactiveFormsModule,
     FormsModule
   ]
 })
 export class SharedModule { }
+
+

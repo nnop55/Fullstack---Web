@@ -1,0 +1,14 @@
+<div class="custom-dropdown {{ className }}">
+  <div class="content" (click)="toggleDropdown()">
+    <span>{{ selectedOption ? selectedOption.label : placeholder }}</span>
+    <article *ngIf="showOptions">
+      <div
+        class="item"
+        *ngFor="let option of options"
+        (click)="selectOption(option)"
+      >
+        {{ option.label }}
+      </div>
+    </article>
+  </div>
+</div>
