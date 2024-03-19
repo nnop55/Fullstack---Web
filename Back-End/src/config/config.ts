@@ -3,7 +3,7 @@ import * as path from 'path';
 
 function initializeConfig() {
     process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-    const envFile = path.resolve(__dirname, process.env.NODE_ENV === 'production' ? 'prod.env' : 'dev.env');
+    const envFile = path.resolve(__dirname, process.env.NODE_ENV === 'production' ? '.env' : 'dev.env');
     config({ path: envFile });
 }
 
