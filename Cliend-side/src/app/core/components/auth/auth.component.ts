@@ -1,6 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+
+type RouteMode = 'signin' | 'signup'
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -9,7 +12,7 @@ import { Router } from '@angular/router';
 export class AuthComponent implements OnInit {
 
   router: Router = inject(Router)
-  mode: 'signin' | 'signup' = 'signup'
+  mode: RouteMode = 'signup'
 
   ngOnInit(): void {
     this.onRoute()
@@ -17,7 +20,7 @@ export class AuthComponent implements OnInit {
 
   onRoute() {
     const url = (this.router.url).split('/')
-    this.mode = (url[url.length - 1] as 'signin' | 'signup')
+    this.mode = (url[url.length - 1] as RouteMode)
   }
 
 }
