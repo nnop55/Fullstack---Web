@@ -37,13 +37,6 @@ class App {
         this.app.all("*", (req, res) => {
             res.status(404).send("Not Found");
         });
-
-        this.app.use((
-            err: Error, req: Request,
-            res: Response, next: NextFunction) => {
-            console.error(err.stack);
-            res.status(500).send('Internal Server Error');
-        });
     }
 
     private startServer(port: number | string) {

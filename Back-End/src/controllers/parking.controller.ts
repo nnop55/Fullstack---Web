@@ -10,23 +10,13 @@ export class ParkingController {
     }
 
     public async getParkingZones(req: Request, res: Response): Promise<void> {
-        try {
-            const result = await this.parkingService.getAllZones()
-            res.status(200).json({ data: result });
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+        const result = await this.parkingService.getAllZones()
+        res.status(200).json({ data: result });
     }
 
     public async insertParkingZones(req: Request, res: Response): Promise<void> {
-        try {
-            const { name, address, price } = req.body;
-            await this.parkingService.insertZone({ name, address, price })
-            res.status(201).json({ name, address, price })
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+        const { name, address, price } = req.body;
+        await this.parkingService.insertZone({ name, address, price })
+        res.status(201).json({ name, address, price })
     }
 }
