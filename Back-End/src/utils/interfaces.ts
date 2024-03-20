@@ -49,3 +49,8 @@ export enum ParkingZone {
     occupied,
     available
 }
+
+export enum Role {
+    user,
+    admin
+}

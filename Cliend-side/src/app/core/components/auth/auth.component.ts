@@ -1,8 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouteMode } from 'src/app/shared/utils/unions';
 
-
-type RouteMode = 'signin' | 'signup'
 
 @Component({
   selector: 'app-auth',

@@ -20,7 +20,7 @@ class AuthController {
 
         const accessToken = getToken({ id: user.id, email: user.email });
         await TokenService.insertTokenInstance(accessToken, user.id)
-        res.status(201).json({ code: 1, accessToken, role: user.role });
+        res.status(201).json({ code: 1, data: { accessToken, role: user.role } });
     }
 
 
@@ -128,6 +128,15 @@ class AuthController {
         }
 
         res.status(200).json({ code: 1, data: user });
+    }
+
+    public async getUserRoles(req: Request, res: Response): Promise<void> {
+        const result = [
+            { value: 0, label: 'User' },
+            { value: 1, label: 'Admin' }
+        ]
+
+        res.status(200).json({ code: 1, data: result });
     }
 
 }

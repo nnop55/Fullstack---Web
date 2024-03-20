@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { regExp } from 'src/app/shared/functions/regExp';
 
 @Component({
@@ -8,8 +9,11 @@ import { regExp } from 'src/app/shared/functions/regExp';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
   form!: FormGroup;
+
   fb: FormBuilder = inject(FormBuilder)
+  shared: SharedService = inject(SharedService)
 
   options = [
     { value: 0, label: 'User' },
@@ -29,6 +33,13 @@ export class RegisterComponent implements OnInit {
       confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
     })
   };
+
+  getUserRoles() {
+    this.shared.getUserRoles().subscribe({
+      next: () => { },
+      error: () => { }
+    })
+  }
 
   submitForm(form: FormGroup) {
     console.log(form.value)

@@ -14,6 +14,10 @@ class AuthRouter {
     }
 
     private initRoutes() {
+        this.router.get('/roles',
+            asyncHandler((req: Request, res: Response) =>
+                AuthController.getUserRoles(req, res))
+        );
         this.router.get('/',
             verifyToken,
             asyncHandler((req: Request, res: Response) =>
