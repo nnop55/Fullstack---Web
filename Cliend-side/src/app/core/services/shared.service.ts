@@ -12,6 +12,6 @@ export class SharedService {
   constructor(private http: HttpClient) { }
 
   getUserRoles(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/auth/roles`)
+    return this.http.get<any>(`${this.baseUrl}auth/roles`)
   }
 }

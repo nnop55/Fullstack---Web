@@ -18,11 +18,15 @@ export class Validator {
         return errors;
     }
 
-    public static validateRegisterInput(email: string, password: string, fullName: string): ValidationResult[] {
+    public static validateRegisterInput(email: string, password: string, fullName: string, role: number): ValidationResult[] {
         const errors: ValidationResult[] = [];
 
         if (!fullName) {
             errors.push({ field: 'fullName', message: 'Fullname is required' });
+        }
+
+        if (!role) {
+            errors.push({ field: 'role', message: 'Role is required' });
         }
 
         if (!email) {

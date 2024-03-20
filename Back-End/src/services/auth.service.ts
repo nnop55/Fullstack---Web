@@ -19,12 +19,12 @@ class AuthService {
         });
     }
 
-    public insertUser(email: string, fullName: string, hashedPassword: string): Promise<void> {
+    public insertUser(email: string, fullName: string, hashedPassword: string, role: number): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             setQuery(`INSERT INTO users 
-                    (email, full_name, password, balance) 
-                    VALUES (?, ?, ?, ?)`,
-                [email, fullName, hashedPassword, 100], (err: any, result: any) => {
+                    (email, full_name, password, balance, role) 
+                    VALUES (?, ?, ?, ?, ?)`,
+                [email, fullName, hashedPassword, 100, role], (err: any, result: any) => {
                     if (err) {
                         console.error('Error registering user:', err);
                         reject(err)

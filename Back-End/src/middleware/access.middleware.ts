@@ -4,7 +4,7 @@ import { accessUrl } from '../config/config';
 export function restrictAccess(req: Request, res: Response, next: NextFunction) {
     const isDevMode = process.env.NODE_ENV === 'development';
     const isPostmanRequest = req.header('user-agent') && req.header('user-agent')!.includes('Postman');
-    const isLocalhostRequest = req.headers.origin && req.headers.origin === 'http://localhost:4200';
+    const isLocalhostRequest = req.headers.origin && req.headers.origin.includes('http://localhost:');
     const isWebsiteRequest = req.headers.origin && req.headers.origin === accessUrl;
 
     if (isDevMode && (isPostmanRequest || isLocalhostRequest)) {

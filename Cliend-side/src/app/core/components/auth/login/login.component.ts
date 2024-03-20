@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { regExp } from 'src/app/shared/functions/regExp';
+import { regExp } from 'src/app/shared/utils/regExp';
 
 @Component({
   selector: 'app-login',

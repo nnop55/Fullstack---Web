@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { SharedService } from 'src/app/core/services/shared.service';
-import { regExp } from 'src/app/shared/functions/regExp';
+import { regExp } from 'src/app/shared/utils/regExp';
+import { Status } from 'src/app/shared/utils/unions';
 
 @Component({
   selector: 'app-register',
@@ -14,14 +16,13 @@ export class RegisterComponent implements OnInit {
 
   fb: FormBuilder = inject(FormBuilder)
   shared: SharedService = inject(SharedService)
+  auth: AuthService = inject(AuthService)
 
-  options = [
-    { value: 0, label: 'User' },
-    { value: 1, label: 'Admin' }
-  ];
+  options = [];
 
   ngOnInit(): void {
     this.initForm()
+    this.getUserRoles()
   }
 
   initForm() {
@@ -36,16 +37,29 @@ export class RegisterComponent implements OnInit {
 
   getUserRoles() {
     this.shared.getUserRoles().subscribe({
-      next: () => { },
+      next: (response) => {
+        if (response.code == Status.success) {
+          this.options = response['data']
+        }
+      },
       error: () => { }
     })
   }
 
   submitForm(form: FormGroup) {
-    console.log(form.value)
-    if (this.form.invalid) {
+    console.log(form.controls)
+    if (form.invalid || form.controls['password'].value !== form.controls['confirmPassword'].value) {
       return
     }
+
+    this.auth.register(
+      {
+        email: form.value['email'],
+        fullName: form.value['fullName'],
+        role: form.value['role'],
+        password: form.value['password']
+      }
+    ).subscribe()
   }
 
 }

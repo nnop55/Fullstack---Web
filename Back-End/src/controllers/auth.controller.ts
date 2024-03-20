@@ -50,7 +50,7 @@ class AuthController {
     }
 
     public async register(req: Request, res: Response): Promise<void> {
-        const { fullName, password, email } = req.body;
+        const { fullName, password, email, role } = req.body;
         const hashedPassword = this.bcrypt.hashSync(password, 10);
         const user = await AuthService.findByEmail(email);
 
@@ -58,7 +58,7 @@ class AuthController {
             res.status(409).json({ code: 2, message: 'User already registered with this email' });
             return;
         }
-        await AuthService.insertUser(email, fullName, hashedPassword)
+        await AuthService.insertUser(email, fullName, hashedPassword, role)
         res.status(201).json({ code: 1, message: 'User registered successfully' });
     }
 
