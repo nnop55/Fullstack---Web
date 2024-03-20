@@ -16,10 +16,14 @@ export class PasswordStepsModalComponent implements OnInit {
   shared: SharedService = inject(SharedService)
   fb: FormBuilder = inject(FormBuilder)
 
-  Steps = Steps
-  step = 1
+  Steps = Steps;
+  step = 1;
 
-  forms: any[] = [FormGroup, FormGroup, FormGroup]
+  emailForm!: FormGroup;
+  codeForm!: FormGroup;
+  passwordForm!: FormGroup;
+
+  forms: { fn: Function, form: FormGroup }[] = [];
 
   ngOnInit(): void {
     this.initForms();
@@ -30,29 +34,36 @@ export class PasswordStepsModalComponent implements OnInit {
   }
 
   hasError(control: string, pattern: string | undefined = undefined) {
-    return this.shared.hasError(this.forms[this.step - 1], control, pattern)
+    return this.shared.hasError(this.forms[this.index]['form'], control, pattern)
   }
 
   initForms() {
-    const index = this.step - 1;
-    switch (this.step) {
-      case Steps.email:
-        this.forms[index] = this.fb.group({
-          email: new FormControl(null, [Validators.required, Validators.email])
-        })
-        break;
-      case Steps.code:
-        this.forms[index] = this.fb.group({
-          code: new FormControl(null, [Validators.required])
-        })
-        break;
-      case Steps.recover:
-        this.forms[index] = this.fb.group({
-          password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
-          confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
-        })
-        break;
-    }
+    this.emailForm = this.fb.group({
+      email: new FormControl(null, [Validators.required, Validators.email])
+    });
+
+    this.codeForm = this.fb.group({
+      code: new FormControl(null, [Validators.required])
+    });
+
+    this.passwordForm = this.fb.group({
+      password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
+    });
+
+    this.forms.push(
+      {
+        fn: () => this.sendCodeToEmail(),
+        form: this.emailForm
+      },
+      {
+        fn: () => this.verifyCode(),
+        form: this.codeForm
+      },
+      {
+        fn: () => this.recoverPassword(),
+        form: this.passwordForm
+      });
   }
 
   sendCodeToEmail() { }
@@ -67,17 +78,11 @@ export class PasswordStepsModalComponent implements OnInit {
       return
     }
 
-    switch (this.step) {
-      case Steps.email:
-        this.sendCodeToEmail()
-        break;
-      case Steps.code:
-        this.verifyCode()
-        break;
-      case Steps.recover:
-        this.recoverPassword()
-        break;
-    }
+    this.forms[this.index]['fn']
+  }
+
+  get index() {
+    return this.step - 1
   }
 
 }
