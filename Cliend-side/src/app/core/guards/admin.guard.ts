@@ -6,9 +6,9 @@ import { Role } from 'src/app/shared/utils/unions';
 export const adminGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
+  console.log(authService.isAuthenticatedUser(), authService.getUserRole())
   if (!authService.isAuthenticatedUser() || authService.getUserRole() !== Role.admin) {
-    router.navigate(['/auth']);
+    router.navigate(['/auth/signin']);
     return false;
   }
   return true;

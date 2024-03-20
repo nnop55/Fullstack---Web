@@ -1,6 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 import { regExp } from 'src/app/shared/utils/regExp';
+import { Status } from 'src/app/shared/utils/unions';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +14,9 @@ export class LoginComponent implements OnInit {
 
   form!: FormGroup;
   fb: FormBuilder = inject(FormBuilder)
+  auth: AuthService = inject(AuthService)
+  shared: SharedService = inject(SharedService)
+  vcRef: ViewContainerRef = inject(ViewContainerRef)
 
   ngOnInit(): void {
     this.initForm()
@@ -24,9 +30,22 @@ export class LoginComponent implements OnInit {
   };
 
   submitForm(form: FormGroup) {
-    if (this.form.invalid) {
+    if (form.invalid) {
       return
     }
+
+    this.auth.login(
+      {
+        email: form.value['email'],
+        password: form.value['password']
+      }
+    ).subscribe(response => {
+      if (response.code == Status.error) {
+        this.shared.showMessage(response.error, this.vcRef)
+      } else {
+        this.shared.showMessage(response.message, this.vcRef)
+      }
+    })
   }
 
 }

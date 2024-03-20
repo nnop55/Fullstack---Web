@@ -23,6 +23,7 @@ export class AuthService {
         if (response.code == Status.success) {
           this.userRole = response['data'].role;
           this.token = response['data'].accessToken;
+          this.isAuthenticated = true;
           localStorage.setItem('currentUser', JSON.stringify(response['data']));
           this.router.navigate(this.userRole == Role.admin ? ['/admin'] : ['/client'])
         }

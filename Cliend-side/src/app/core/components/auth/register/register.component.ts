@@ -66,6 +66,8 @@ export class RegisterComponent implements OnInit {
     ).subscribe(response => {
       if (response.code == Status.error) {
         this.shared.showMessage(response.error, this.vcRef)
+      } else {
+        this.shared.showMessage(response.message, this.vcRef)
       }
     })
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouteMode } from 'src/app/shared/utils/unions';
 
 
@@ -10,17 +10,15 @@ import { RouteMode } from 'src/app/shared/utils/unions';
 })
 export class AuthComponent implements OnInit {
 
-  router: Router = inject(Router)
+  route: ActivatedRoute = inject(ActivatedRoute)
   mode: RouteMode = 'signup'
 
   ngOnInit(): void {
     this.onRoute()
   }
 
-
   onRoute() {
-    const url = (this.router.url).split('/')
-    this.mode = (url[url.length - 1] as RouteMode)
+    this.mode = this.route.snapshot.data['mode']
   }
 
 }

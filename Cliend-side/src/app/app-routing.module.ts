@@ -11,8 +11,8 @@ const routes: Routes = [
   {
     path: 'auth',
     children: [
-      { path: 'signin', component: AuthComponent },
-      { path: 'signup', component: AuthComponent }
+      { path: 'signin', component: AuthComponent, data: { mode: 'signin' } },
+      { path: 'signup', component: AuthComponent, data: { mode: 'signup' } }
     ]
   },
   {
