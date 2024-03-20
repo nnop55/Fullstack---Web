@@ -25,7 +25,7 @@ export class Validator {
             errors.push({ field: 'fullName', message: 'Fullname is required' });
         }
 
-        if (!role) {
+        if (!(role >= 0 && role <= 1)) {
             errors.push({ field: 'role', message: 'Role is required' });
         }
 

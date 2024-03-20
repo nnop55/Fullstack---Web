@@ -48,11 +48,18 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-
+  hasError(control: string, pattern: string | undefined = undefined) {
+    return this.shared.hasError(this.form, control, pattern)
+  }
 
   submitForm(form: FormGroup) {
-    console.log(form.controls)
-    if (form.invalid || form.controls['password'].value !== form.controls['confirmPassword'].value) {
+    if (form.invalid) {
+      this.shared.markAllDirty(form)
+      return
+    }
+
+    if (form.controls['password'].value !== form.controls['confirmPassword'].value) {
+      this.shared.showMessage(`Password doesn't match!`, this.vcRef)
       return
     }
 

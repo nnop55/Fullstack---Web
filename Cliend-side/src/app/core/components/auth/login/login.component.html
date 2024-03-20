@@ -6,12 +6,14 @@
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
+        [className]="hasError('email', 'email') && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
       <app-text-input
         [placeholder]="'Password'"
         formControlName="password"
+        [className]="hasError('password') && 'error'"
         [inpType]="'password'"
       ></app-text-input>
     </div>

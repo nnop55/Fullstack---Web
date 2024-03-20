@@ -29,8 +29,13 @@ export class LoginComponent implements OnInit {
     })
   };
 
+  hasError(control: string, pattern: string | undefined = undefined) {
+    return this.shared.hasError(this.form, control, pattern)
+  }
+
   submitForm(form: FormGroup) {
     if (form.invalid) {
+      this.shared.markAllDirty(form)
       return
     }
 

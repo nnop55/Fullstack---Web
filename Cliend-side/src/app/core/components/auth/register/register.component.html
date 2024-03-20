@@ -6,12 +6,14 @@
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
+        [className]="hasError('email', 'email') && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
       <app-text-input
         [placeholder]="'Full name'"
         formControlName="fullName"
+        [className]="hasError('fullName') && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -19,6 +21,7 @@
         [placeholder]="'Role'"
         formControlName="role"
         [options]="options"
+        [className]="hasError('role') && 'error'"
       ></app-dropdown>
     </div>
     <div class="form-item">
@@ -26,6 +29,7 @@
         [placeholder]="'Password'"
         formControlName="password"
         [inpType]="'password'"
+        [className]="hasError('password', 'pattern') && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -33,6 +37,7 @@
         [placeholder]="'Confirm password'"
         formControlName="confirmPassword"
         [inpType]="'password'"
+        [className]="hasError('confirmPassword', 'pattern') && 'error'"
       ></app-text-input>
     </div>
 
