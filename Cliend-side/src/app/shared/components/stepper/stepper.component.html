@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="step-view">
+    <ng-container *ngFor="let step of data; let i = index">
+      <div
+        class="box"
+        [ngClass]="{
+          disabled: !step.clickable,
+          active: step.level <= activeStep
+        }"
+      >
+        <div class="item">
+          <span class="title">{{ step.title }}</span>
+        </div>
+        <hr *ngIf="i < data.length - 1" />
+      </div>
+    </ng-container>
+  </div>
+  <article class="steps-content">
+    <ng-content></ng-content>
+  </article>
+</div>

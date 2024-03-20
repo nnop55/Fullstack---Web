@@ -25,6 +25,12 @@ export class PasswordStepsModalComponent implements OnInit {
 
   forms: { fn: Function, form: FormGroup }[] = [];
 
+  stepperOptions = [
+    { level: 1, title: "Enter your email", clickable: true },
+    { level: 2, title: "Check code at email", clickable: false },
+    { level: 3, title: "Enter new password", clickable: false }
+  ]
+
   ngOnInit(): void {
     this.initForms();
   }
@@ -73,12 +79,13 @@ export class PasswordStepsModalComponent implements OnInit {
   recoverPassword() { }
 
   submitForm(form: FormGroup) {
-    if (form.invalid) {
-      this.shared.markAllDirty(form)
-      return
-    }
+    // if (form.invalid) {
+    //   this.shared.markAllDirty(form)
+    //   return
+    // }
 
     this.forms[this.index]['fn']
+    this.step++
   }
 
   get index() {
