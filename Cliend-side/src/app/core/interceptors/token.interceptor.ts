@@ -7,9 +7,11 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  baseUrl: string = environment.baseUrl;
 
   constructor(private authService: AuthService) { }
 
@@ -28,6 +30,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private shouldAddToken(url: string): boolean {
-    return url.startsWith('your_login_endpoint') || url.startsWith('your_recover_password_endpoint');
+    return url.startsWith(`${this.baseUrl}auth/login`) || url.startsWith(`${this.baseUrl}auth/recover-password`);
   }
 }
