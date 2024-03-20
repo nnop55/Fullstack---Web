@@ -25,9 +25,8 @@ export class AuthService {
           this.token = response['data'].accessToken;
           localStorage.setItem('currentUser', JSON.stringify(response['data']));
           this.router.navigate(this.userRole == Role.admin ? ['/admin'] : ['/client'])
-        } else {
-
         }
+
         return response;
       })
     );
@@ -43,8 +42,6 @@ export class AuthService {
               password: params['password']
             }
           ).subscribe()
-        } else {
-
         }
 
         return response;

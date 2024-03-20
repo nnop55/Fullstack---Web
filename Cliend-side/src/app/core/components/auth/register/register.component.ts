@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SharedService } from 'src/app/core/services/shared.service';
+import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
 import { regExp } from 'src/app/shared/utils/regExp';
 import { Status } from 'src/app/shared/utils/unions';
 
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   fb: FormBuilder = inject(FormBuilder)
   shared: SharedService = inject(SharedService)
   auth: AuthService = inject(AuthService)
+  vcRef: ViewContainerRef = inject(ViewContainerRef)
 
   options = [];
 
@@ -46,6 +48,8 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+
+
   submitForm(form: FormGroup) {
     console.log(form.controls)
     if (form.invalid || form.controls['password'].value !== form.controls['confirmPassword'].value) {
@@ -59,7 +63,11 @@ export class RegisterComponent implements OnInit {
         role: form.value['role'],
         password: form.value['password']
       }
-    ).subscribe()
+    ).subscribe(response => {
+      if (response.code == Status.error) {
+        this.shared.showMessage(response.error, this.vcRef)
+      }
+    })
   }
 
 }

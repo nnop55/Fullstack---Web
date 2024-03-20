@@ -17,6 +17,7 @@ export class AuthComponent implements OnInit {
     this.onRoute()
   }
 
+
   onRoute() {
     const url = (this.router.url).split('/')
     this.mode = (url[url.length - 1] as RouteMode)

@@ -42,7 +42,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -30,7 +30,7 @@ class AuthController {
         const userId = parseInt(req.params.userId);
 
         if (userId !== user['id']) {
-            res.status(400).json({ code: 2, message: "Invalid input" });
+            res.status(400).json({ code: 2, error: "Invalid input" });
             return;
         }
 
@@ -55,7 +55,7 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (user) {
-            res.status(409).json({ code: 2, message: 'User already registered with this email' });
+            res.status(409).json({ code: 2, error: 'User already registered with this email' });
             return;
         }
         await AuthService.insertUser(email, fullName, hashedPassword, role)
@@ -67,7 +67,7 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (!user) {
-            res.status(400).json({ code: 2, message: 'Invalid email' });
+            res.status(400).json({ code: 2, error: 'Invalid email' });
             return;
         }
         await AuthService.sendVerification(email)
@@ -84,12 +84,12 @@ class AuthController {
         const { code } = req.body;
         const user = (req as any).user;
         if (!user) {
-            res.status(400).json({ code: 2, message: 'Invalid email' });
+            res.status(400).json({ code: 2, error: 'Invalid email' });
             return
         }
 
         if (code != user.code) {
-            res.status(400).json({ code: 2, message: 'Incorrect code' });
+            res.status(400).json({ code: 2, error: 'Incorrect code' });
             return
         }
 
@@ -103,7 +103,7 @@ class AuthController {
         const user = (req as any).user;
 
         if (user.code !== null) {
-            res.status(400).json({ code: 2, message: 'Invalid verification' });
+            res.status(400).json({ code: 2, error: 'Invalid verification' });
             return
         }
 
