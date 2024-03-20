@@ -5,12 +5,14 @@ import { ButtonComponent } from './components/button/button.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { PasswordStepsModalComponent } from './components/password-steps-modal/password-steps-modal.component';
 
 const exportComponents = [
   TextInputComponent,
   ButtonComponent,
   DropdownComponent,
   SnackbarComponent,
+  PasswordStepsModalComponent,
 ]
 
 @NgModule({
@@ -18,7 +20,8 @@ const exportComponents = [
     TextInputComponent,
     ButtonComponent,
     DropdownComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    PasswordStepsModalComponent
   ],
   imports: [
     CommonModule,

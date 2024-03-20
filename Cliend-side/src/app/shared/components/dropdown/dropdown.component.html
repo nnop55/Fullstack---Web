@@ -1,7 +1,7 @@
 <div class="custom-dropdown {{ className }}" [class.focus]="showOptions">
   <div class="content" (click)="toggleDropdown()">
     <span *ngIf="selectedOption">{{ selectedOption.label }}</span>
-    <div class="icon">></div>
+    <img class="icon" src="../../../../assets/icons/arrow-pointer.svg" />
   </div>
   <label [class.active]="selectedOption">
     {{ placeholder }}

@@ -8,4 +8,10 @@ export enum Status {
     error
 }
 
+export enum Steps {
+    email = 1,
+    code,
+    recover
+}
+
 export type RouteMode = 'signin' | 'signup'

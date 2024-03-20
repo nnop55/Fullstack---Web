@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
 import { regExp } from 'src/app/shared/utils/regExp';
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
 
   fb: FormBuilder = inject(FormBuilder)
   shared: SharedService = inject(SharedService)
+  dyService: DyComponentsService = inject(DyComponentsService)
   auth: AuthService = inject(AuthService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
 
@@ -59,7 +61,7 @@ export class RegisterComponent implements OnInit {
     }
 
     if (form.controls['password'].value !== form.controls['confirmPassword'].value) {
-      this.shared.showMessage(`Password doesn't match!`, this.vcRef)
+      this.dyService.showMessage(`Password doesn't match!`, this.vcRef)
       return
     }
 
@@ -72,9 +74,9 @@ export class RegisterComponent implements OnInit {
       }
     ).subscribe(response => {
       if (response.code == Status.error) {
-        this.shared.showMessage(response.error, this.vcRef)
+        this.dyService.showMessage(response.error, this.vcRef)
       } else {
-        this.shared.showMessage(response.message, this.vcRef)
+        this.dyService.showMessage(response.message, this.vcRef)
       }
     })
   }
