@@ -18,7 +18,9 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() inpType: 'number' | 'text' | 'password' = 'text';
   @Input() className: string = '';
+  @Input() showEye: boolean = false;
 
+  eye: 'hiding' | 'showing' = 'hiding'
   private _innerValue: any;
 
   private onChangeCallback: (_: any) => void = () => { };
@@ -26,6 +28,15 @@ export class TextInputComponent implements ControlValueAccessor {
 
   constructor() { }
 
+  togglePassEye() {
+    if (this.eye == 'hiding') {
+      this.eye = 'showing';
+      this.inpType = 'text'
+    } else {
+      this.eye = 'hiding';
+      this.inpType = 'password';
+    }
+  }
 
   writeValue(value: any): void {
     if (value !== this._innerValue) {

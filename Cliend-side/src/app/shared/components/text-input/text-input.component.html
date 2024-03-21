@@ -7,5 +7,14 @@
     placeholder=""
     name="input"
   />
+
   <label for="input">{{ placeholder }}</label>
+
+  <ng-container *ngIf="showEye">
+    <img
+      class="eye"
+      (click)="togglePassEye()"
+      src="../../../../assets/icons/eye-{{ eye }}.svg"
+    />
+  </ng-container>
 </div>

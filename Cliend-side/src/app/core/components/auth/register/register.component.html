@@ -29,6 +29,7 @@
         [placeholder]="'Password'"
         formControlName="password"
         [inpType]="'password'"
+        [showEye]="true"
         [className]="hasError('password', 'pattern') && 'error'"
       ></app-text-input>
     </div>
@@ -37,6 +38,7 @@
         [placeholder]="'Confirm password'"
         formControlName="confirmPassword"
         [inpType]="'password'"
+        [showEye]="true"
         [className]="hasError('confirmPassword', 'pattern') && 'error'"
       ></app-text-input>
     </div>

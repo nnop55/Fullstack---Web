@@ -47,6 +47,13 @@
     color: $gray;
   }
 
+  .eye {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+  }
+
   &.error {
     input {
       border-color: $error;
