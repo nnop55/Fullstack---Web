@@ -93,7 +93,7 @@ class AuthController {
             return;
         }
 
-        if (code != user.code) {
+        if (code !== user.code) {
             res.status(400).json({ code: 2, error: 'Incorrect code' });
             return
         }
