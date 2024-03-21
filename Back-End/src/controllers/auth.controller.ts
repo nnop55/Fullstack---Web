@@ -67,14 +67,14 @@ class AuthController {
         const user = await AuthService.findByEmail(email);
 
         if (!user) {
-            res.status(400).json({ code: 2, error: 'Invalid email' });
+            res.status(400).json({ code: 2, error: 'Account not found for this email' });
             return;
         }
         await AuthService.sendVerification(email)
         if (!fromProfile) {
             const accessToken = getToken({ id: user.id, email: user.email }, '10m');
             await TokenService.insertTokenInstance(accessToken, user.id)
-            res.status(200).json({ code: 1, message: 'Check email, code is valid for 3 min', accessToken });
+            res.status(200).json({ code: 1, message: 'Check email, code is valid for 3 min', data: { accessToken } });
             return
         }
         res.status(200).json({ code: 1, message: 'Check email, code is valid for 3 min' });

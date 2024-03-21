@@ -50,11 +50,14 @@ export class LoginComponent implements OnInit {
         email: form.value['email'],
         password: form.value['password']
       }
-    ).subscribe(response => {
-      if (response.code == Status.error) {
-        this.dyService.showMessage(response.error, this.vcRef)
-      } else {
-        this.dyService.showMessage(response.message, this.vcRef)
+    ).subscribe({
+      next: (response) => {
+        if (response.code == Status.success) {
+          this.dyService.showMessage(response.message, this.vcRef)
+        }
+      },
+      error: (error) => {
+        this.dyService.showMessage(error.error.error, this.vcRef, true)
       }
     })
   }

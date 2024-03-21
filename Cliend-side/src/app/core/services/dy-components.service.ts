@@ -11,14 +11,16 @@ export class DyComponentsService {
 
   constructor() { }
 
-  showMessage(message: string, vcRef: ViewContainerRef) {
+  showMessage(message: string, vcRef: ViewContainerRef, isError?: boolean) {
+    console.log("AEEE")
     vcRef.clear()
     const ref = vcRef.createComponent(SnackbarComponent)
     ref.setInput('message', message)
+    ref.setInput('isError', isError)
 
     setTimeout(() => {
       ref.destroy()
-    }, 3000);
+    }, 6000);
   }
 
   openPasswordStepsModal(vcRef: ViewContainerRef) {

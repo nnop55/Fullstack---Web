@@ -30,6 +30,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private shouldAddToken(url: string): boolean {
-    return url.startsWith(`${this.baseUrl}auth/login`) || url.startsWith(`${this.baseUrl}auth/recover-password`);
+    return url.startsWith(`${this.baseUrl}auth/login`) || url.startsWith(`${this.baseUrl}auth/verify-email`);
   }
 }

@@ -6,6 +6,6 @@ import { Component, Input, OnInit, ViewContainerRef, inject } from '@angular/cor
   styleUrls: ['./snackbar.component.scss']
 })
 export class SnackbarComponent {
-
   @Input() message: string = '';
+  @Input() isError: boolean = false;
 }

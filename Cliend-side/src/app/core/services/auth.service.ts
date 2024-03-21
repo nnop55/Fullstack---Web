@@ -59,8 +59,20 @@ export class AuthService {
     );
   }
 
-  recoverPassword(username: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { username }).pipe(
+  recoverPassword(params: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { ...params }).pipe(
+      map(response => {
+        if (response.code == Status.success) {
+          // this.token = response['data'].accessToken;
+          // localStorage.setItem('currentUser', JSON.stringify(response));
+        }
+        return response;
+      })
+    );
+  }
+
+  sendCodeToEmail(email: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}auth/verify-email`, { email }).pipe(
       map(response => {
         if (response.code == Status.success) {
           this.token = response['data'].accessToken;

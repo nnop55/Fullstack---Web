@@ -1,8 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { Steps } from '../../utils/unions';
+import { Component, EventEmitter, OnInit, Output, ViewContainerRef, inject } from '@angular/core';
+import { Status, Steps } from '../../utils/unions';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { regExp } from '../../utils/regExp';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 
 @Component({
   selector: 'app-password-steps-modal',
@@ -14,6 +16,9 @@ export class PasswordStepsModalComponent implements OnInit {
   @Output() closeClicked: EventEmitter<void> = new EventEmitter<void>();
 
   shared: SharedService = inject(SharedService)
+  auth: AuthService = inject(AuthService)
+  dyService: DyComponentsService = inject(DyComponentsService)
+  vcRef: ViewContainerRef = inject(ViewContainerRef)
   fb: FormBuilder = inject(FormBuilder)
 
   Steps = Steps;
@@ -23,7 +28,7 @@ export class PasswordStepsModalComponent implements OnInit {
   codeForm!: FormGroup;
   passwordForm!: FormGroup;
 
-  forms: { fn: Function, form: FormGroup }[] = [];
+  forms: { fn: () => void, form: FormGroup }[] = [];
 
   stepperOptions = [
     { level: 1, title: "1", clickable: true },
@@ -40,7 +45,7 @@ export class PasswordStepsModalComponent implements OnInit {
   }
 
   hasError(control: string, pattern: string | undefined = undefined) {
-    return this.shared.hasError(this.forms[this.index]['form'], control, pattern)
+    return this.shared.hasError(this.formItem['form'], control, pattern)
   }
 
   initForms() {
@@ -72,24 +77,39 @@ export class PasswordStepsModalComponent implements OnInit {
       });
   }
 
-  sendCodeToEmail() { }
+  sendCodeToEmail() {
+    const form = this.formItem['form'];
+    this.auth.sendCodeToEmail(
+      form.controls['email']?.value
+    ).subscribe({
+      next: (response) => {
+        if (response.code == Status.success) {
+          this.dyService.showMessage(response.message, this.vcRef)
+          this.step++;
+        }
+      },
+      error: (error) => {
+        console.log(error)
+        this.dyService.showMessage(error.error.error, this.vcRef, true)
+      }
+    })
+  }
 
   verifyCode() { }
 
   recoverPassword() { }
 
   submitForm(form: FormGroup) {
-    // if (form.invalid) {
-    //   this.shared.markAllDirty(form)
-    //   return
-    // }
+    if (form.invalid) {
+      this.shared.markAllDirty(form)
+      return
+    }
 
-    this.forms[this.index]['fn']
-    this.step++
+    this.formItem.fn()
   }
 
-  get index() {
-    return this.step - 1
+  get formItem() {
+    return this.forms[this.step - 1]
   }
 
 }
