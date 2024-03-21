@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouteMode } from 'src/app/shared/utils/unions';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -11,10 +12,15 @@ import { RouteMode } from 'src/app/shared/utils/unions';
 export class AuthComponent implements OnInit {
 
   route: ActivatedRoute = inject(ActivatedRoute)
+  auth: AuthService = inject(AuthService)
   mode: RouteMode = 'signup'
 
   ngOnInit(): void {
     this.onRoute()
+
+    if (this.auth.getBearerToken()) {
+      this.auth.logout().subscribe()
+    }
   }
 
   onRoute() {

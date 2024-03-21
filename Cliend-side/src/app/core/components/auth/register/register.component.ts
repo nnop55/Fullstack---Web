@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
     }
 
     if (form.controls['password'].value !== form.controls['confirmPassword'].value) {
-      this.dyService.showMessage(`Password doesn't match!`, this.vcRef)
+      this.dyService.showMessage(`Password doesn't match!`, this.vcRef, true)
       return
     }
 

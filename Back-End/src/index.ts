@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import { connectDB } from './services/database.service';
 import { restrictAccess } from './middleware/access.middleware';
+import cors from 'cors';
 
 import CarRouter from './routers/car.router';
 import ParkingRouter from './routers/parking.router';
@@ -13,6 +14,10 @@ class Index {
     constructor() {
         this.app = express();
         this.app.use(restrictAccess)
+        this.app.use(cors());
+        this.app.options('*', cors({
+            allowedHeaders: ['Content-Type', 'Authorization']
+        }));
 
         this.setupMiddleware();
         this.setupRoutes();

@@ -16,8 +16,9 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.shouldAddToken(request.url)) {
-      const token = this.authService.getBearerToken();
+    const token = this.authService.getBearerToken();
+
+    if (token) {
       const authReq = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
@@ -27,9 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
     } else {
       return next.handle(request);
     }
-  }
 
-  private shouldAddToken(url: string): boolean {
-    return url.startsWith(`${this.baseUrl}auth/login`) || url.startsWith(`${this.baseUrl}auth/verify-email`);
+
   }
 }

@@ -89,15 +89,49 @@ export class PasswordStepsModalComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error)
+        this.dyService.showMessage(error?.error?.error, this.vcRef, true)
+      }
+    })
+  }
+
+  verifyCode() {
+    const form = this.formItem['form'];
+    this.auth.verifyCode(
+      form.controls['code']?.value
+    ).subscribe({
+      next: (response) => {
+        if (response.code == Status.success) {
+          this.dyService.showMessage(response.message, this.vcRef)
+          this.step++;
+        }
+      },
+      error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
       }
     })
   }
 
-  verifyCode() { }
+  recoverPassword() {
+    const form = this.formItem['form'];
+    if (form.controls['password'].value !== form.controls['confirmPassword'].value) {
+      this.dyService.showMessage(`Password doesn't match!`, this.vcRef, true)
+      return
+    }
 
-  recoverPassword() { }
+    this.auth.recoverPassword(
+      form.controls['password']?.value
+    ).subscribe({
+      next: (response) => {
+        if (response.code == Status.success) {
+          this.dyService.showMessage(response.message, this.vcRef)
+          this.onCloseClick()
+        }
+      },
+      error: (error) => {
+        this.dyService.showMessage(error.error.error, this.vcRef, true)
+      }
+    })
+  }
 
   submitForm(form: FormGroup) {
     if (form.invalid) {

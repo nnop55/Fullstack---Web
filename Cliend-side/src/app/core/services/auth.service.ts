@@ -12,7 +12,6 @@ export class AuthService {
 
   private isAuthenticated = false;
   private userRole: number | null = null;
-  private token: string | null = null;
   baseUrl: string = environment.baseUrl;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -22,7 +21,6 @@ export class AuthService {
       map(response => {
         if (response.code == Status.success) {
           this.userRole = response['data'].role;
-          this.token = response['data'].accessToken;
           this.isAuthenticated = true;
           localStorage.setItem('currentUser', JSON.stringify(response['data']));
           this.router.navigate(this.userRole == Role.admin ? ['/admin'] : ['/client'])
@@ -59,13 +57,10 @@ export class AuthService {
     );
   }
 
-  recoverPassword(params: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { ...params }).pipe(
+  recoverPassword(password: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { password }).pipe(
       map(response => {
-        if (response.code == Status.success) {
-          // this.token = response['data'].accessToken;
-          // localStorage.setItem('currentUser', JSON.stringify(response));
-        }
+        localStorage.removeItem('currentUser');
         return response;
       })
     );
@@ -75,12 +70,16 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}auth/verify-email`, { email }).pipe(
       map(response => {
         if (response.code == Status.success) {
-          this.token = response['data'].accessToken;
-          localStorage.setItem('currentUser', JSON.stringify(response));
+          localStorage.setItem('currentUser', JSON.stringify(response['data']));
         }
+
         return response;
       })
     );
+  }
+
+  verifyCode(code: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}auth/verify-code`, { code });
   }
 
   isAuthenticatedUser(): boolean {
@@ -92,6 +91,7 @@ export class AuthService {
   }
 
   getBearerToken(): string | null {
-    return this.token;
+    const data = JSON.parse(localStorage.getItem('currentUser')!)
+    return data ? data['accessToken'] : null
   }
 }

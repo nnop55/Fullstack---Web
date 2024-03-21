@@ -12,7 +12,6 @@ export class DyComponentsService {
   constructor() { }
 
   showMessage(message: string, vcRef: ViewContainerRef, isError?: boolean) {
-    console.log("AEEE")
     vcRef.clear()
     const ref = vcRef.createComponent(SnackbarComponent)
     ref.setInput('message', message)
