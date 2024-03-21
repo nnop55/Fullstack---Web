@@ -4,14 +4,25 @@
       <div
         class="box"
         [ngClass]="{
-          disabled: !step.clickable,
-          active: step.level <= activeStep
+          disabled: step.level > finishedStep
         }"
+        [style.gap]="boxGap"
       >
-        <div class="item">
-          <span class="title">{{ step.title }}</span>
-        </div>
-        <hr *ngIf="i < data.length - 1" />
+        <button
+          id="stepButton{{ step.level }}"
+          class="item"
+          (click)="onStepClick(step)"
+          [ngClass]="{ done: step.level < finishedStep }"
+        >
+          {{ step.title }}
+        </button>
+        <ng-container *ngIf="i < data.length - 1">
+          <span
+            class="line"
+            [ngClass]="{ done: activeStep > step.level }"
+            [style.width]="lineWidth"
+          ></span>
+        </ng-container>
       </div>
     </ng-container>
   </div>

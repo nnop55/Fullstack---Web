@@ -1,7 +1,7 @@
 @import "/src/assets/styles/variables";
 
 .custom-dropdown {
-  width: 285px;
+  width: 100%;
   position: relative;
   margin: 10px 0;
   z-index: 11;
@@ -25,7 +25,7 @@
   .content {
     padding: 16px 16px 10px;
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
     background-color: transparent;
     outline: none;
     border: 2px solid $gray;
@@ -84,11 +84,11 @@
     }
   }
 }
-@media screen and (max-width: 768px) {
-  .custom-dropdown {
-    width: 245px !important;
-    span {
-      font-size: 14px !important;
-    }
-  }
-}
+// @media screen and (max-width: 768px) {
+//   .custom-dropdown {
+//     width: 245px !important;
+//     span {
+//       font-size: 14px !important;
+//     }
+//   }
+// }

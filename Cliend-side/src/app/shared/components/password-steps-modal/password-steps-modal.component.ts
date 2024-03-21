@@ -26,9 +26,9 @@ export class PasswordStepsModalComponent implements OnInit {
   forms: { fn: Function, form: FormGroup }[] = [];
 
   stepperOptions = [
-    { level: 1, title: "Enter your email", clickable: true },
-    { level: 2, title: "Check code at email", clickable: false },
-    { level: 3, title: "Enter new password", clickable: false }
+    { level: 1, title: "1", clickable: true },
+    { level: 2, title: "2", clickable: false },
+    { level: 3, title: "3", clickable: false }
   ]
 
   ngOnInit(): void {

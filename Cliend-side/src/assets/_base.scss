@@ -30,7 +30,7 @@ p {
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.303);
+  background-color: rgb(0 0 0 / 61%);
   z-index: 9999;
   position: fixed;
   width: 100%;
@@ -47,6 +47,15 @@ p {
     .header {
       display: flex;
       justify-content: end;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .overlay {
+    .container {
+      padding: 3px !important;
+      height: 40vw !important;
     }
   }
 }
