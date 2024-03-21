@@ -13,7 +13,7 @@
       align-items: center;
 
       .line {
-        height: 1px;
+        height: 1.5px;
         opacity: 1 !important;
         transition: 500ms;
         background: linear-gradient(to right, $light-blue 50%, $white 50%);
