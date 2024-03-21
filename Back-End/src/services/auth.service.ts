@@ -38,9 +38,10 @@ class AuthService {
 
     public sendVerification(email: string): Promise<void> {
         const verification = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiryTime = new Date(Date.now() + 3 * 60 * 1000);
         return new Promise<void>((resolve, reject) => {
-            setQuery(`UPDATE users SET code = ? WHERE email = ?`,
-                [verification, email], async (err: any, result: any) => {
+            setQuery(`UPDATE users SET code = ?, code_expire = ? WHERE email = ?`,
+                [verification, expiryTime, email], async (err: any, result: any) => {
                     if (err) {
                         console.error('Error logging in:', err);
                         reject(err)
