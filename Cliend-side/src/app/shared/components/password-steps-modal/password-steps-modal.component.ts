@@ -23,6 +23,7 @@ export class PasswordStepsModalComponent implements OnInit {
 
   Steps = Steps;
   step = 1;
+  restartStepper: boolean = false
 
   emailForm!: FormGroup;
   codeForm!: FormGroup;
@@ -107,6 +108,15 @@ export class PasswordStepsModalComponent implements OnInit {
       },
       error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
+        if (error.error.code == Status.expire) {
+          this.step--;
+          this.resetForm(1);
+
+          this.restartStepper = true
+          setTimeout(() => {
+            this.restartStepper = false
+          }, 1000)
+        }
       }
     })
   }
@@ -144,6 +154,10 @@ export class PasswordStepsModalComponent implements OnInit {
 
   get formItem() {
     return this.forms[this.step - 1]
+  }
+
+  resetForm(index: number) {
+    this.forms[index].form.reset()
   }
 
 }

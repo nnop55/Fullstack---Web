@@ -9,7 +9,8 @@ export class StepperComponent implements AfterViewInit, OnChanges {
 
   @Input() activeStep: number = 1;
   @Input() stepCount: number = 0;
-  @Input() data: any[] = [0];
+  @Input() data: any[] = [];
+  @Input() restart: boolean = false
 
   @Output() onStepClicked: EventEmitter<number> = new EventEmitter<number>();
 
@@ -25,10 +26,14 @@ export class StepperComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['activeStep']) {
-      if (this.activeStep > this.finishedStep) {
-        this.finishedStep = this.activeStep
-      }
+    if (changes['activeStep'] &&
+      changes['activeStep'].currentValue > this.finishedStep) {
+      this.finishedStep = this.activeStep
+    }
+
+    if (changes['restart'] &&
+      changes['restart'].currentValue == true) {
+      this.finishedStep = 1;
     }
   }
 

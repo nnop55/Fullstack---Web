@@ -5,7 +5,8 @@ export enum Role {
 
 export enum Status {
     success = 1,
-    error
+    error,
+    expire
 }
 
 export enum Steps {

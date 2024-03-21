@@ -89,7 +89,7 @@ class AuthController {
         }
 
         if (Date.now() > user['code_expire'].getTime()) {
-            res.status(400).json({ code: 2, error: 'Verification code has expired' });
+            res.status(400).json({ code: 3, error: 'Verification code has expired' });
             return;
         }
 
