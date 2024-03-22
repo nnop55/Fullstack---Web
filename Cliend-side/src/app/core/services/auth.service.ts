@@ -1,29 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import { Role, Status } from 'src/app/shared/utils/unions';
 import { environment } from 'src/environments/environment.development';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private isAuthenticated = false;
-  private userRole: number | null = null;
   baseUrl: string = environment.baseUrl;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  private unauthorizedSubject = new Subject<void>();
+  unauthorized$ = this.unauthorizedSubject.asObservable();
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private ls: LocalStorageService
+  ) { }
+
+  emitUnauthorizedEvent() {
+    this.unauthorizedSubject.next();
+  }
 
   login(params: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}auth/login`, { ...params }).pipe(
       map(response => {
         if (response.code == Status.success) {
-          this.userRole = response['data'].role;
-          this.isAuthenticated = true;
-          localStorage.setItem('currentUser', JSON.stringify(response['data']));
-          this.router.navigate(this.userRole == Role.admin ? ['/admin'] : ['/client'])
+          this.ls.set('currentUser', response['data'])
+          this.router.navigate(this.getUserRole() == Role.admin ? ['/admin'] : ['/client'])
         }
 
         return response;
@@ -51,7 +59,7 @@ export class AuthService {
   logout(): Observable<void> {
     return this.http.post<any>(`${this.baseUrl}auth/logout`, {}).pipe(
       map(response => {
-        localStorage.removeItem('currentUser');
+        this.ls.remove('currentUser')
         return;
       })
     );
@@ -60,7 +68,7 @@ export class AuthService {
   recoverPassword(password: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { password }).pipe(
       map(response => {
-        localStorage.removeItem('currentUser');
+        this.ls.remove('currentUser')
         return response;
       })
     );
@@ -70,7 +78,7 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}auth/verify-email`, { email }).pipe(
       map(response => {
         if (response.code == Status.success) {
-          localStorage.setItem('currentUser', JSON.stringify(response['data']));
+          this.ls.set('currentUser', response['data'])
         }
 
         return response;
@@ -82,16 +90,19 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}auth/verify-code`, { code });
   }
 
-  isAuthenticatedUser(): boolean {
-    return this.isAuthenticated;
-  }
-
   getUserRole(): number | null {
-    return this.userRole;
+    return this.user ?
+      this.user['role'] :
+      null
   }
 
   getBearerToken(): string | null {
-    const data = JSON.parse(localStorage.getItem('currentUser')!)
-    return data ? data['accessToken'] : null
+    return this.user ?
+      this.user['accessToken'] :
+      null
+  }
+
+  get user() {
+    return this.ls.get('currentUser')
   }
 }
