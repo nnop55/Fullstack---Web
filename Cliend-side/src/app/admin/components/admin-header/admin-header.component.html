@@ -1,1 +1,36 @@
-<p>admin-header works!</p>
+<header>
+  <div class="header">
+    <button
+      class="icon"
+      (click)="toggleSidenav()"
+      [style.marginLeft]="sidenavSize"
+    >
+      <img src="../../../../assets/icons/burger.svg" alt="" />
+    </button>
+  </div>
+</header>
+<section
+  class="sidenav-container"
+  [ngStyle]="{
+    width: sidenavSize,
+    left: sidenavSize == '20%' ? '0' : ' -20%'
+  }"
+>
+  <div class="routers">
+    <a
+      class="router-item"
+      routerLink="/admin"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Dashboard
+    </a>
+    <a
+      class="router-item"
+      routerLink="/admin/history"
+      routerLinkActive="active"
+    >
+      Parking History
+    </a>
+  </div>
+</section>

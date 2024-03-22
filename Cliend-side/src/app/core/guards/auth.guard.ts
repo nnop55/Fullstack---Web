@@ -9,15 +9,18 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const ls = inject(LocalStorageService)
 
-  authService.unauthorized$.subscribe(() => {
-    ls.remove('currentUser')
+  const not = () => {
     router.navigate(['/auth/signin']);
     return false
+  }
+
+  authService.unauthorized$.subscribe(() => {
+    ls.remove('currentUser')
+    not()
   });
 
   if (!authService.getBearerToken()) {
-    router.navigate(['/auth/signin']);
-    return false;
+    not()
   }
   return true;
 };

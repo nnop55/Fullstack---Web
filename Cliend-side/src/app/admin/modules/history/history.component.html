@@ -1,0 +1,5 @@
+<app-admin-header (onToggle)="marginLeft = $event"></app-admin-header>
+
+<section [style.marginLeft]="marginLeft">
+  <app-generic-table [columns]="getTableColumns()"> </app-generic-table>
+</section>

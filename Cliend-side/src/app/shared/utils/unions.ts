@@ -15,4 +15,9 @@ export enum Steps {
     recover
 }
 
+export interface TableColumn {
+    key: string;
+    label: string;
+}
+
 export type RouteMode = 'signin' | 'signup'

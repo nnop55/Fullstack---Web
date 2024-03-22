@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdminMainRoutingModule } from './admin-main-routing.module';
-import { AdminMainComponent } from './admin-main.component';
+import { HistoryRoutingModule } from './history-routing.module';
+import { HistoryComponent } from './history.component';
 import { AdminSharedModule } from '../../components/admin-shared.module';
 
 
 @NgModule({
   declarations: [
-    AdminMainComponent
+    HistoryComponent
   ],
   imports: [
     CommonModule,
-    AdminMainRoutingModule,
+    HistoryRoutingModule,
     AdminSharedModule
   ]
 })
-export class AdminMainModule { }
+export class HistoryModule { }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-admin-header',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AdminHeaderComponent {
 
+  @Output() onToggle: EventEmitter<string> = new EventEmitter<string>()
+
+  sidenavSize = "0"
+
+  toggleSidenav() {
+    this.sidenavSize = this.sidenavSize == "0" ? "20%" : "0"
+    this.onToggle.emit(this.sidenavSize)
+  }
 }
