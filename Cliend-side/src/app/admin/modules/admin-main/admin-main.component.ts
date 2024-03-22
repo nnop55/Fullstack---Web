@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { SharedService } from 'src/app/core/services/shared.service';
-import { Status } from 'src/app/shared/utils/unions';
+import { Component, inject } from '@angular/core';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 
 @Component({
   selector: 'app-admin-main',
@@ -8,14 +7,10 @@ import { Status } from 'src/app/shared/utils/unions';
   styleUrls: ['./admin-main.component.scss']
 })
 export class AdminMainComponent {
-  constructor(private shared: SharedService) {
-    this.shared.getUserRoles().subscribe({
-      next: (response) => {
-        if (response.code == Status.success) {
 
-        }
-      },
-      error: () => { }
-    })
+  ls: LocalStorageService = inject(LocalStorageService)
+
+  get sidenavCurrentSize() {
+    return this.ls.get('sidenavSize') ?? "20%";
   }
 }
