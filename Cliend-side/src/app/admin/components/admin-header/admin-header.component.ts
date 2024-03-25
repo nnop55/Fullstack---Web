@@ -34,8 +34,8 @@ export class AdminHeaderComponent implements OnInit, AfterViewInit {
 
   onSizeChange() {
     this.ls.storage$.subscribe((item) => {
-      this.sidenavSize = item['sidenavSize']
-      this.resizeSection()
+      item['sidenavSize'] && (this.sidenavSize = item['sidenavSize'],
+        this.resizeSection())
     });
   }
 }
