@@ -3,8 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 import { SharedService } from 'src/app/core/services/shared.service';
-import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
-import { regExp } from 'src/app/shared/utils/regex';
+import { regex } from 'src/app/shared/utils/regex';
 import { Status } from 'src/app/shared/utils/unions';
 
 @Component({
@@ -34,8 +33,8 @@ export class RegisterComponent implements OnInit {
       email: new FormControl(null, [Validators.required, Validators.email]),
       fullName: new FormControl(null, [Validators.required]),
       role: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
-      confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
+      password: new FormControl(null, [Validators.required, Validators.pattern(regex.password)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regex.password)])
     })
   };
 

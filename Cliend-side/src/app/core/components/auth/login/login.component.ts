@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 import { SharedService } from 'src/app/core/services/shared.service';
-import { regExp } from 'src/app/shared/utils/regex';
+import { regex } from 'src/app/shared/utils/regex';
 import { Status } from 'src/app/shared/utils/unions';
 
 @Component({
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
+      password: new FormControl(null, [Validators.required, Validators.pattern(regex.password)]),
     })
   };
 
