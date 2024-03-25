@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 import { SharedService } from 'src/app/core/services/shared.service';
 import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
-import { regExp } from 'src/app/shared/utils/regExp';
+import { regExp } from 'src/app/shared/utils/regex';
 import { Status } from 'src/app/shared/utils/unions';
 
 @Component({

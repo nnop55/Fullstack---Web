@@ -10,7 +10,7 @@ export class ErrorService {
 
   handleError(error: HttpErrorResponse): void {
     if (error.error.error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.error.error.message);
+      console.error('An error occurred:', error.error.error);
     } else {
       console.error(`Backend returned code ${error.status}, body was: `, error.error.error);
     }

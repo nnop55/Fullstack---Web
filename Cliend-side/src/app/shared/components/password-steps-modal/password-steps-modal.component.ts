@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output, ViewContainerRef, inject } fro
 import { Status, Steps } from '../../utils/unions';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/core/services/shared.service';
-import { regExp } from '../../utils/regExp';
+import { regex } from '../../utils/regex';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
 
@@ -59,8 +59,8 @@ export class PasswordStepsModalComponent implements OnInit {
     });
 
     this.passwordForm = this.fb.group({
-      password: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)]),
-      confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regExp.password)])
+      password: new FormControl(null, [Validators.required, Validators.pattern(regex.password)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regex.password)])
     });
 
     this.forms.push(
