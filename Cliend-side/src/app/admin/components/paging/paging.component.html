@@ -1,6 +1,6 @@
 <div class="pagination">
   <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-    &laquo; Previous
+    &laquo;
   </button>
   <ng-container *ngFor="let page of pages">
     <button
@@ -16,6 +16,6 @@
     (click)="nextPage()"
     [disabled]="currentPage === totalPages"
   >
-    &raquo; Next
+    &raquo;
   </button>
 </div>

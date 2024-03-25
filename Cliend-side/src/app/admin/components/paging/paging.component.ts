@@ -7,12 +7,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class PagingComponent {
   @Input() currentPage: number = 1;
-  @Input() totalPages: number = 1;
+  @Input() totalPages: number = 10;
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+  pages = Array.from({ length: this.totalPages }, (_, i) => i + 1)
 
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
 
   prevPage(): void {
     if (this.currentPage > 1) {
