@@ -8,8 +8,6 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
 })
 export class AdminHeaderComponent implements OnInit, AfterViewInit {
 
-  @Output() onToggle: EventEmitter<string> = new EventEmitter<string>()
-
   ls: LocalStorageService = inject(LocalStorageService)
 
   sidenavSize: string = "20%";
