@@ -16,7 +16,7 @@ export class LocalStorageService {
     return value ?? null
   }
 
-  set(key: string, value: string) {
+  set(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
     this.storageSubject.next({ [key]: value });
   }
