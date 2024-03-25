@@ -13,20 +13,20 @@ export class PagingComponent {
 
 
   prevPage(): void {
-    if (this.currentPage > 1) {
-      this.pageChange.emit(this.currentPage - 1);
-    }
+    // if (this.currentPage > 1) {
+    //   this.pageChange.emit(this.currentPage - 1);
+    // }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.pageChange.emit(this.currentPage + 1);
-    }
+    // if (this.currentPage < this.totalPages) {
+    //   this.pageChange.emit(this.currentPage + 1);
+    // }
   }
 
   gotoPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageChange.emit(page);
-    }
+    // if (page >= 1 && page <= this.totalPages) {
+    //   this.pageChange.emit(page);
+    // }
   }
 }
