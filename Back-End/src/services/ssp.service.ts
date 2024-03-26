@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 
-class SSP {
+class ServerSidePaging {
     public async paging(req: Request, res: Response, result: any[]): Promise<void> {
         const { page = 1, pageSize = 10, sortBy = 'id', sortOrder = 'asc' } = req.query;
 
@@ -25,4 +25,4 @@ class SSP {
     }
 }
 
-export default new SSP()
+export default new ServerSidePaging()
