@@ -16,8 +16,8 @@ export enum Steps {
 }
 
 export interface TableColumn {
-    key: string;
-    label: string;
+    key?: string;
+    label?: string;
 }
 
 export type RouteMode = 'signin' | 'signup'

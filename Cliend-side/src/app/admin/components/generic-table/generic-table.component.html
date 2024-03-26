@@ -3,11 +3,11 @@
     <thead>
       <tr>
         <th *ngFor="let column of columns">
-          <span (click)="onSort(column.key)" class="label">{{
+          <span (click)="onSort(column.key!)" class="label">{{
             column.label
           }}</span>
           <span
-            (click)="onSort(column.key)"
+            (click)="onSort(column.key!)"
             class="icon"
             [style.display]="sortBy === column.key && 'contents'"
           >
@@ -17,14 +17,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of data">
-        <td *ngFor="let column of columns">{{ item[column.key] }}</td>
+      <tr *ngFor="let item of tableData">
+        <td *ngFor="let column of columns">
+          {{ item[column.key!] }}
+        </td>
       </tr>
     </tbody>
   </table>
   <app-paging
     [currentPage]="currentPage"
-    [totalPages]="totalRecords / pageSize"
+    [totalPages]="10 / pageSize"
     (pageChange)="onPageChange($event)"
   >
   </app-paging>

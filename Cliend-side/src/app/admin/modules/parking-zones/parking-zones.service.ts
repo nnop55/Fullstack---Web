@@ -6,20 +6,18 @@ import { environment } from 'src/environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
-export class GenericTableService {
-
+export class ParkingZonesService {
   private baseUrl: string = environment.baseUrl
 
   constructor(private http: HttpClient) { }
 
-  getTableData(
-    path: string,
+  getParkingZones(
     currentPage: number,
     pageSize: number,
     sortBy: string,
     sortingOrder: string
   ): Observable<any> {
-    const url = `${this.baseUrl + path}?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortingOrder}`;
-    return this.http.get<any[]>(url)
+    const url = `${this.baseUrl}parking/?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortingOrder}`;
+    return this.http.get<any>(url)
   }
 }
