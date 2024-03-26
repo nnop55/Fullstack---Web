@@ -5,6 +5,7 @@ import { PagingComponent } from './paging/paging.component';
 import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -17,14 +18,16 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   exports: [
     GenericTableComponent,
     PagingComponent,
     AdminFooterComponent,
     AdminHeaderComponent,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ]
 })
 export class AdminSharedModule { }

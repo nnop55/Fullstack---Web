@@ -9,7 +9,7 @@
           <span
             (click)="onSort(column.key)"
             class="icon"
-            [style.display]="sortingKey === column.key && 'contents'"
+            [style.display]="sortBy === column.key && 'contents'"
           >
             {{ sortingOrder === "asc" ? "▲" : "▼" }}
           </span>

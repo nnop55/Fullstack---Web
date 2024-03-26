@@ -5,8 +5,8 @@ class ParkingService {
 
     constructor() { }
 
-    public getAllZones(): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
+    public getAllZones(): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
             setQuery(`SELECT * FROM parking_zones`, [],
                 (err, result) => {
                     if (err) {

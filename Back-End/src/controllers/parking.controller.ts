@@ -1,6 +1,7 @@
 import ParkingService from "../services/parking.service";
 import { Request, Response } from 'express';
 import { ParkingZone } from "../utils/interfaces";
+import ServerSidePaging from "../services/ssp.service";
 
 class ParkingController {
 
@@ -9,6 +10,11 @@ class ParkingController {
     public async getParkingZones(req: Request, res: Response): Promise<void> {
         const result = await ParkingService.getAllZones()
         res.status(200).json({ code: 1, data: result });
+    }
+
+    public async pagingParkingZones(req: Request, res: Response): Promise<void> {
+        const result = await ParkingService.getAllZones()
+        ServerSidePaging.paging(req, res, result)
     }
 
     public async insertParkingZones(req: Request, res: Response): Promise<void> {

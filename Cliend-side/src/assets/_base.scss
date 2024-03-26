@@ -53,6 +53,11 @@ p {
 
 .admin-section {
   margin: 13rem auto;
+  transition: 500ms;
+
+  * {
+    transition: 500ms;
+  }
 }
 
 @media screen and (max-width: 768px) {

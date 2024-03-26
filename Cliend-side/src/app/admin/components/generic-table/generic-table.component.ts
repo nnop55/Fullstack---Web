@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TableColumn } from 'src/app/shared/utils/unions';
+import { GenericTableService } from './generic-table.service';
 
 @Component({
   selector: 'app-generic-table',
@@ -9,39 +10,42 @@ import { TableColumn } from 'src/app/shared/utils/unions';
 export class GenericTableComponent implements OnInit {
 
   @Input() columns: TableColumn[] = [];
+  @Input() path!: string;
+
   data: any[] = [];
   currentPage: number = 1;
   pageSize: number = 10;
   totalRecords: number = 0;
-  sortingKey: string = '';
-  sortingOrder: string = '';
+  sortBy: string = 'id';
+  sortingOrder: string = 'asc';
 
-  constructor() { }
+  constructor(private tableService: GenericTableService) { }
 
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData(): void {
-    // const url = `/api/data?page=${this.currentPage}&pageSize=${this.pageSize}&sortBy=${this.sortingKey}&sortOrder=${this.sortingOrder}`;
-    // this.http.get<any[]>(url)
-    //   .subscribe(response => {
-    //     this.data = response.data;
-    //     this.totalRecords = response.totalRecords;
-    //   });
-    this.data = [{ id: 1, vinCode: 'ABC123' }, { id: 2, vinCode: 'DEF456' }]
+    this.tableService.getTableData(
+      this.path,
+      this.currentPage,
+      this.pageSize,
+      this.sortBy,
+      this.sortingOrder).subscribe((response) => {
+        this.data = response['data']
+      })
   }
 
   onPageChange(page: number): void {
-    this.currentPage = page;
+    this.currentPage = page
     this.loadData();
   }
 
   onSort(columnKey: string): void {
-    if (columnKey === this.sortingKey) {
+    if (columnKey === this.sortBy) {
       this.sortingOrder = this.sortingOrder === 'asc' ? 'desc' : 'asc';
     } else {
-      this.sortingKey = columnKey;
+      this.sortBy = columnKey;
       this.sortingOrder = 'asc';
     }
     this.loadData();
