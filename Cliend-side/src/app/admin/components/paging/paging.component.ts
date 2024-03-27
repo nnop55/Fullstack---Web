@@ -1,32 +1,74 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-paging',
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']
 })
-export class PagingComponent {
+export class PagingComponent implements OnChanges {
+
   @Input() currentPage: number = 1;
-  @Input() totalPages: number = 10;
+  @Input() totalPages!: number;
+  @Input() totalCount!: number;
+
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
-  pages = Array.from({ length: this.totalPages }, (_, i) => i + 1)
 
+  pageSize: number = 10;
+  from: number = 1;
 
-  prevPage(): void {
-    // if (this.currentPage > 1) {
-    //   this.pageChange.emit(this.currentPage - 1);
-    // }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['totalPages']) {
+      this.totalPages = changes['totalPages'].currentValue
+    }
+    if (changes['totalCount']) {
+      this.totalCount = changes['totalCount'].currentValue
+    }
   }
 
-  nextPage(): void {
-    // if (this.currentPage < this.totalPages) {
-    //   this.pageChange.emit(this.currentPage + 1);
-    // }
+  prevPage(isLoop: boolean = false): void {
+    if (this.currentPage > 1) {
+      this.currentPage--
+      this.from -= this.pageSize
+    }
+
+    if (isLoop) {
+      if (this.currentPage == 1) {
+        this.pageChange.emit(this.currentPage);
+      }
+    } else {
+      if (this.currentPage >= 1) {
+        this.pageChange.emit(this.currentPage);
+      }
+    }
   }
 
-  gotoPage(page: number): void {
-    // if (page >= 1 && page <= this.totalPages) {
-    //   this.pageChange.emit(page);
-    // }
+  nextPage(isLoop: boolean = false): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++
+      this.from += this.pageSize
+    }
+
+    if (isLoop) {
+      if (this.currentPage == this.totalPages) {
+        this.pageChange.emit(this.currentPage);
+      }
+    } else {
+      if (this.currentPage <= this.totalPages) {
+        this.pageChange.emit(this.currentPage);
+      }
+    }
   }
+
+  firstPage() {
+    while (this.currentPage > 1) {
+      this.prevPage(true)
+    }
+  }
+
+  lastPage() {
+    while (this.currentPage < this.totalPages) {
+      this.nextPage(true)
+    }
+  }
+
 }

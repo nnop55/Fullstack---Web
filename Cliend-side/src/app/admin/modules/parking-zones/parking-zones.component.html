@@ -1,4 +1,8 @@
 <section class="admin-section">
-  <app-generic-table [columns]="getColumnSettings()" [tableData]="data">
+  <app-generic-table
+    [columns]="getColumnSettings()"
+    [tableData]="data"
+    [paginator]="paginatorData"
+  >
   </app-generic-table>
 </section>

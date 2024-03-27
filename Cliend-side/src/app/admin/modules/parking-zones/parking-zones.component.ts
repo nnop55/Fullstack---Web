@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { TableColumn } from 'src/app/shared/utils/unions';
+import { Status, TableColumn } from 'src/app/shared/utils/unions';
 import { ParkingZoneColumnKey } from '../../utils/unions';
 import { ParkingZonesService } from './parking-zones.service';
 
@@ -11,6 +11,7 @@ import { ParkingZonesService } from './parking-zones.service';
 export class ParkingZonesComponent implements OnInit {
 
   data: any[] = []
+  paginatorData: any = new Object();
   service: ParkingZonesService = inject(ParkingZonesService)
 
   ngOnInit(): void {
@@ -25,8 +26,9 @@ export class ParkingZonesComponent implements OnInit {
       'asc'
     ).subscribe({
       next: (response) => {
-        if (response['data']) {
+        if (response.code == Status.success) {
           this.data = response['data']
+          this.paginatorData = response['paginator']
         }
       },
       error: () => { }

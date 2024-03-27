@@ -1,21 +1,48 @@
-<div class="pagination">
-  <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-    &laquo;
-  </button>
-  <ng-container *ngFor="let page of pages">
+<section>
+  <div class="info">
+    <h5>
+      {{ from }} -
+
+      <ng-container *ngIf="currentPage !== totalPages; else last">
+        {{ from + pageSize - 1 }}
+      </ng-container>
+      <ng-template #last>
+        {{ totalCount }}
+      </ng-template>
+
+      of {{ totalCount }}
+    </h5>
+  </div>
+  <div class="pagination">
     <button
       class="page-link"
-      (click)="gotoPage(page)"
-      [class.active]="currentPage === page"
+      (click)="firstPage()"
+      [disabled]="currentPage === 1"
     >
-      {{ page }}
+      <img src="../../../../assets/icons/paginator-first.svg" alt="" />
     </button>
-  </ng-container>
-  <button
-    class="page-link"
-    (click)="nextPage()"
-    [disabled]="currentPage === totalPages"
-  >
-    &raquo;
-  </button>
-</div>
+    <button
+      class="page-link"
+      (click)="prevPage()"
+      [disabled]="currentPage === 1"
+    >
+      <img src="../../../../assets/icons/paginator-prev.svg" alt="" />
+    </button>
+
+    <button
+      class="page-link"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      <img src="../../../../assets/icons/paginator-next.svg" alt="" />
+    </button>
+
+    <button
+      class="page-link"
+      (click)="lastPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      <img src="../../../../assets/icons/paginator-last.svg" alt="" />
+    </button>
+  </div>
+</section>

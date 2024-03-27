@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TableColumn } from 'src/app/shared/utils/unions';
 
 @Component({
@@ -6,12 +6,13 @@ import { TableColumn } from 'src/app/shared/utils/unions';
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss']
 })
-export class GenericTableComponent implements OnInit {
+export class GenericTableComponent implements OnInit, OnChanges {
 
   @Input() columns: TableColumn[] = [];
   @Input() path!: string;
 
   @Input() tableData!: any[];
+  @Input() paginator: any = new Object();
 
   currentPage: number = 1;
   pageSize: number = 10;
@@ -19,6 +20,12 @@ export class GenericTableComponent implements OnInit {
   sortingOrder: string = 'asc';
 
   constructor() { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['paginator']) {
+      this.paginator = changes['paginator'].currentValue
+      console.log(this.paginator)
+    }
+  }
 
   ngOnInit(): void {
     // this.loadData();
