@@ -10,10 +10,11 @@ export class RoutingService {
   constructor(private router: Router, private acRoute: ActivatedRoute) { }
 
   updateUrl(url: string,
-    page: number = 1,
-    pageSize: number = 10,
-    sortBy: string = 'id',
-    sortOrder: string = 'asc') {
+    page: number,
+    pageSize: number,
+    sortBy: string,
+    sortOrder: string) {
+
     const queryParams = { page, pageSize, sortBy, sortOrder }
     this.router.navigate([url], { queryParams });
   }

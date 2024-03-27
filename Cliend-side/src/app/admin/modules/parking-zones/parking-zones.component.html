@@ -3,10 +3,7 @@
     [columns]="getColumnSettings()"
     [tableData]="data"
     [paginator]="paginatorData"
-    [sortBy]="queryParams?.sortBy"
-    [sortOrder]="queryParams?.sortOrder"
-    [currentPage]="queryParams?.page"
-    [pageSize]="queryParams?.pageSize"
+    [queryParams]="queryParams"
   >
   </app-generic-table>
 </section>

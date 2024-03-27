@@ -26,6 +26,7 @@
   </table>
   <app-paging
     [currentPage]="currentPage"
+    [pageSize]="pageSize"
     [totalPages]="paginator['totalPages']"
     [totalCount]="paginator['totalCount']"
     (pageChange)="onPageChange($event)"

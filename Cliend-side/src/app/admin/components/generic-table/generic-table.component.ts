@@ -14,10 +14,12 @@ export class GenericTableComponent implements OnChanges {
   @Input() path!: string;
   @Input() tableData!: any[];
   @Input() paginator: any = new Object();
-  @Input() sortBy!: string;
-  @Input() sortOrder!: string;
-  @Input() currentPage!: number;
-  @Input() pageSize!: number;
+  @Input() queryParams: any = new Object();
+
+  sortBy: string = 'id';
+  sortOrder: string = 'asc';
+  currentPage: number = 1;
+  pageSize: number = 10;
 
   pathName!: string;
 
@@ -32,6 +34,15 @@ export class GenericTableComponent implements OnChanges {
     if (changes['paginator']) {
       this.paginator = changes['paginator'].currentValue
     }
+    if (changes['queryParams']) {
+      const newParams = changes['queryParams'].currentValue
+      this.sortBy = newParams['sortBy'] ?? 'id';
+      this.sortOrder = newParams['sortOrder'] ?? 'asc';
+      this.currentPage = newParams['page'] ?? 1;
+      this.pageSize = newParams['pageSize'] ?? 10;
+      this.pageSize = parseInt(this.pageSize as any)
+      this.currentPage = parseInt(this.currentPage as any)
+    }
   }
 
   onPageChange(page: number): void {
@@ -39,7 +50,9 @@ export class GenericTableComponent implements OnChanges {
     this.routingService.updateUrl(
       this.pathName,
       this.currentPage,
-      this.pageSize
+      this.pageSize,
+      this.sortBy,
+      this.sortOrder
     )
   }
 

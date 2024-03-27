@@ -1,20 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-paging',
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']
 })
-export class PagingComponent implements OnChanges {
+export class PagingComponent implements OnInit, OnChanges {
 
   @Input() currentPage: number = 1;
   @Input() totalPages!: number;
   @Input() totalCount!: number;
+  @Input() pageSize!: number;
 
   @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
-  pageSize: number = 10;
-  from: number = 1;
+
+  from!: number;
+
+  ngOnInit(): void {
+    this.from = (this.pageSize * (this.currentPage - 1)) + 1
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['totalPages']) {
@@ -28,7 +33,7 @@ export class PagingComponent implements OnChanges {
   prevPage(isLoop: boolean = false): void {
     if (this.currentPage > 1) {
       this.currentPage--
-      this.from -= this.pageSize
+      this.from = ((this.pageSize * (this.currentPage - 1)) - this.pageSize) + 1 + this.pageSize
     }
 
     if (isLoop) {
@@ -45,7 +50,7 @@ export class PagingComponent implements OnChanges {
   nextPage(isLoop: boolean = false): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++
-      this.from += this.pageSize
+      this.from = (this.pageSize * (this.currentPage - 1)) + 1
     }
 
     if (isLoop) {
