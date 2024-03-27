@@ -8,7 +8,10 @@ const routes: Routes = [
     path: '',
     component: AdminHeaderComponent,
     children: [
-      { path: '', component: ParkingZonesComponent }
+      {
+        path: '',
+        component: ParkingZonesComponent
+      }
     ]
   }
 ];

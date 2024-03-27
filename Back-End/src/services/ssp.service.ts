@@ -24,7 +24,7 @@ class ServerSidePaging {
         const endIndex = startIndex + Number(pageSize);
         const paginatedData = result.slice(startIndex, endIndex);
 
-        res.status(200).json({ code: 1, data: paginatedData, paginator: { totalCount, totalPages } });
+        res.status(200).json({ code: 1, data: { paginatedData, paginator: { totalCount, totalPages } } });
     }
 }
 

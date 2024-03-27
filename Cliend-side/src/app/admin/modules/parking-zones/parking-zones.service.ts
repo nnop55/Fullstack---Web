@@ -11,13 +11,9 @@ export class ParkingZonesService {
 
   constructor(private http: HttpClient) { }
 
-  getParkingZones(
-    currentPage: number,
-    pageSize: number,
-    sortBy: string,
-    sortingOrder: string
-  ): Observable<any> {
-    const url = `${this.baseUrl}parking/?page=${currentPage}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortingOrder}`;
+  getParkingZones(queryParams: any): Observable<any> {
+    const { page = 1, pageSize = 10, sortBy = 'id', sortOrder = 'asc' } = queryParams
+    const url = `${this.baseUrl}parking/?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
     return this.http.get<any>(url)
   }
 }
