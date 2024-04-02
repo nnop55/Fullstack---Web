@@ -1,64 +1,31 @@
-import { ValidationResult } from "../utils/interfaces";
 import { Request, Response, NextFunction } from 'express';
-import { Validator } from "../utils/validator";
+import { ClassType } from 'class-transformer-validator';
+import { validate } from 'class-validator';
 
 
-export function validateLoginInput(req: Request, res: Response, next: NextFunction): void {
-    const { email, password } = req.body;
-    const validationErrors: ValidationResult[] = Validator.validateLoginInput(email, password);
+async function validateRequestDto<T extends object>(dtoClass: ClassType<T>, body: any): Promise<T | string[]> {
+    const dtoInstance = new dtoClass();
 
-    if (validationErrors.length > 0) {
-        res.status(400).json({ code: 2, errors: validationErrors });
-        return;
+    Object.assign(dtoInstance, body);
+
+    const errors = await validate(dtoInstance);
+
+    if (errors.length > 0) {
+        return errors.map(error => Object.values(error.constraints || {}).join('; '));
     }
 
-    next();
+    return dtoInstance;
 }
 
-export function validateRegisterInput(req: Request, res: Response, next: NextFunction): void {
-    const { email, password, fullName, role } = req.body;
-    const validationErrors: ValidationResult[] = Validator.validateRegisterInput(email, password, fullName, role);
+export function validationMiddleware<T extends object>(dtoClass: ClassType<T>): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const validationResultOrErrors = await validateRequestDto(dtoClass, req.body);
 
-    if (validationErrors.length > 0) {
-        res.status(400).json({ code: 2, errors: validationErrors });
-        return;
-    }
+        if (Array.isArray(validationResultOrErrors)) {
+            res.status(400).json({ code: 2, error: 'Validation failed', errors: validationResultOrErrors });
+            return;
+        }
 
-    next();
-}
-
-export function validateEditProfileInput(req: Request, res: Response, next: NextFunction): void {
-    const { email, fullName } = req.body;
-    const validationErrors: ValidationResult[] = Validator.validateEditProfileInput(email, fullName);
-
-    if (validationErrors.length > 0) {
-        res.status(400).json({ code: 2, errors: validationErrors });
-        return;
-    }
-
-    next();
-}
-
-export function validateEmailInput(req: Request, res: Response, next: NextFunction): void {
-    const { email } = req.body;
-    const validationErrors: ValidationResult[] = Validator.validateEmailInput(email);
-
-    if (validationErrors.length > 0) {
-        res.status(400).json({ code: 2, errors: validationErrors });
-        return;
-    }
-
-    next();
-}
-
-export function validateCarInput(req: Request, res: Response, next: NextFunction): void {
-    const { type, mark, licenseNumber } = req.body;
-    const validationErrors: ValidationResult[] = Validator.validateCarInput({ type, mark, licenseNumber });
-
-    if (validationErrors.length > 0) {
-        res.status(400).json({ code: 2, errors: validationErrors });
-        return;
-    }
-
-    next();
+        next();
+    };
 }

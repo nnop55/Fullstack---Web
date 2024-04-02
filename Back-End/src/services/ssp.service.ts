@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 
 class ServerSidePaging {
-    public async paging(req: Request, res: Response, result: any[]): Promise<void> {
+    public paging(req: Request, res: Response, result: any[]): any {
         const { page = 1, pageSize = 10, sortBy = 'id', sortOrder = 'asc' } = req.query;
 
         if (sortBy) {

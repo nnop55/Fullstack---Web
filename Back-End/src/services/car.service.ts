@@ -77,6 +77,21 @@ class CarService {
                 });
         });
     }
+
+    public updateCarZone(id: number, zoneId: number | null): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setQuery(`UPDATE cars SET 
+                        zone_id = ?
+                        WHERE id = ?`,
+                [zoneId, id], (err: any, result: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve();
+                });
+        });
+    }
 }
 
 export default new CarService();

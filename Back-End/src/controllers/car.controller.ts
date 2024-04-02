@@ -10,7 +10,7 @@ class CarController {
         const { mark, type, licenseNumber } = req.body;
         const userId = (req as any).user['id'];
         await CarService.insertCar({ mark, type, licenseNumber, userId })
-        res.status(201).json({ code: 1, mark, type, licenseNumber })
+        res.status(201).json({ code: 1, data: { mark, type, licenseNumber } })
     }
 
     public async editCar(req: Request, res: Response): Promise<void> {

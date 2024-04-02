@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { validateCarInput } from "../middleware/validator.middleware";
+import { validationMiddleware } from "../middleware/validator.middleware";
 import { verifyToken } from "../middleware/token.middleware";
 import { Request, Response } from 'express';
 import asyncHandler from "../middleware/async-handler.middleware";
 import CarController from "../controllers/car.controller";
+import { CarDto } from "../dtos/car.dto";
 
 
 class CarRouter {
@@ -26,7 +27,7 @@ class CarRouter {
                 CarController.getCars(req, res))
         );
         this.router.post('/add',
-            validateCarInput,
+            validationMiddleware(CarDto),
             verifyToken,
             asyncHandler((req: Request, res: Response) =>
                 CarController.addCar(req, res))

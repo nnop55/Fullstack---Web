@@ -38,10 +38,8 @@ export class GenericTableComponent implements OnChanges {
       const newParams = changes['queryParams'].currentValue
       this.sortBy = newParams['sortBy'] ?? 'id';
       this.sortOrder = newParams['sortOrder'] ?? 'asc';
-      this.currentPage = newParams['page'] ?? 1;
-      this.pageSize = newParams['pageSize'] ?? 10;
-      this.pageSize = parseInt(this.pageSize as any)
-      this.currentPage = parseInt(this.currentPage as any)
+      this.currentPage = parseInt(newParams['page']) ?? 1;
+      this.pageSize = parseInt(newParams['pageSize']) ?? 10;
     }
   }
 

@@ -36,14 +36,10 @@ export class PagingComponent implements OnInit, OnChanges {
       this.from = ((this.pageSize * (this.currentPage - 1)) - this.pageSize) + 1 + this.pageSize
     }
 
-    if (isLoop) {
-      if (this.currentPage == 1) {
-        this.pageChange.emit(this.currentPage);
-      }
-    } else {
-      if (this.currentPage >= 1) {
-        this.pageChange.emit(this.currentPage);
-      }
+    if (isLoop && this.currentPage == 1) {
+      this.pageChange.emit(this.currentPage);
+    } else if (!isLoop && this.currentPage >= 1) {
+      this.pageChange.emit(this.currentPage);
     }
   }
 
@@ -53,14 +49,10 @@ export class PagingComponent implements OnInit, OnChanges {
       this.from = (this.pageSize * (this.currentPage - 1)) + 1
     }
 
-    if (isLoop) {
-      if (this.currentPage == this.totalPages) {
-        this.pageChange.emit(this.currentPage);
-      }
-    } else {
-      if (this.currentPage <= this.totalPages) {
-        this.pageChange.emit(this.currentPage);
-      }
+    if (isLoop && this.currentPage == this.totalPages) {
+      this.pageChange.emit(this.currentPage);
+    } else if (!isLoop && this.currentPage <= this.totalPages) {
+      this.pageChange.emit(this.currentPage);
     }
   }
 

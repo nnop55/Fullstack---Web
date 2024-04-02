@@ -37,6 +37,7 @@ export interface CarRes {
     mark: string,
     license_number: string
     user_id?: number
+    zone_id?: number
 }
 
 export interface Zone {

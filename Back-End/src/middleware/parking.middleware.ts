@@ -10,6 +10,7 @@ export async function checkParkingZone(req: Request, res: Response, next: NextFu
     const car = await CarService.findCarById(carId)
     const zone = await ParkingService.findZoneById(zoneId);
     (req as any).zone = zone;
+    (req as any).car = car;
 
     if (!car) {
         res.status(404).json({ code: 2, error: 'Car not found' });
