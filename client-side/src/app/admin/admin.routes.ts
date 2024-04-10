@@ -12,12 +12,12 @@ export const AdminRoute: Routes = [
     children: [
       {
         path: 'parking-zones',
-        loadComponent: () => import('./modules/parking-zones/parking-zones.component').then(m => m.ParkingZonesComponent),
+        loadChildren: () => import('./modules/parking-zones/parking-zones.routes').then(m => m.ParkingZonesRoute),
         data: { path: '/admin/parking-zones' }
       },
       {
         path: 'history',
-        loadComponent: () => import('./modules/history/history.component').then(m => m.HistoryComponent),
+        loadChildren: () => import('./modules/history/history.routes').then(m => m.HistoryRoute),
       },
     ]
   },
