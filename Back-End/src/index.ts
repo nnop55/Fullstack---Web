@@ -7,6 +7,7 @@ import CarRouter from './routers/car.router';
 import ParkingRouter from './routers/parking.router';
 import AuthRouter from './routers/auth.router';
 import HistoryRouter from './routers/history.router';
+import UserRouter from './routers/user.router';
 
 
 class Index {
@@ -33,10 +34,11 @@ class Index {
     }
 
     private setupRoutes() {
-        this.app.use('/auth', AuthRouter.getRouter());
-        this.app.use('/car', CarRouter.getRouter());
-        this.app.use('/parking', ParkingRouter.getRouter());
-        this.app.use('/history', HistoryRouter.getRouter());
+        this.app.use('/api/auth', AuthRouter.getRouter());
+        this.app.use('/api/user', UserRouter.getRouter());
+        this.app.use('/api/car', CarRouter.getRouter());
+        this.app.use('/api/parking', ParkingRouter.getRouter());
+        this.app.use('/api/history', HistoryRouter.getRouter());
     }
 
     private setupErrorHandling() {
