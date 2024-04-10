@@ -7,7 +7,7 @@
 
 header {
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
   top: 0;
   width: 100%;
   min-height: 60px;
@@ -34,6 +34,7 @@ header {
   position: fixed;
   background-color: $dark;
   top: 0;
+  z-index: 1000;
 
   .routers {
     height: 100%;
