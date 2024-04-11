@@ -23,7 +23,6 @@ export const routes: Routes = [
             }
         ]
     },
-    { path: '', redirectTo: '/auth/signup', pathMatch: "full" },
     {
         path: 'auth',
         children: [
