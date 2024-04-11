@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
@@ -8,7 +8,7 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
 import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
 import { regex } from 'src/app/shared/utils/regex';
-import { Status } from 'src/app/shared/utils/unions';
+import { RegisterForm, Status } from 'src/app/shared/utils/unions';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
 
   form!: FormGroup;
 
-  fb: FormBuilder = inject(FormBuilder)
   shared: SharedService = inject(SharedService)
   dyService: DyComponentsService = inject(DyComponentsService)
   auth: AuthService = inject(AuthService)
@@ -35,7 +34,7 @@ export class RegisterComponent implements OnInit {
   }
 
   initForm() {
-    this.form = this.fb.group({
+    this.form = new FormGroup<RegisterForm>({
       email: new FormControl(null, [Validators.required, Validators.email]),
       fullName: new FormControl(null, [Validators.required]),
       role: new FormControl(null, [Validators.required]),
@@ -55,11 +54,12 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  hasError(control: string, pattern: string | undefined = undefined) {
+  hasError(control: string, pattern: string[] = []) {
     return this.shared.hasError(this.form, control, pattern)
   }
 
   submitForm(form: FormGroup) {
+    console.log(form.value)
     if (form.invalid) {
       this.shared.markAllDirty(form)
       return

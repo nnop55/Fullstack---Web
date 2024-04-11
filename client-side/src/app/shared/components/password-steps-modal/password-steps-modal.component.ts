@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewContainerRef, inject } from '@angular/core';
-import { Status, Steps } from '../../utils/unions';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CodeForm, EmailForm, PasswordForm, Status, Steps } from '../../utils/unions';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { regex } from '../../utils/regex';
 import { ButtonComponent } from '../button/button.component';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
@@ -25,7 +25,6 @@ export class PasswordStepsModalComponent implements OnInit {
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
-  fb: FormBuilder = inject(FormBuilder)
 
   Steps = Steps;
   step = 1;
@@ -51,20 +50,20 @@ export class PasswordStepsModalComponent implements OnInit {
     this.closeClicked.emit();
   }
 
-  hasError(control: string, pattern: string | undefined = undefined) {
+  hasError(control: string, pattern: string[] = []) {
     return this.shared.hasError(this.formItem['form'], control, pattern)
   }
 
   initForms() {
-    this.emailForm = this.fb.group({
+    this.emailForm = new FormGroup<EmailForm>({
       email: new FormControl(null, [Validators.required, Validators.email])
     });
 
-    this.codeForm = this.fb.group({
-      code: new FormControl(null, [Validators.required])
+    this.codeForm = new FormGroup<CodeForm>({
+      code: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(6)])
     });
 
-    this.passwordForm = this.fb.group({
+    this.passwordForm = new FormGroup<PasswordForm>({
       password: new FormControl(null, [Validators.required, Validators.pattern(regex.password)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.pattern(regex.password)])
     });

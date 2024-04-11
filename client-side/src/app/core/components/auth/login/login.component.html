@@ -6,7 +6,7 @@
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
-        [className]="hasError('email', 'email') && 'error'"
+        [className]="hasError('email', ['email']) && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">

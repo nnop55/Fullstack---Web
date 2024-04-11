@@ -14,7 +14,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   authService.unauthorized$.subscribe(() => {
-    ls.remove('currentUser')
+    ls.remove(AuthService.jwtKey)
     not()
   });
 

@@ -22,7 +22,7 @@ export const ErrorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
 
       if (error.status === 401) {
         authService.emitUnauthorizedEvent()
-        ls.remove('currentUser')
+        ls.remove(AuthService.jwtKey)
       }
 
       return throwError(error);

@@ -6,7 +6,7 @@
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
-        [className]="hasError('email', 'email') && 'error'"
+        [className]="hasError('email', ['email']) && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -30,7 +30,7 @@
         formControlName="password"
         [inpType]="'password'"
         [showEye]="true"
-        [className]="hasError('password', 'pattern') && 'error'"
+        [className]="hasError('password', ['pattern']) && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -39,7 +39,7 @@
         formControlName="confirmPassword"
         [inpType]="'password'"
         [showEye]="true"
-        [className]="hasError('confirmPassword', 'pattern') && 'error'"
+        [className]="hasError('confirmPassword', ['pattern']) && 'error'"
       ></app-text-input>
     </div>
 

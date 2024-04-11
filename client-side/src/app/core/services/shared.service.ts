@@ -16,11 +16,14 @@ export class SharedService {
     return this.http.get<any>(`${this.baseUrl}user/roles`)
   }
 
-  hasError(form: FormGroup, control: string, pattern?: string) {
-    return form.get(control)?.dirty &&
-      (pattern ? (form.get(control)?.errors?.['required'] ||
-        form.get(control)?.errors?.[pattern]) :
-        form.get(control)?.errors?.['required'])
+  hasError(form: FormGroup, control: string, pattern: string[] = []) {
+    for (let error of pattern) {
+      if (form.get(control)?.errors?.[error]) {
+        return true
+      }
+    }
+
+    return form.get(control)?.dirty && form.get(control)?.errors?.['required']
   }
 
   markAllDirty(form: FormGroup) {

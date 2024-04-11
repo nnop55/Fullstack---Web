@@ -10,6 +10,7 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root'
 })
 export class AuthService {
+  static readonly jwtKey = 'CURRENT-USER';
 
   baseUrl: string = environment.baseUrl;
 
@@ -30,7 +31,7 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}auth/login`, { ...params }).pipe(
       map(response => {
         if (response.code == Status.success) {
-          this.ls.set('currentUser', response['data'])
+          this.ls.set(AuthService.jwtKey, response['data'])
           this.router.navigate(this.getUserRole() == Role.admin ? ['/admin'] : ['/client'])
         }
 
@@ -57,9 +58,9 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.http.post<any>(`${this.baseUrl}auth/logout`, {}).pipe(
+    return this.http.post<any>(`${this.baseUrl}user/logout`, {}).pipe(
       map(response => {
-        this.ls.remove('currentUser')
+        this.ls.remove(AuthService.jwtKey)
         return;
       })
     );
@@ -68,7 +69,7 @@ export class AuthService {
   recoverPassword(password: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}auth/recover-password`, { password }).pipe(
       map(response => {
-        this.ls.remove('currentUser')
+        this.ls.remove(AuthService.jwtKey)
         return response;
       })
     );
@@ -78,7 +79,7 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}auth/verify-email`, { email }).pipe(
       map(response => {
         if (response.code == Status.success) {
-          this.ls.set('currentUser', response['data'])
+          this.ls.set(AuthService.jwtKey, response['data'])
         }
 
         return response;
@@ -103,6 +104,6 @@ export class AuthService {
   }
 
   get user() {
-    return this.ls.get('currentUser')
+    return this.ls.get(AuthService.jwtKey)
   }
 }
