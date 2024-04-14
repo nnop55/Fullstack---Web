@@ -1,9 +1,12 @@
 export class LoadingHelper {
+
+    // have to change or delete
     static getMode(url: string) {
         url = url.split('api')[1]
         const urls = [
             '/user/roles',
-            '/car/'
+            '/car/',
+            '/parking/'
         ]
         const btnUrls = [
             '/auth/login',

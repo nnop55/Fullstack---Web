@@ -12,7 +12,7 @@ export const LoadingInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>,
   HttpHandlerFn) => {
   const loadingService = inject(LoadingService)
   const mode = LoadingHelper.getMode(req.url)
-
+  console.log(req.url.split('api')[1])
   loadingService.showLoading(mode);
 
   return next(req).pipe(

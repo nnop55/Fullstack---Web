@@ -30,7 +30,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
 
   resizeSection() {
     const sectionEl = document.querySelector(".admin-section") as HTMLElement
-    sectionEl.style.marginLeft = this.sidenavSize;
+    sectionEl && (sectionEl.style.marginLeft = this.sidenavSize)
   }
 
   toggleSidenav() {

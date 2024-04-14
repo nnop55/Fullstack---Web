@@ -4,13 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { PagingComponent } from '../paging/paging.component';
 import { TableColumn } from '../../utils/unions';
+import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
+import { LoadingService } from 'src/app/core/services/loading.service';
 
 @Component({
   selector: 'app-generic-table',
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss'],
   standalone: true,
-  imports: [NgFor, PagingComponent]
+  imports: [NgFor, PagingComponent, LoadingDirective]
 })
 export class GenericTableComponent implements OnChanges {
 
@@ -29,7 +31,8 @@ export class GenericTableComponent implements OnChanges {
 
   constructor(
     private routingService: RoutingService,
-    private acRoute: ActivatedRoute
+    private acRoute: ActivatedRoute,
+    private loadingService: LoadingService
   ) {
     this.pathName = this.acRoute.snapshot.data['path']
   }
@@ -73,5 +76,9 @@ export class GenericTableComponent implements OnChanges {
       this.sortBy,
       this.sortOrder
     )
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
   }
 }
