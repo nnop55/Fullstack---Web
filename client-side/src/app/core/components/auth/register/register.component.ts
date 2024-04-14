@@ -5,9 +5,11 @@ import { FormHelper } from 'src/app/core/functions/form-helper';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
+import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
 import { regex } from 'src/app/shared/utils/regex';
 import { RegisterForm, Status } from 'src/app/shared/utils/unions';
 
@@ -16,13 +18,14 @@ import { RegisterForm, Status } from 'src/app/shared/utils/unions';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink]
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink, LoadingDirective]
 })
 export class RegisterComponent implements OnInit {
 
   form!: FormGroup;
 
   api: ApiService = inject(ApiService)
+  loadingService: LoadingService = inject(LoadingService)
   dyService: DyComponentsService = inject(DyComponentsService)
   auth: AuthService = inject(AuthService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
@@ -90,4 +93,11 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  get isLoading(): boolean {
+    return this.loadingService.isLoading()
+  }
+
+  get isBtnLoading(): boolean {
+    return this.loadingService.isBtnLoading()
+  }
 }

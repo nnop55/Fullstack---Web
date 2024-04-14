@@ -1,8 +1,10 @@
 <button
-  [disabled]="disabled"
+  [disabled]="disabled || isLoading"
   (click)="emitClick()"
   class="button-default {{ className }}"
   [type]="btnType"
 >
   {{ label | uppercase }}
+
+  <ng-container [appLoading]="isLoading" *spinnerSize="0.5"></ng-container>
 </button>

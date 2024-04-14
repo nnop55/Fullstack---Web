@@ -1,6 +1,8 @@
 @import "/src/assets/styles/mixins";
 
 section {
+  position: relative;
+
   h2 {
     text-align: center;
   }

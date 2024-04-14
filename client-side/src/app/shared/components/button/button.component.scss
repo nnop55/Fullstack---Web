@@ -5,6 +5,11 @@ button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  position: relative;
+
+  &:disabled {
+    pointer-events: none;
+  }
 }
 
 .button {

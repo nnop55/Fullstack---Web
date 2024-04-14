@@ -1,22 +1,23 @@
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
   HttpInterceptorFn,
   HttpHandlerFn
 } from '@angular/common/http';
-import { Observable, finalize } from 'rxjs';
+import { finalize } from 'rxjs';
 import { LoadingService } from '../services/loading.service';
+import { LoadingHelper } from '../functions/loading-helper';
 
 export const LoadingInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next:
   HttpHandlerFn) => {
   const loadingService = inject(LoadingService)
+  const mode = LoadingHelper.getMode(req.url)
 
-  loadingService.showLoading();
+  loadingService.showLoading(mode);
 
   return next(req).pipe(
-    finalize(() => loadingService.hideLoading())
+    finalize(() => {
+      loadingService.hideLoading(mode)
+    })
   );
 };

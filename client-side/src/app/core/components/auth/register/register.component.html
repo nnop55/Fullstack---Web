@@ -1,6 +1,7 @@
 <section>
-  <h2>Create new account</h2>
+  <ng-container *appLoading="isLoading"></ng-container>
 
+  <h2>Create new account</h2>
   <form (ngSubmit)="submitForm(form)" [formGroup]="form">
     <div class="form-item">
       <app-text-input
@@ -44,7 +45,11 @@
     </div>
 
     <div class="btn">
-      <app-button [btnType]="'submit'" [label]="'sign in'"></app-button>
+      <app-button
+        [btnType]="'submit'"
+        [label]="'sign up'"
+        [isLoading]="isBtnLoading"
+      ></app-button>
     </div>
   </form>
   <div class="opposite-form">

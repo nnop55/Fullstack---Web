@@ -4,19 +4,23 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LoadingService {
-  private isLoadingValue: boolean = false;
+  private loading: boolean[] = [false, false];
 
   constructor() { }
 
-  showLoading(): void {
-    this.isLoadingValue = true;
+  showLoading(mode: number): void {
+    this.loading[mode] = true;
   }
 
-  hideLoading(): void {
-    this.isLoadingValue = false;
+  hideLoading(mode: number): void {
+    this.loading[mode] = false;
   }
 
   isLoading(): boolean {
-    return this.isLoadingValue;
+    return this.loading[0];
+  }
+
+  isBtnLoading(): boolean {
+    return this.loading[1];
   }
 }

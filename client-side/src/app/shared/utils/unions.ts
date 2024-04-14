@@ -17,6 +17,7 @@ export enum Steps {
     recover
 }
 
+
 export type RegisterForm = {
     email: FormControl<string | null>,
     fullName: FormControl<string | null>,

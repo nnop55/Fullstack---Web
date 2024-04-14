@@ -1,4 +1,6 @@
 <section>
+  <ng-container *appLoading="isLoading"></ng-container>
+
   <h2>Sign in to your account</h2>
 
   <form (ngSubmit)="submitForm(form)" [formGroup]="form">
@@ -19,7 +21,11 @@
       ></app-text-input>
     </div>
     <div class="btn">
-      <app-button [btnType]="'submit'" [label]="'sign in'"></app-button>
+      <app-button
+        [btnType]="'submit'"
+        [label]="'sign in'"
+        [isLoading]="isBtnLoading"
+      ></app-button>
     </div>
   </form>
   <div class="opposite-form">

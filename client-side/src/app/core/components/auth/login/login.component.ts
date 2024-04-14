@@ -4,8 +4,10 @@ import { RouterLink } from '@angular/router';
 import { FormHelper } from 'src/app/core/functions/form-helper';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
+import { LoadingService } from 'src/app/core/services/loading.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
+import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
 import { regex } from 'src/app/shared/utils/regex';
 import { LoginForm, Status } from 'src/app/shared/utils/unions';
 
@@ -14,13 +16,14 @@ import { LoginForm, Status } from 'src/app/shared/utils/unions';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink]
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink, LoadingDirective]
 })
 export class LoginComponent implements OnInit {
 
   form!: FormGroup;
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
+  loadingService: LoadingService = inject(LoadingService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
 
   ngOnInit(): void {
@@ -63,6 +66,14 @@ export class LoginComponent implements OnInit {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
       }
     })
+  }
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading()
+  }
+
+  get isBtnLoading(): boolean {
+    return this.loadingService.isBtnLoading()
   }
 
 }
