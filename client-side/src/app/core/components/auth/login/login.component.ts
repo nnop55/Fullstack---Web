@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { FormHelper } from 'src/app/core/functions/form-helper';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { SharedService } from 'src/app/core/services/shared.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
 import { regex } from 'src/app/shared/utils/regex';
@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
 
   form!: FormGroup;
   auth: AuthService = inject(AuthService)
-  shared: SharedService = inject(SharedService)
   dyService: DyComponentsService = inject(DyComponentsService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
 
@@ -40,12 +39,12 @@ export class LoginComponent implements OnInit {
   }
 
   hasError(control: string, pattern: string[] = []) {
-    return this.shared.hasError(this.form, control, pattern)
+    return FormHelper.hasError(this.form, control, pattern)
   }
 
   submitForm(form: FormGroup) {
     if (form.invalid) {
-      this.shared.markAllDirty(form)
+      FormHelper.markAllDirty(form)
       return
     }
 

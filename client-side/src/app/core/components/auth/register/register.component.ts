@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { FormHelper } from 'src/app/core/functions/form-helper';
+import { ApiService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { SharedService } from 'src/app/core/services/shared.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
 
   form!: FormGroup;
 
-  shared: SharedService = inject(SharedService)
+  api: ApiService = inject(ApiService)
   dyService: DyComponentsService = inject(DyComponentsService)
   auth: AuthService = inject(AuthService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit {
   };
 
   getUserRoles() {
-    this.shared.getUserRoles().subscribe({
+    this.api.getUserRoles().subscribe({
       next: (response) => {
         if (response.code == Status.success) {
           this.options = response['data']
@@ -55,13 +56,13 @@ export class RegisterComponent implements OnInit {
   }
 
   hasError(control: string, pattern: string[] = []) {
-    return this.shared.hasError(this.form, control, pattern)
+    return FormHelper.hasError(this.form, control, pattern)
   }
 
   submitForm(form: FormGroup) {
     console.log(form.value)
     if (form.invalid) {
-      this.shared.markAllDirty(form)
+      FormHelper.markAllDirty(form)
       return
     }
 

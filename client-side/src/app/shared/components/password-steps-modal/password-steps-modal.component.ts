@@ -6,9 +6,9 @@ import { ButtonComponent } from '../button/button.component';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 import { StepperComponent } from '../stepper/stepper.component';
 import { TextInputComponent } from '../text-input/text-input.component';
-import { SharedService } from 'src/app/core/services/shared.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
+import { FormHelper } from 'src/app/core/functions/form-helper';
 
 @Component({
   selector: 'app-password-steps-modal',
@@ -21,7 +21,6 @@ export class PasswordStepsModalComponent implements OnInit {
 
   @Output() closeClicked: EventEmitter<void> = new EventEmitter<void>();
 
-  shared: SharedService = inject(SharedService)
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
@@ -51,7 +50,7 @@ export class PasswordStepsModalComponent implements OnInit {
   }
 
   hasError(control: string, pattern: string[] = []) {
-    return this.shared.hasError(this.formItem['form'], control, pattern)
+    return FormHelper.hasError(this.formItem['form'], control, pattern)
   }
 
   initForms() {
@@ -150,7 +149,7 @@ export class PasswordStepsModalComponent implements OnInit {
 
   submitForm(form: FormGroup) {
     if (form.invalid) {
-      this.shared.markAllDirty(form)
+      FormHelper.markAllDirty(form)
       return
     }
 

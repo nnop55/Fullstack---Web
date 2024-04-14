@@ -12,7 +12,7 @@ import { LocalStorageService } from './local-storage.service';
 export class AuthService {
   static readonly jwtKey = 'CURRENT-USER';
 
-  baseUrl: string = environment.baseUrl;
+  private baseUrl: string = environment.baseUrl;
 
   private unauthorizedSubject = new Subject<void>();
   unauthorized$ = this.unauthorizedSubject.asObservable();
