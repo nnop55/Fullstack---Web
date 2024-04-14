@@ -68,10 +68,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  get isLoading(): boolean {
-    return this.loadingService.isLoading()
-  }
-
   get isBtnLoading(): boolean {
     return this.loadingService.isBtnLoading()
   }
