@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, effect, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 
@@ -20,7 +20,6 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     const defSize = this.ls.get('sidenavSize');
     if (defSize) { this.sidenavSize = defSize }
-    this.onSizeChange()
     this.onRouteChange()
   }
 
@@ -38,12 +37,11 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     this.ls.set('sidenavSize', this.sidenavSize)
   }
 
-  onSizeChange() {
-    this.ls.storage$.subscribe((item) => {
-      item['sidenavSize'] && (this.sidenavSize = item['sidenavSize'],
-        this.resizeSection())
-    });
-  }
+  onSizeChange = effect(() => {
+    const storageSubject = this.ls.storageSubject()
+    storageSubject['sidenavSize'] && (this.sidenavSize = storageSubject['sidenavSize'],
+      this.resizeSection())
+  });
 
   onRouteChange() {
     this.router.events.subscribe(event => {

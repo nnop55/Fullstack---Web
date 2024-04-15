@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { FormHelper } from 'src/app/core/functions/form-helper';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { LoadingService } from 'src/app/core/services/loading.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
 import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
@@ -23,8 +22,9 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
-  loadingService: LoadingService = inject(LoadingService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
+
+  isBtnLoading: boolean = false;
 
   ngOnInit(): void {
     this.initForm()
@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
       return
     }
 
+    this.isBtnLoading = true
     this.auth.login(
       {
         email: form.value['email'],
@@ -61,15 +62,13 @@ export class LoginComponent implements OnInit {
         if (response.code == Status.success) {
           this.dyService.showMessage(response.message, this.vcRef)
         }
+        this.isBtnLoading = false
       },
       error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
+        this.isBtnLoading = false
       }
     })
-  }
-
-  get isBtnLoading(): boolean {
-    return this.loadingService.isBtnLoading()
   }
 
 }

@@ -5,7 +5,6 @@ import { FormHelper } from 'src/app/core/functions/form-helper';
 import { ApiService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { LoadingService } from 'src/app/core/services/loading.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
@@ -25,12 +24,13 @@ export class RegisterComponent implements OnInit {
   form!: FormGroup;
 
   api: ApiService = inject(ApiService)
-  loadingService: LoadingService = inject(LoadingService)
   dyService: DyComponentsService = inject(DyComponentsService)
   auth: AuthService = inject(AuthService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
 
   options = [];
+  isLoading: boolean = false;
+  isBtnLoading: boolean = false;
 
   ngOnInit(): void {
     this.initForm()
@@ -48,13 +48,15 @@ export class RegisterComponent implements OnInit {
   };
 
   getUserRoles() {
+    this.isLoading = true
     this.api.getUserRoles().subscribe({
       next: (response) => {
         if (response.code == Status.success) {
           this.options = response['data']
         }
+        this.isLoading = false
       },
-      error: () => { }
+      error: () => this.isLoading = false
     })
   }
 
@@ -63,7 +65,6 @@ export class RegisterComponent implements OnInit {
   }
 
   submitForm(form: FormGroup) {
-    console.log(form.value)
     if (form.invalid) {
       FormHelper.markAllDirty(form)
       return
@@ -74,6 +75,7 @@ export class RegisterComponent implements OnInit {
       return
     }
 
+    this.isBtnLoading = true
     this.auth.register(
       {
         email: form.value['email'],
@@ -86,18 +88,13 @@ export class RegisterComponent implements OnInit {
         if (response.code == Status.success) {
           this.dyService.showMessage(response.message, this.vcRef)
         }
+        this.isBtnLoading = false
       },
       error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
+        this.isBtnLoading = false
       }
     })
   }
 
-  get isLoading(): boolean {
-    return this.loadingService.isLoading()
-  }
-
-  get isBtnLoading(): boolean {
-    return this.loadingService.isBtnLoading()
-  }
 }

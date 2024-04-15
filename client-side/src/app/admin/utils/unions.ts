@@ -10,4 +10,6 @@ export enum ParkingZoneColumnKey {
 export interface TableColumn {
     key?: string;
     label?: string;
+    isInput?: boolean;
+    isDropdown?: boolean;
 }

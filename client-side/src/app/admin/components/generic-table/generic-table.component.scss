@@ -29,7 +29,6 @@ section {
       background-color: $dark;
       color: $gray;
       font-weight: bold;
-      text-transform: uppercase;
       position: relative;
 
       .label,
@@ -41,6 +40,10 @@ section {
         // top: -2px;
         // position: relative;
         display: none;
+      }
+
+      .label {
+        text-transform: uppercase;
       }
     }
 

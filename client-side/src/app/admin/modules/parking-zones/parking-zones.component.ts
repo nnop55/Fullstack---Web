@@ -19,6 +19,7 @@ export class ParkingZonesComponent {
   service: ParkingZonesService = inject(ParkingZonesService)
   routingService: RoutingService = inject(RoutingService)
   queryParams: any;
+  isLoading: boolean = false
 
   ngOnInit(): void {
     this.routingService.getQueryParams().subscribe(params => {
@@ -28,6 +29,7 @@ export class ParkingZonesComponent {
   }
 
   getData() {
+    this.isLoading = true
     this.service.getParkingZones(
       this.queryParams
     ).subscribe({
@@ -36,8 +38,9 @@ export class ParkingZonesComponent {
           this.data = response['data']['paginatedData']
           this.paginatorData = response['data']['paginator']
         }
+        this.isLoading = false
       },
-      error: () => { }
+      error: () => this.isLoading = false
     })
   }
 
@@ -45,27 +48,33 @@ export class ParkingZonesComponent {
     return [
       {
         key: ParkingZoneColumnKey.Id,
-        label: 'id'
+        label: 'id',
+        isInput: true
       },
       {
         key: ParkingZoneColumnKey.Name,
-        label: 'name'
+        label: 'name',
+        isInput: true
       },
       {
         key: ParkingZoneColumnKey.Price,
-        label: 'price'
+        label: 'price',
+        isInput: true
       },
       {
         key: ParkingZoneColumnKey.Address,
-        label: 'address'
+        label: 'address',
+        isDropdown: true
       },
       {
         key: ParkingZoneColumnKey.Available,
-        label: 'available'
+        label: 'available',
+        isInput: true
       },
       {
         key: ParkingZoneColumnKey.CarId,
-        label: 'carid'
+        label: 'carid',
+        isInput: true
       }
     ]
   }

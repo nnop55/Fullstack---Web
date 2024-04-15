@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, computed, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  private storageSubject = new Subject<{ [key: string]: string }>();
-  storage$ = this.storageSubject.asObservable();
+  #storageSubject = signal<{ [key: string]: string }>({});
+  storageSubject = computed(this.#storageSubject);
 
   constructor() { }
 
@@ -17,8 +16,8 @@ export class LocalStorageService {
   }
 
   set(key: string, value: any) {
+    this.#storageSubject.set({ [key]: value });
     localStorage.setItem(key, JSON.stringify(value));
-    this.storageSubject.next({ [key]: value });
   }
 
   remove(key: string) {
