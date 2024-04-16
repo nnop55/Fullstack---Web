@@ -10,7 +10,7 @@ export class ModuleBase {
   routingService: RoutingService = inject(RoutingService)
   isLoading: boolean = false
 
-  onRoute(serviceName: any,
+  loadTable(serviceName: any,
     method: any) {
     this.routingService.getQueryParams().subscribe(params => {
       if (params) this.queryParams = params;

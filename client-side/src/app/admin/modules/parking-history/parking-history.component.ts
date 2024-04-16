@@ -18,7 +18,7 @@ export class ParkingHistoryComponent extends ModuleBase {
   service: ParkingHistoryService = inject(ParkingHistoryService)
 
   ngOnInit(): void {
-    super.onRoute(
+    super.loadTable(
       this.service,
       'getParkingHistory'
     )

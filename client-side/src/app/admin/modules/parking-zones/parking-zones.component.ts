@@ -16,7 +16,7 @@ export class ParkingZonesComponent extends ModuleBase {
   service: ParkingZonesService = inject(ParkingZonesService)
 
   ngOnInit(): void {
-    super.onRoute(
+    super.loadTable(
       this.service,
       'getParkingZones'
     )
