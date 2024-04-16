@@ -2,12 +2,18 @@
 
 section {
   width: 90%;
-  margin: 13rem auto;
+  margin: 11rem auto;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   background-color: $dark;
-  border-radius: 10px;
   position: relative;
+  border-radius: 10px;
+
+  .table-container {
+    overflow-x: auto;
+    padding-bottom: 20px;
+    border-radius: 10px 10px 0 0;
+  }
 
   table {
     width: 100%;
@@ -30,6 +36,7 @@ section {
       color: $gray;
       font-weight: bold;
       position: relative;
+      min-width: 200px;
 
       .label,
       .icon {

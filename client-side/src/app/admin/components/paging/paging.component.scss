@@ -4,8 +4,9 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 15px;
-  margin: 20px;
+  padding: 20px;
+  background: $dark;
+  border-radius: 0 0 10px 10px;
 
   h5 {
     margin: 0;
