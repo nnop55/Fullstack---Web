@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { ParkingZoneColumnKey, SearchModes, TableColumn } from '../../utils/unions';
-import { Status } from '../../../shared/utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ParkingZonesService } from './parking-zones.service';
-import { RoutingService } from '../../services/routing.service';
+import { ModuleBase } from '../module-base';
 
 @Component({
   selector: 'app-parking-zones',
@@ -12,39 +11,18 @@ import { RoutingService } from '../../services/routing.service';
   templateUrl: './parking-zones.component.html',
   styleUrl: './parking-zones.component.scss'
 })
-export class ParkingZonesComponent {
-  data: any[] = []
-  paginatorData: any = new Object();
+export class ParkingZonesComponent extends ModuleBase {
 
   service: ParkingZonesService = inject(ParkingZonesService)
-  routingService: RoutingService = inject(RoutingService)
-  queryParams: any;
-  isLoading: boolean = false
 
   ngOnInit(): void {
-    this.routingService.getQueryParams().subscribe(params => {
-      if (params) this.queryParams = params
-      this.getData()
-    })
+    super.onRoute(
+      this.service,
+      'getParkingZones'
+    )
   }
 
-  getData() {
-    this.isLoading = true
-    this.service.getParkingZones(
-      this.queryParams
-    ).subscribe({
-      next: (response) => {
-        if (response.code == Status.success) {
-          this.data = response['data']['paginatedData']
-          this.paginatorData = response['data']['paginator']
-        }
-        this.isLoading = false
-      },
-      error: () => this.isLoading = false
-    })
-  }
-
-  getColumnSettings(): TableColumn[] {
+  override getColumnSettings(): TableColumn[] {
     return [
       {
         key: ParkingZoneColumnKey.Id,

@@ -4,6 +4,7 @@ import { ParkingHistoryService } from './parking-history.service';
 import { RoutingService } from '../../services/routing.service';
 import { Status } from '../../../shared/utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
+import { ModuleBase } from '../module-base';
 
 @Component({
   selector: 'app-parking-history',
@@ -12,39 +13,18 @@ import { GenericTableComponent } from '../../components/generic-table/generic-ta
   templateUrl: './parking-history.component.html',
   styleUrl: './parking-history.component.scss'
 })
-export class ParkingHistoryComponent {
-  data: any[] = []
-  paginatorData: any = new Object();
+export class ParkingHistoryComponent extends ModuleBase {
 
   service: ParkingHistoryService = inject(ParkingHistoryService)
-  routingService: RoutingService = inject(RoutingService)
-  queryParams: any;
-  isLoading: boolean = false
 
   ngOnInit(): void {
-    this.routingService.getQueryParams().subscribe(params => {
-      if (params) this.queryParams = params
-      this.getData()
-    })
+    super.onRoute(
+      this.service,
+      'getParkingHistory'
+    )
   }
 
-  getData() {
-    this.isLoading = true
-    this.service.getParkingHistory(
-      this.queryParams
-    ).subscribe({
-      next: (response) => {
-        if (response.code == Status.success) {
-          this.data = response['data']['paginatedData']
-          this.paginatorData = response['data']['paginator']
-        }
-        this.isLoading = false
-      },
-      error: () => this.isLoading = false
-    })
-  }
-
-  getColumnSettings(): TableColumn[] {
+  override getColumnSettings(): TableColumn[] {
     return [
       {
         key: ParkingHistoryColumnKey.Id,

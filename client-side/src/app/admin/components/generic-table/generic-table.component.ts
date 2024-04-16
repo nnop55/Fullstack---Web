@@ -54,6 +54,9 @@ export class GenericTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isLoading']) {
+      console.log(this.isLoading)
+    }
     if (changes['paginator']) {
       this.paginator = changes['paginator'].currentValue
     }

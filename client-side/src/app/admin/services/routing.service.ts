@@ -25,6 +25,7 @@ export class RoutingService {
   getQueryParams(): Observable<any> {
     return this.acRoute.queryParams.pipe(
       map(params => {
+
         return params;
       })
     );
