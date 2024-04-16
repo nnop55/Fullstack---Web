@@ -1,18 +1,20 @@
 <div class="custom-dropdown {{ className }}" [class.focus]="showOptions">
   <div class="content" (click)="toggleDropdown()">
-    <span *ngIf="selectedOption">{{ selectedOption.label }}</span>
+    @if(selectedOption){
+    <span>{{ selectedOption.label }}</span>
+    }
     <img class="icon" src="../../../../assets/icons/arrow-pointer.svg" />
   </div>
   <label [class.active]="selectedOption">
     {{ placeholder }}
   </label>
-  <article *ngIf="showOptions">
-    <div
-      class="item"
-      *ngFor="let option of options"
-      (click)="selectOption(option)"
-    >
+  @if(showOptions){
+  <article>
+    @for(option of options; track $index){
+    <div class="item" (click)="selectOption(option)">
       {{ option.label }}
     </div>
+    }
   </article>
+  }
 </div>

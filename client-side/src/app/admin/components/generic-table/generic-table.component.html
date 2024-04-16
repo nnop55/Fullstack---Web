@@ -1,47 +1,53 @@
 <section>
   <ng-container *appLoading="isLoading"></ng-container>
-  @if(true){ }
   <div class="table-container">
     <table>
       <thead>
         <tr>
-          <th *ngFor="let column of columns; trackBy: trackByFn">
-            <ng-container *ngIf="column.key">
-              <span (click)="onSort(column.key)" class="label">{{
-                column.label
-              }}</span>
-              <span
-                (click)="onSort(column.key)"
-                class="icon"
-                [style.display]="sortBy === column.key && 'contents'"
-              >
-                {{ sortOrder === "asc" ? "▲" : "▼" }}
-              </span>
+          @for(column of columns; track column.key){
+          <th>
+            <span (click)="onSort(column.key!)" class="label">{{
+              column.label
+            }}</span>
+            <span
+              (click)="onSort(column.key!)"
+              class="icon"
+              [style.display]="sortBy === column.key && 'contents'"
+            >
+              {{ sortOrder === "asc" ? "▲" : "▼" }}
+            </span>
 
-              <div class="search-input" *ngIf="column.isInput">
-                <app-text-input
-                  [placeholder]="'Search'"
-                  [formControl]="searchControls[column.key]"
-                ></app-text-input>
-              </div>
-              <div class="search-input" *ngIf="column.isDropdown">
-                <app-dropdown
-                  [placeholder]="'Search'"
-                  [formControl]="searchControls[column.key]"
-                  [options]="[1, 0]"
-                ></app-dropdown>
-              </div>
-            </ng-container>
+            @switch (column.searchable) { @case (SearchModes.Input) {
+            <div class="search-input">
+              <app-text-input
+                [placeholder]="'Search'"
+                [formControl]="searchControls[column.key!]"
+              ></app-text-input>
+            </div>
+            } @case (SearchModes.Dropdown) {
+            <div class="search-input">
+              <app-dropdown
+                [placeholder]="'Search'"
+                [formControl]="searchControls[column.key!]"
+                [options]="[1, 0]"
+              ></app-dropdown>
+            </div>
+            } }
           </th>
+          }
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let item of tableData">
-          <td *ngFor="let column of columns">
+        @for (item of tableData; track $index) {
+        <tr>
+          @for (column of columns; track $index) {
+          <td>
             {{ item[column.key!] }}
           </td>
+          }
         </tr>
+        }
       </tbody>
     </table>
   </div>

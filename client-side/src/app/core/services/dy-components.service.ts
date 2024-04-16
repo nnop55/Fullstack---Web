@@ -1,6 +1,6 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { PasswordStepsModalComponent } from 'src/app/shared/components/password-steps-modal/password-steps-modal.component';
-import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
+import { PasswordStepsModalComponent } from '../../shared/components/password-steps-modal/password-steps-modal.component';
+import { SnackbarComponent } from '../../shared/components/snackbar/snackbar.component';
 
 @Injectable({
   providedIn: 'root'

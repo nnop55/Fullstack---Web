@@ -1,13 +1,12 @@
 import { Component, HostListener, Input, forwardRef } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [],
   templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.scss'],
+  styleUrl: './dropdown.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -16,7 +15,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ],
 })
-export class DropdownComponent {
+export class DropdownComponent implements ControlValueAccessor {
   @Input() options: any[] = [];
   @Input() placeholder: string = 'Select an option';
   @Input() className: string = '';

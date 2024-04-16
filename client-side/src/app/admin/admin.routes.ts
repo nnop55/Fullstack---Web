@@ -16,8 +16,12 @@ export const AdminRoute: Routes = [
         data: { path: '/admin/parking-zones' }
       },
       {
-        path: 'history',
-        loadChildren: () => import('./modules/history/history.routes').then(m => m.HistoryRoute),
+        path: 'parking-history',
+        loadChildren: () => import('./modules/parking-history/parking-history.routes').then(m => m.ParkingHistoryRoute),
+      },
+      {
+        path: '',
+        loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.DashboardRoutes),
       },
     ]
   },

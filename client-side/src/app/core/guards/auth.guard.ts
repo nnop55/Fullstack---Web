@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { LocalStorageService } from '../services/local-storage.service';
 import { inject } from '@angular/core';
+import { LocalStorageService } from '../services/local-storage.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const ls = inject(LocalStorageService)
 
   const not = () => {
-    router.navigate(['/auth/signin']);
+    router.navigate(['/sign/in']);
     return false
   }
 

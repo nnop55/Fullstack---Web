@@ -1,12 +1,11 @@
-import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, output } from '@angular/core';
 
 @Component({
   selector: 'app-paging',
-  templateUrl: './paging.component.html',
-  styleUrls: ['./paging.component.scss'],
   standalone: true,
-  imports: [NgIf]
+  imports: [],
+  templateUrl: './paging.component.html',
+  styleUrl: './paging.component.scss'
 })
 export class PagingComponent implements OnInit, OnChanges {
 
@@ -15,7 +14,7 @@ export class PagingComponent implements OnInit, OnChanges {
   @Input() totalCount!: number;
   @Input() pageSize!: number;
 
-  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+  pageChange = output<number>()
 
 
   from!: number;

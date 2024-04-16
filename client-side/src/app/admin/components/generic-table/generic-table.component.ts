@@ -1,20 +1,19 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
+import { TextInputComponent } from '../../../shared/components/text-input/text-input.component';
+import { LoadingDirective } from '../../../shared/directives/loading.directive';
+import { PagingComponent } from '../paging/paging.component';
 import { RoutingService } from '../../services/routing.service';
 import { ActivatedRoute } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
-import { PagingComponent } from '../paging/paging.component';
-import { TableColumn } from '../../utils/unions';
-import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
-import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
-import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SearchModes, TableColumn } from '../../utils/unions';
 
 @Component({
   selector: 'app-generic-table',
-  templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.scss'],
   standalone: true,
-  imports: [NgFor, PagingComponent, LoadingDirective, TextInputComponent, NgIf, DropdownComponent, ReactiveFormsModule]
+  imports: [PagingComponent, LoadingDirective, TextInputComponent, DropdownComponent, ReactiveFormsModule],
+  templateUrl: './generic-table.component.html',
+  styleUrl: './generic-table.component.scss'
 })
 export class GenericTableComponent implements OnInit, OnChanges {
 
@@ -32,6 +31,7 @@ export class GenericTableComponent implements OnInit, OnChanges {
 
   pathName!: string;
   searchControls: { [key: string]: FormControl } = {};
+  SearchModes = SearchModes
 
 
   constructor(
@@ -40,21 +40,17 @@ export class GenericTableComponent implements OnInit, OnChanges {
   ) {
     this.pathName = this.acRoute.snapshot.data['path']
   }
-  test: any = new FormControl('')
+
   ngOnInit(): void {
     this.initForm()
   }
 
   initForm() {
     this.columns.forEach(column => {
-      if ((column.isInput || column.isDropdown) && column.key) {
+      if (column.searchable !== undefined && column.key) {
         this.searchControls[column.key] = new FormControl(null);
       }
     });
-  }
-
-  trackByFn(index: number, item: any): any {
-    return item.key;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

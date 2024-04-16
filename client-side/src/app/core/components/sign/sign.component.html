@@ -5,9 +5,7 @@
     </div>
     <div class="right-side">
       <ng-container
-        *ngComponentOutlet="
-          mode == 'signin' ? LoginComponent : RegisterComponent
-        "
+        *ngComponentOutlet="mode == 'in' ? InComponent : UpComponent"
       ></ng-container>
     </div>
   </div>

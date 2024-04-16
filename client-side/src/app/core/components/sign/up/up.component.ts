@@ -1,26 +1,25 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormHelper } from 'src/app/core/functions/form-helper';
-import { ApiService } from 'src/app/core/services/api.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { ButtonComponent } from 'src/app/shared/components/button/button.component';
-import { DropdownComponent } from 'src/app/shared/components/dropdown/dropdown.component';
-import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
-import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
-import { regex } from 'src/app/shared/utils/regex';
-import { RegisterForm, Status } from 'src/app/shared/utils/unions';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
+import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { LoadingDirective } from '../../../../shared/directives/loading.directive';
+import { RegisterForm, Status } from '../../../../shared/utils/unions';
+import { FormHelper } from '../../../functions/form-helper';
+import { regex } from '../../../../shared/utils/regex';
+import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service';
+import { DyComponentsService } from '../../../services/dy-components.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: 'app-up',
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink, LoadingDirective]
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink, LoadingDirective],
+  templateUrl: './up.component.html',
+  styleUrl: './up.component.scss'
 })
-export class RegisterComponent implements OnInit {
-
+export class UpComponent implements OnInit {
   form!: FormGroup;
 
   api: ApiService = inject(ApiService)

@@ -1,24 +1,23 @@
 import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FormHelper } from 'src/app/core/functions/form-helper';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { ButtonComponent } from 'src/app/shared/components/button/button.component';
-import { TextInputComponent } from 'src/app/shared/components/text-input/text-input.component';
-import { LoadingDirective } from 'src/app/shared/directives/loading.directive';
-import { regex } from 'src/app/shared/utils/regex';
-import { LoginForm, Status } from 'src/app/shared/utils/unions';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { LoadingDirective } from '../../../../shared/directives/loading.directive';
+import { LoginForm, Status } from '../../../../shared/utils/unions';
+import { FormHelper } from '../../../functions/form-helper';
+import { regex } from '../../../../shared/utils/regex';
+import { AuthService } from '../../../services/auth.service';
+import { DyComponentsService } from '../../../services/dy-components.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-in',
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink, LoadingDirective]
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink, LoadingDirective],
+  templateUrl: './in.component.html',
+  styleUrl: './in.component.scss'
 })
-export class LoginComponent implements OnInit {
-
+export class InComponent implements OnInit {
   form!: FormGroup;
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)

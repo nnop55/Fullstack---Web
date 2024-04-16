@@ -1,14 +1,14 @@
 import { NgStyle } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, effect, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { LocalStorageService } from 'src/app/core/services/local-storage.service';
+import { AfterViewInit, Component, OnInit, effect, inject } from '@angular/core';
+import { RouterOutlet, RouterLinkActive, RouterLink, NavigationEnd, Router } from '@angular/router';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-admin-layout',
-  templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss'],
   standalone: true,
-  imports: [RouterOutlet, NgStyle, RouterLinkActive, RouterLink]
+  imports: [RouterOutlet, NgStyle, RouterLinkActive, RouterLink],
+  templateUrl: './admin-layout.component.html',
+  styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent implements OnInit, AfterViewInit {
 
@@ -27,6 +27,13 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     this.resizeSection()
   }
 
+
+  onSizeChange = effect(() => {
+    const storageSubject = this.ls.storageSubject()
+    storageSubject['sidenavSize'] && (this.sidenavSize = storageSubject['sidenavSize'],
+      this.resizeSection())
+  });
+
   resizeSection() {
     const sectionEl = document.querySelector(".admin-section") as HTMLElement
     sectionEl && (sectionEl.style.marginLeft = this.sidenavSize)
@@ -36,12 +43,6 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     this.sidenavSize = this.sidenavSize == "0" ? "20%" : "0"
     this.ls.set('sidenavSize', this.sidenavSize)
   }
-
-  onSizeChange = effect(() => {
-    const storageSubject = this.ls.storageSubject()
-    storageSubject['sidenavSize'] && (this.sidenavSize = storageSubject['sidenavSize'],
-      this.resizeSection())
-  });
 
   onRouteChange() {
     this.router.events.subscribe(event => {

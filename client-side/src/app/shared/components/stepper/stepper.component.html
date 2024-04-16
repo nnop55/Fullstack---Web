@@ -1,30 +1,30 @@
 <div class="container">
   <div class="step-view">
-    <ng-container *ngFor="let step of data; let i = index">
-      <div
-        class="box"
-        [ngClass]="{
-          disabled: step.level > finishedStep
-        }"
-        [style.gap]="boxGap"
+    @for(step of data; track i; let i = $index ){
+    <div
+      class="box"
+      [ngClass]="{
+        disabled: step.level > finishedStep
+      }"
+      [style.gap]="boxGap"
+    >
+      <button
+        id="stepButton{{ step.level }}"
+        class="item"
+        (click)="onStepClick(step)"
+        [ngClass]="{ done: step.level < finishedStep }"
       >
-        <button
-          id="stepButton{{ step.level }}"
-          class="item"
-          (click)="onStepClick(step)"
-          [ngClass]="{ done: step.level < finishedStep }"
-        >
-          {{ step.title }}
-        </button>
-        <ng-container *ngIf="i < data.length - 1">
-          <span
-            class="line"
-            [ngClass]="{ done: activeStep > step.level }"
-            [style.width]="lineWidth"
-          ></span>
-        </ng-container>
-      </div>
-    </ng-container>
+        {{ step.title }}
+      </button>
+      @if(i < data.length - 1){
+      <span
+        class="line"
+        [ngClass]="{ done: activeStep > step.level }"
+        [style.width]="lineWidth"
+      ></span>
+      }
+    </div>
+    }
   </div>
   <article class="steps-content">
     <ng-content></ng-content>

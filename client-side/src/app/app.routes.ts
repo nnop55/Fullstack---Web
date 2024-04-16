@@ -24,17 +24,17 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'auth',
+        path: 'sign',
         children: [
             {
-                path: 'signin',
-                loadComponent: () => import('./core/components/auth/auth.component').then(m => m.AuthComponent),
-                data: { mode: 'signin' }
+                path: 'in',
+                loadComponent: () => import('./core/components/sign/sign.component').then(m => m.SignComponent),
+                data: { mode: 'in' }
             },
             {
-                path: 'signup',
-                loadComponent: () => import('./core/components/auth/auth.component').then(m => m.AuthComponent),
-                data: { mode: 'signup' }
+                path: 'up',
+                loadComponent: () => import('./core/components/sign/sign.component').then(m => m.SignComponent),
+                data: { mode: 'up' }
             }
         ]
     },

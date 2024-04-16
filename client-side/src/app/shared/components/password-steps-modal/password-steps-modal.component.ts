@@ -1,25 +1,23 @@
-import { Component, EventEmitter, OnInit, Output, ViewContainerRef, inject } from '@angular/core';
-import { CodeForm, EmailForm, PasswordForm, Status, Steps } from '../../utils/unions';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ViewContainerRef, inject, output } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormHelper } from '../../../core/functions/form-helper';
 import { regex } from '../../utils/regex';
+import { Steps, EmailForm, CodeForm, PasswordForm, Status } from '../../utils/unions';
 import { ButtonComponent } from '../button/button.component';
-import { NgSwitch, NgSwitchCase } from '@angular/common';
-import { StepperComponent } from '../stepper/stepper.component';
 import { TextInputComponent } from '../text-input/text-input.component';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { DyComponentsService } from 'src/app/core/services/dy-components.service';
-import { FormHelper } from 'src/app/core/functions/form-helper';
+import { StepperComponent } from '../stepper/stepper.component';
+import { AuthService } from '../../../core/services/auth.service';
+import { DyComponentsService } from '../../../core/services/dy-components.service';
 
 @Component({
   selector: 'app-password-steps-modal',
-  templateUrl: './password-steps-modal.component.html',
-  styleUrls: ['./password-steps-modal.component.scss'],
   standalone: true,
-  imports: [StepperComponent, ButtonComponent, TextInputComponent, NgSwitchCase, ReactiveFormsModule, NgSwitch]
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, StepperComponent],
+  templateUrl: './password-steps-modal.component.html',
+  styleUrl: './password-steps-modal.component.scss'
 })
-export class PasswordStepsModalComponent implements OnInit {
-
-  @Output() closeClicked: EventEmitter<void> = new EventEmitter<void>();
+export class PasswordStepsModalComponent {
+  closeClicked = output<void>()
 
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
@@ -163,5 +161,4 @@ export class PasswordStepsModalComponent implements OnInit {
   resetForm(index: number) {
     this.forms[index].form.reset()
   }
-
 }

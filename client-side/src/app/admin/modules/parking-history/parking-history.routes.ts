@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-export const HistoryRoute: Routes = [
+export const ParkingHistoryRoute: Routes = [
     {
         path: '',
         redirectTo: '',
@@ -8,6 +8,6 @@ export const HistoryRoute: Routes = [
     },
     {
         path: '',
-        loadComponent: () => import('./history.component').then(m => m.HistoryComponent),
+        loadComponent: () => import('./parking-history.component').then(m => m.ParkingHistoryComponent),
     }
 ]

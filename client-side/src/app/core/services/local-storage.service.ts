@@ -4,7 +4,6 @@ import { Injectable, computed, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class LocalStorageService {
-
   #storageSubject = signal<{ [key: string]: string }>({});
   storageSubject = computed(this.#storageSubject);
 
@@ -23,5 +22,4 @@ export class LocalStorageService {
   remove(key: string) {
     localStorage.removeItem(key);
   }
-
 }

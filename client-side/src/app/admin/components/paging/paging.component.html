@@ -1,16 +1,11 @@
 <section>
   <div class="info">
     <h5>
-      {{ from }} -
-
-      <ng-container *ngIf="currentPage !== totalPages; else last">
-        {{ from + pageSize - 1 }}
-      </ng-container>
-      <ng-template #last>
-        {{ totalCount }}
-      </ng-template>
-
-      of {{ totalCount }}
+      {{ from }} - @if (currentPage !== totalPages) {
+      {{ from + pageSize - 1 }}
+      }@else {
+      {{ totalCount }}
+      } of {{ totalCount }}
     </h5>
   </div>
   <div class="pagination">

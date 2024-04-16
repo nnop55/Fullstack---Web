@@ -1,27 +1,25 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RouteMode } from 'src/app/shared/utils/unions';
+import { RouteMode } from '../../../shared/utils/unions';
 import { AuthService } from '../../services/auth.service';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { UpComponent } from './up/up.component';
+import { InComponent } from './in/in.component';
 import { NgComponentOutlet } from '@angular/common';
 
-
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
+  selector: 'app-sign',
   standalone: true,
   imports: [NgComponentOutlet],
-  styleUrls: ['./auth.component.scss']
+  templateUrl: './sign.component.html',
+  styleUrl: './sign.component.scss'
 })
-export class AuthComponent implements OnInit {
-
+export class SignComponent implements OnInit {
   route: ActivatedRoute = inject(ActivatedRoute)
   auth: AuthService = inject(AuthService)
-  mode: RouteMode = 'signup'
+  mode: RouteMode = 'up'
 
-  LoginComponent = LoginComponent
-  RegisterComponent = RegisterComponent
+  UpComponent = UpComponent
+  InComponent = InComponent
 
   ngOnInit(): void {
     this.onRoute()
@@ -34,5 +32,4 @@ export class AuthComponent implements OnInit {
   onRoute() {
     this.mode = this.route.snapshot.data['mode']
   }
-
 }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+import { Component, Input, output } from '@angular/core';
 import { LoadingDirective } from '../../directives/loading.directive';
 
 @Component({
@@ -7,7 +7,7 @@ import { LoadingDirective } from '../../directives/loading.directive';
   standalone: true,
   imports: [UpperCasePipe, LoadingDirective],
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
   @Input() label: string = 'Button';
@@ -16,9 +16,7 @@ export class ButtonComponent {
   @Input() btnType: 'submit' | 'button' = 'button';
   @Input() isLoading: boolean = false;
 
-  @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
-
-  constructor() { }
+  onClick = output<void>();
 
   emitClick(): void {
     this.onClick.emit()

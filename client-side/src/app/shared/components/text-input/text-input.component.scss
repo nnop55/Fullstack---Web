@@ -1,4 +1,4 @@
-@import "/src/assets/styles/variables";
+@import "../../../../assets/styles/variables";
 
 .custom-input {
   width: 100%;
@@ -60,10 +60,3 @@
     }
   }
 }
-
-// @media screen and (max-width: 768px) {
-//   .custom-input {
-//     width: 245px !important;
-//     font-size: 14px !important;
-//   }
-// }

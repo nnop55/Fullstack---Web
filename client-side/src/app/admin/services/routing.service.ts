@@ -7,7 +7,10 @@ import { Observable, map } from 'rxjs';
 })
 export class RoutingService {
 
-  constructor(private router: Router, private acRoute: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private acRoute: ActivatedRoute
+  ) { }
 
   updateUrl(url: string,
     page: number,
@@ -26,4 +29,5 @@ export class RoutingService {
       })
     );
   }
+
 }

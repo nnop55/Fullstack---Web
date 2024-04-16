@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, Subject, map } from 'rxjs';
-import { Role, Status } from 'src/app/shared/utils/unions';
-import { environment } from 'src/environments/environment.development';
+import { Role, Status } from '../../shared/utils/unions';
+import { environment } from '../../../environments/environment.development';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({

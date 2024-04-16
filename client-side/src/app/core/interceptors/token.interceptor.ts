@@ -1,16 +1,11 @@
-import { inject } from '@angular/core';
-import {
-  HttpRequest,
-  HttpInterceptorFn,
-  HttpHandlerFn
-} from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { inject } from '@angular/core';
 
-
-export const TokenInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next:
-  HttpHandlerFn) => {
+export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService)
   const token = authService.getBearerToken();
+
   if (token) {
     const authReq = req.clone({
       setHeaders: {

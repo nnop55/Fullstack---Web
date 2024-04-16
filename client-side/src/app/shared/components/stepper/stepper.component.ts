@@ -1,21 +1,20 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnChanges, AfterViewInit, Output, SimpleChanges } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges, output } from '@angular/core';
 
 @Component({
   selector: 'app-stepper',
-  templateUrl: './stepper.component.html',
-  styleUrls: ['./stepper.component.scss'],
   standalone: true,
-  imports: [NgClass, NgIf, NgFor]
+  imports: [NgClass],
+  templateUrl: './stepper.component.html',
+  styleUrl: './stepper.component.scss'
 })
 export class StepperComponent implements AfterViewInit, OnChanges {
-
   @Input() activeStep: number = 1;
   @Input() stepCount: number = 0;
   @Input() data: any[] = [];
   @Input() restart: boolean = false
 
-  @Output() onStepClicked: EventEmitter<number> = new EventEmitter<number>();
+  onStepClicked = output<number>();
 
   finishedStep: number = 0
 

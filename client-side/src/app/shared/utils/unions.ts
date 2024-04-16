@@ -44,4 +44,4 @@ export type PasswordForm = {
     confirmPassword: FormControl<string | null>,
 }
 
-export type RouteMode = 'signin' | 'signup'
+export type RouteMode = 'in' | 'up'

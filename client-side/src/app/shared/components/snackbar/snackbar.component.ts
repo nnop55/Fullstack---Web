@@ -1,10 +1,15 @@
-import { Component, Input, OnInit, ViewContainerRef, inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-snackbar',
-  templateUrl: './snackbar.component.html',
-  styleUrls: ['./snackbar.component.scss'],
-  standalone: true
+  standalone: true,
+  imports: [],
+  template: `
+  <div class="snackbar">
+    <div class="message" [class.error]="isError">{{ message }}</div>
+  </div>
+  `,
+  styleUrl: './snackbar.component.scss'
 })
 export class SnackbarComponent {
   @Input() message: string = '';

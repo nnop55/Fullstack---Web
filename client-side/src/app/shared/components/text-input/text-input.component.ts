@@ -1,23 +1,21 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-text-input',
+  standalone: true,
+  imports: [],
   templateUrl: './text-input.component.html',
-  styleUrls: ['./text-input.component.scss'],
+  styleUrl: './text-input.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TextInputComponent),
       multi: true
     }
-  ],
-  standalone: true,
-  imports: [NgIf]
+  ]
 })
 export class TextInputComponent implements ControlValueAccessor {
-
   @Input() placeholder: string = '';
   @Input() inpType: 'number' | 'text' | 'password' = 'text';
   @Input() className: string = '';
@@ -28,8 +26,6 @@ export class TextInputComponent implements ControlValueAccessor {
 
   private onChangeCallback: (_: any) => void = () => { };
   private onTouchedCallback: () => void = () => { };
-
-  constructor() { }
 
   togglePassEye() {
     if (this.eye == 'hiding') {

@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { ParkingZoneColumnKey, TableColumn } from '../../utils/unions';
-import { Status } from 'src/app/shared/utils/unions';
-import { RoutingService } from '../../services/routing.service';
-import { ParkingZonesService } from './parking-zones.service';
+import { ParkingZoneColumnKey, SearchModes, TableColumn } from '../../utils/unions';
+import { Status } from '../../../shared/utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
+import { ParkingZonesService } from './parking-zones.service';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-parking-zones',
   standalone: true,
   imports: [GenericTableComponent],
   templateUrl: './parking-zones.component.html',
-  styleUrls: ['./parking-zones.component.scss']
+  styleUrl: './parking-zones.component.scss'
 })
 export class ParkingZonesComponent {
   data: any[] = []
@@ -49,32 +49,32 @@ export class ParkingZonesComponent {
       {
         key: ParkingZoneColumnKey.Id,
         label: 'id',
-        isInput: true
+        searchable: SearchModes.Input
       },
       {
         key: ParkingZoneColumnKey.Name,
         label: 'name',
-        isInput: true
+        searchable: SearchModes.Input
       },
       {
         key: ParkingZoneColumnKey.Price,
         label: 'price',
-        isInput: true
+        searchable: SearchModes.Input
       },
       {
         key: ParkingZoneColumnKey.Address,
         label: 'address',
-        isDropdown: true
+        searchable: SearchModes.Dropdown
       },
       {
         key: ParkingZoneColumnKey.Available,
         label: 'available',
-        isInput: true
+        searchable: SearchModes.Input
       },
       {
         key: ParkingZoneColumnKey.CarId,
         label: 'carid',
-        isInput: true
+        searchable: SearchModes.Input
       }
     ]
   }
