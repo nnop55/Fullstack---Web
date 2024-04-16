@@ -10,13 +10,9 @@ class ParkingController {
     constructor() { }
 
     public async getParkingZones(req: Request, res: Response): Promise<void> {
-        const result = await ParkingService.getAllZones()
-        res.status(200).json({ code: 1, data: result });
-    }
-
-    public async pagingParkingZones(req: Request, res: Response): Promise<void> {
-        const result = await ParkingService.getAllZones()
-        ServerSidePaging.paging(req, res, result)
+        const data = await ParkingService.getAllZones()
+        const result = ServerSidePaging.paging(req, res, data)
+        res.status(200).json({ code: 1, data: { ...result } })
     }
 
     public async insertParkingZones(req: Request, res: Response): Promise<void> {

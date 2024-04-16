@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 class ServerSidePaging {
     public paging(req: Request, res: Response, result: any[]): any {
-        const { page = 1, pageSize = 10, sortBy = 'id', sortOrder = 'asc', ...filters } = req.query;
+        const { page = 1, pageSize = 100000, sortBy = 'id', sortOrder = 'asc', ...filters } = req.query;
 
         let filteredResult = [...result];
 
@@ -36,7 +36,7 @@ class ServerSidePaging {
         const endIndex = startIndex + Number(pageSize);
         const paginatedData = result.slice(startIndex, endIndex);
 
-        res.status(200).json({ code: 1, data: { paginatedData, paginator: { totalCount, totalPages } } });
+        return { paginatedData, paginator: { totalCount, totalPages } }
     }
 }
 

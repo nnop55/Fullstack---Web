@@ -73,7 +73,7 @@ export class ParkingZonesComponent {
       },
       {
         key: ParkingZoneColumnKey.CarId,
-        label: 'carid',
+        label: 'car id',
         searchable: SearchModes.Input
       }
     ]

@@ -1,3 +1,9 @@
 <div class="admin-section">
-  <p>parking-history works!</p>
+  <app-generic-table
+    [columns]="getColumnSettings()"
+    [tableData]="data"
+    [paginator]="paginatorData"
+    [queryParams]="queryParams"
+  >
+  </app-generic-table>
 </div>
