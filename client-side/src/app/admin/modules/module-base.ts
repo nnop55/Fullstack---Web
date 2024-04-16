@@ -22,7 +22,7 @@ export class ModuleBase {
     });
   }
 
-  getData(
+  private getData(
     serviceName: any,
     method: any,
     params: any
