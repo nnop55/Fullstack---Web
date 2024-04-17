@@ -11,7 +11,7 @@ class ParkingController {
 
     public async getParkingZones(req: Request, res: Response): Promise<void> {
         const data = await ParkingService.getAllZones()
-        const result = ServerSidePaging.paging(req, res, data)
+        const result = ServerSidePaging.paging(req.query, data)
         res.status(200).json({ code: 1, data: { ...result } })
     }
 

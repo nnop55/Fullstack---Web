@@ -37,7 +37,7 @@ export class ParkingZonesComponent extends ModuleBase {
       {
         key: ParkingZoneColumnKey.Price,
         label: 'price',
-        searchable: SearchModes.Input
+        searchable: SearchModes.FromTo
       },
       {
         key: ParkingZoneColumnKey.Address,

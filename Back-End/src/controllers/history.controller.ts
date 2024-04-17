@@ -8,7 +8,7 @@ class HistoryController {
 
     public async getHistory(req: Request, res: Response) {
         const data = await HistoryService.getHistories()
-        const result = ServerSidePaging.paging(req, res, data)
+        const result = ServerSidePaging.paging(req.query, data)
         res.status(200).json({ code: 1, data: { ...result } });
     }
 

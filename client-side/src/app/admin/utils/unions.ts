@@ -6,7 +6,8 @@ export interface TableColumn {
 
 export enum SearchModes {
     Input,
-    Dropdown
+    Dropdown,
+    FromTo,
 }
 
 export enum ParkingZoneColumnKey {

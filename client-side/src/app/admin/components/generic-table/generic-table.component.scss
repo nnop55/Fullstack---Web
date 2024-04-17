@@ -62,5 +62,12 @@ section {
     tbody tr:hover {
       background-color: $dark-hover;
     }
+
+    .search-input {
+      &.from-to {
+        display: flex;
+        gap: 10px;
+      }
+    }
   }
 }

@@ -16,16 +16,17 @@ export class RoutingService {
     page: number,
     pageSize: number,
     sortBy: string,
-    sortOrder: string) {
-
-    const queryParams = { page, pageSize, sortBy, sortOrder }
+    sortOrder: string,
+    filters?: any
+  ) {
+    console.log(filters)
+    const queryParams = { page, pageSize, sortBy, sortOrder, ...filters }
     this.router.navigate([url], { queryParams });
   }
 
   getQueryParams(): Observable<any> {
     return this.acRoute.queryParams.pipe(
       map(params => {
-
         return params;
       })
     );

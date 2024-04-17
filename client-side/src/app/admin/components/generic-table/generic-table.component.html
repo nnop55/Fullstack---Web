@@ -31,6 +31,17 @@
                 [options]="[1, 0]"
               ></app-dropdown>
             </div>
+            }@case (SearchModes.FromTo) {
+            <div class="search-input from-to">
+              <app-text-input
+                [placeholder]="'From'"
+                [formControl]="searchControls[column.key! + 'From']"
+              ></app-text-input>
+              <app-text-input
+                [placeholder]="'To'"
+                [formControl]="searchControls[column.key! + 'To']"
+              ></app-text-input>
+            </div>
             } }
           </th>
           }

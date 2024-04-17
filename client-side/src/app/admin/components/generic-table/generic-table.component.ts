@@ -33,7 +33,6 @@ export class GenericTableComponent {
   searchControls: { [key: string]: FormControl } = {};
   SearchModes = SearchModes
 
-
   constructor(
     private routingService: RoutingService,
     private acRoute: ActivatedRoute
@@ -48,9 +47,33 @@ export class GenericTableComponent {
   initForm() {
     this.columns.forEach(column => {
       if (column.searchable !== undefined && column.key) {
+        if (column.searchable === SearchModes.FromTo) {
+          this.searchControls[column.key + 'From'] = new FormControl(null);
+          this.searchControls[column.key + 'To'] = new FormControl(null);
+          return
+        }
         this.searchControls[column.key] = new FormControl(null);
       }
     });
+    this.onFilter()
+  }
+
+  onFilter() {
+    for (
+      const [key, value] of
+      Object.entries(this.searchControls)
+    ) {
+      value.valueChanges.subscribe(searchTerm => {
+        this.routingService.updateUrl(
+          this.pathName,
+          this.currentPage,
+          this.pageSize,
+          this.sortBy,
+          this.sortOrder,
+          { [key]: searchTerm }
+        )
+      })
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
