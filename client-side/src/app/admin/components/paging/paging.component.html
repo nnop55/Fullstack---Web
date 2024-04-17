@@ -7,6 +7,14 @@
       {{ totalCount }}
       } of {{ totalCount }}
     </h5>
+
+    <app-dropdown
+      [formControl]="pageSizeControl"
+      [options]="pageSizeOptions"
+      [defaultValue]="pageSizeControl.value"
+      [className]="'paginator'"
+      [showLabel]="false"
+    ></app-dropdown>
   </div>
   <div class="pagination">
     <button

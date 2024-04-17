@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from '../../../shared/components/text-input/text-input.component';
@@ -15,7 +15,7 @@ import { SearchModes, TableColumn } from '../../utils/unions';
   templateUrl: './generic-table.component.html',
   styleUrl: './generic-table.component.scss'
 })
-export class GenericTableComponent implements OnInit, OnChanges {
+export class GenericTableComponent {
 
   @Input() columns: TableColumn[] = [];
   @Input() path!: string;
@@ -66,12 +66,15 @@ export class GenericTableComponent implements OnInit, OnChanges {
     }
   }
 
-  onPageChange(page: number): void {
+  onPageChange(
+    page: number,
+    pageSize: number = this.pageSize
+  ): void {
     this.currentPage = page
     this.routingService.updateUrl(
       this.pathName,
       this.currentPage,
-      this.pageSize,
+      pageSize,
       this.sortBy,
       this.sortOrder
     )

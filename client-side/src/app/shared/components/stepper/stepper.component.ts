@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges, output } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges, output } from '@angular/core';
 
 @Component({
   selector: 'app-stepper',
@@ -8,7 +8,7 @@ import { AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss'
 })
-export class StepperComponent implements AfterViewInit, OnChanges {
+export class StepperComponent {
   @Input() activeStep: number = 1;
   @Input() stepCount: number = 0;
   @Input() data: any[] = [];

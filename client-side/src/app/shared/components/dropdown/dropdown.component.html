@@ -2,13 +2,16 @@
   <div class="content" (click)="toggleDropdown()">
     @if(selectedOption){
     <span>{{ selectedOption.label }}</span>
+    }@else if (defaultValue && !selectedOption) {
+    <span>{{ defaultValue }}</span>
     }
     <img class="icon" src="../../../../assets/icons/arrow-pointer.svg" />
   </div>
+  @if(showLabel){
   <label [class.active]="selectedOption">
     {{ placeholder }}
   </label>
-  @if(showOptions){
+  } @if(showOptions){
   <article>
     @for(option of options; track $index){
     <div class="item" (click)="selectOption(option)">

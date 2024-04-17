@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouteMode } from '../../../shared/utils/unions';
 import { AuthService } from '../../services/auth.service';
@@ -13,7 +13,7 @@ import { NgComponentOutlet } from '@angular/common';
   templateUrl: './sign.component.html',
   styleUrl: './sign.component.scss'
 })
-export class SignComponent implements OnInit {
+export class SignComponent {
   route: ActivatedRoute = inject(ActivatedRoute)
   auth: AuthService = inject(AuthService)
   mode: RouteMode = 'up'

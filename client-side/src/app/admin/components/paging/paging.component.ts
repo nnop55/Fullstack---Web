@@ -1,13 +1,15 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, output } from '@angular/core';
+import { Component, Input, SimpleChanges, output } from '@angular/core';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-paging',
   standalone: true,
-  imports: [],
+  imports: [DropdownComponent, ReactiveFormsModule],
   templateUrl: './paging.component.html',
   styleUrl: './paging.component.scss'
 })
-export class PagingComponent implements OnInit, OnChanges {
+export class PagingComponent {
 
   @Input() currentPage: number = 1;
   @Input() totalPages!: number;
@@ -15,12 +17,30 @@ export class PagingComponent implements OnInit, OnChanges {
   @Input() pageSize!: number;
 
   pageChange = output<number>()
+  sizeChange = output<number>()
 
+  pageSizeControl: FormControl = new FormControl(null)
+  pageSizeOptions = [
+    { label: 10, value: 10 },
+    { label: 15, value: 15 },
+    { label: 25, value: 25 },
+    { label: 50, value: 50 },
+    { label: 100, value: 100 }
+  ]
 
   from!: number;
 
   ngOnInit(): void {
     this.from = (this.pageSize * (this.currentPage - 1)) + 1
+    this.pageSizeControl.setValue(this.pageSize)
+
+    this.pageSizeControl
+      .valueChanges
+      .subscribe(value => {
+        if (value !== this.pageSize) {
+          this.sizeChange.emit(value)
+        }
+      })
   }
 
   ngOnChanges(changes: SimpleChanges): void {

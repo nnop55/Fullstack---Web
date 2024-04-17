@@ -9,7 +9,8 @@ import { Component, Input } from '@angular/core';
    <div class="loading-container"
   [ngStyle]="{
       'transform':'scale(' + size + ')',
-      'justify-content': size === 0.5 && 'flex-end'
+      'justify-content': size === 0.5 && 'flex-end',
+        'backdrop-filter':isBlur && 'blur(1px)'
     }"
   >
     <div class="loader"></div>
@@ -18,5 +19,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loading.component.scss'
 })
 export class LoadingComponent {
-  @Input() size: number = 1;
+  @Input() size!: number;
+  @Input() isBlur!: boolean;
+
 }

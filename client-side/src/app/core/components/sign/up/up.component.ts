@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, inject } from '@angular/core';
+import { Component, ViewContainerRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -19,7 +19,7 @@ import { DyComponentsService } from '../../../services/dy-components.service';
   templateUrl: './up.component.html',
   styleUrl: './up.component.scss'
 })
-export class UpComponent implements OnInit {
+export class UpComponent {
   form!: FormGroup;
 
   api: ApiService = inject(ApiService)

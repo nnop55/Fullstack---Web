@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, forwardRef } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -16,9 +16,12 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class DropdownComponent implements ControlValueAccessor {
+
   @Input() options: any[] = [];
   @Input() placeholder: string = 'Select an option';
   @Input() className: string = '';
+  @Input() showLabel: boolean = true;
+  @Input() defaultValue: any;
 
   selectedOption: any;
   showOptions: boolean = false;
@@ -30,7 +33,6 @@ export class DropdownComponent implements ControlValueAccessor {
       this.showOptions = false;
     }
   }
-
 
   onChange: any = () => { };
   onTouched: any = () => { };

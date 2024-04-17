@@ -1,5 +1,5 @@
 import { NgStyle } from '@angular/common';
-import { AfterViewInit, Component, OnInit, effect, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { RouterOutlet, RouterLinkActive, RouterLink, NavigationEnd, Router } from '@angular/router';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 
@@ -10,7 +10,7 @@ import { LocalStorageService } from '../../../core/services/local-storage.servic
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })
-export class AdminLayoutComponent implements OnInit, AfterViewInit {
+export class AdminLayoutComponent {
 
   ls: LocalStorageService = inject(LocalStorageService)
   router: Router = inject(Router)

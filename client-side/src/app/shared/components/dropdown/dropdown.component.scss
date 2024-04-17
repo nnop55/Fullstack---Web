@@ -7,6 +7,33 @@
   z-index: 11;
   user-select: none;
 
+  &.paginator {
+    .content {
+      min-height: 30px;
+      min-width: 56px;
+      padding: 1px 5px 1px;
+
+      img {
+        right: 6px;
+        top: 5px;
+        width: 18px;
+      }
+
+      span {
+        font-size: 13px;
+      }
+    }
+
+    article {
+      top: 27px;
+    }
+
+    .item {
+      font-size: 13px;
+      padding: 8px !important;
+    }
+  }
+
   &.focus {
     .content {
       border-color: $light-blue;
@@ -48,7 +75,10 @@
     width: 100%;
     left: 0;
     box-shadow: 0 -10px 15px -3px rgb(0 0 0 / 23%), 0 4px 6px -2px #000000;
-    top: 45px;
+    top: 47px;
+    border: 2px solid $light-blue;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
 
     .item {
       padding: 10px;

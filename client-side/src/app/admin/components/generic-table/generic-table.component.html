@@ -1,5 +1,4 @@
 <section>
-  <ng-container *appLoading="isLoading"></ng-container>
   <div class="table-container">
     <table>
       <thead>
@@ -38,6 +37,12 @@
         </tr>
       </thead>
 
+      @if(isLoading){ @for (column of columns; track $index) {
+      <td>
+        <ng-container [skeleton]="true" [appLoading]="isLoading"></ng-container>
+      </td>
+      } }
+
       <tbody>
         @for (item of tableData; track $index) {
         <tr>
@@ -57,6 +62,7 @@
     [totalPages]="paginator['totalPages']"
     [totalCount]="paginator['totalCount']"
     (pageChange)="onPageChange($event)"
+    (sizeChange)="onPageChange(currentPage, $event)"
   >
   </app-paging>
 </section>
