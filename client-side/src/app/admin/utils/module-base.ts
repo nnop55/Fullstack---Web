@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { RoutingService } from "../services/routing.service";
-import { TableColumn } from "../utils/unions";
+import { TableColumn } from "./unions";
 import { Status } from "../../shared/utils/unions";
 
 export class ModuleBase {

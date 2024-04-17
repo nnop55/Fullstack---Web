@@ -4,7 +4,7 @@ import { ParkingHistoryService } from './parking-history.service';
 import { RoutingService } from '../../services/routing.service';
 import { Status } from '../../../shared/utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
-import { ModuleBase } from '../module-base';
+import { ModuleBase } from '../../utils/module-base';
 
 @Component({
   selector: 'app-parking-history',

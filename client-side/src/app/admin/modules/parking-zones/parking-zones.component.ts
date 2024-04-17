@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ParkingZoneColumnKey, SearchModes, TableColumn } from '../../utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ParkingZonesService } from './parking-zones.service';
-import { ModuleBase } from '../module-base';
+import { ModuleBase } from '../../utils/module-base';
 
 @Component({
   selector: 'app-parking-zones',
