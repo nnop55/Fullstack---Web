@@ -15,7 +15,13 @@ export class AdminLayoutComponent {
   ls: LocalStorageService = inject(LocalStorageService)
   router: Router = inject(Router)
 
-  sidenavSize: string = "20%";
+  sidenavSize: string = '20%';
+
+  onSizeChange = effect(() => {
+    const storageSubject = this.ls.storageSubject()
+    storageSubject['sidenavSize'] && (this.sidenavSize = storageSubject['sidenavSize'],
+      this.resizeSection())
+  });
 
   ngOnInit(): void {
     const defSize = this.ls.get('sidenavSize');
@@ -27,20 +33,17 @@ export class AdminLayoutComponent {
     this.resizeSection()
   }
 
-
-  onSizeChange = effect(() => {
-    const storageSubject = this.ls.storageSubject()
-    storageSubject['sidenavSize'] && (this.sidenavSize = storageSubject['sidenavSize'],
-      this.resizeSection())
-  });
-
   resizeSection() {
+    if (this.isSmallScreen) {
+      return
+    }
+
     const sectionEl = document.querySelector(".admin-section") as HTMLElement
     sectionEl && (sectionEl.style.marginLeft = this.sidenavSize)
   }
 
   toggleSidenav() {
-    this.sidenavSize = this.sidenavSize == "0" ? "20%" : "0"
+    this.sidenavSize = this.isOpen ? '0' : this.sizes('70%', '20%')
     this.ls.set('sidenavSize', this.sidenavSize)
   }
 
@@ -50,5 +53,17 @@ export class AdminLayoutComponent {
         this.resizeSection()
       }
     });
+  }
+
+  sizes(m: string, n: string) {
+    return (this.isSmallScreen ? m : n)
+  }
+
+  get isSmallScreen() {
+    return window.innerWidth <= 900
+  }
+
+  get isOpen() {
+    return this.sidenavSize != '0';
   }
 }

@@ -13,7 +13,7 @@
   class="sidenav-container"
   [ngStyle]="{
     width: sidenavSize,
-    left: sidenavSize == '20%' ? '0' : ' -20%'
+    left: isOpen ? '0' : this.sizes('-40%', '-20%')
   }"
 >
   <div class="routers">
