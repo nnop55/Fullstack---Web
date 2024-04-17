@@ -15,6 +15,8 @@ export class ButtonComponent {
   @Input() disabled: boolean = false;
   @Input() btnType: 'submit' | 'button' = 'button';
   @Input() isLoading: boolean = false;
+  @Input() mode: 'with-icon' | 'only-icon' | 'default' = 'default';
+  @Input() imgSrc!: string;
 
   onClick = output<void>();
 

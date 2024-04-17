@@ -1,11 +1,12 @@
 import { Component, Input, SimpleChanges, output } from '@angular/core';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-paging',
   standalone: true,
-  imports: [DropdownComponent, ReactiveFormsModule],
+  imports: [DropdownComponent, ReactiveFormsModule, ButtonComponent],
   templateUrl: './paging.component.html',
   styleUrl: './paging.component.scss'
 })

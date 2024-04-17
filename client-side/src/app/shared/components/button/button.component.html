@@ -4,7 +4,14 @@
   class="button-default {{ className }}"
   [type]="btnType"
 >
+  @switch (mode) { @case ('with-icon') {
   {{ label | uppercase }}
+  <img [src]="imgSrc" alt="" />
+  } @case ('only-icon') {
+  <img [src]="imgSrc" alt="" />
+  } @case ('default') {
+  {{ label | uppercase }}
+  } }
 
   <ng-container [appLoading]="isLoading" [spinnerSize]="0.5"></ng-container>
 </button>

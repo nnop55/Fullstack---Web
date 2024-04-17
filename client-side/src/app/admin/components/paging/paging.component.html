@@ -17,35 +17,36 @@
     ></app-dropdown>
   </div>
   <div class="pagination">
-    <button
-      class="page-link"
-      (click)="firstPage()"
+    <app-button
+      [className]="'button--page-link'"
+      (onClick)="firstPage()"
       [disabled]="currentPage === 1"
-    >
-      <img src="../../../../assets/icons/paginator-first.svg" alt="" />
-    </button>
-    <button
-      class="page-link"
-      (click)="prevPage()"
+      [mode]="'only-icon'"
+      [imgSrc]="'../../../../assets/icons/paginator-first.svg'"
+    ></app-button>
+
+    <app-button
+      [className]="'button--page-link'"
+      (onClick)="prevPage()"
       [disabled]="currentPage === 1"
-    >
-      <img src="../../../../assets/icons/paginator-prev.svg" alt="" />
-    </button>
+      [mode]="'only-icon'"
+      [imgSrc]="'../../../../assets/icons/paginator-prev.svg'"
+    ></app-button>
 
-    <button
-      class="page-link"
-      (click)="nextPage()"
+    <app-button
+      [className]="'button--page-link'"
+      (onClick)="nextPage()"
       [disabled]="currentPage === totalPages"
-    >
-      <img src="../../../../assets/icons/paginator-next.svg" alt="" />
-    </button>
+      [mode]="'only-icon'"
+      [imgSrc]="'../../../../assets/icons/paginator-next.svg'"
+    ></app-button>
 
-    <button
-      class="page-link"
-      (click)="lastPage()"
+    <app-button
+      [className]="'button--page-link'"
+      (onClick)="lastPage()"
       [disabled]="currentPage === totalPages"
-    >
-      <img src="../../../../assets/icons/paginator-last.svg" alt="" />
-    </button>
+      [mode]="'only-icon'"
+      [imgSrc]="'../../../../assets/icons/paginator-last.svg'"
+    ></app-button>
   </div>
 </section>
