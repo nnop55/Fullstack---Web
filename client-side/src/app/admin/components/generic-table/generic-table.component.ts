@@ -7,6 +7,7 @@ import { PagingComponent } from '../paging/paging.component';
 import { RoutingService } from '../../services/routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { SearchModes, TableColumn } from '../../utils/unions';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-generic-table',
@@ -30,6 +31,7 @@ export class GenericTableComponent {
   pageSize: number = 10;
 
   pathName!: string;
+  searchTerms: any = {};
   searchControls: { [key: string]: FormControl } = {};
   SearchModes = SearchModes
 
@@ -42,6 +44,8 @@ export class GenericTableComponent {
 
   ngOnInit(): void {
     this.initForm()
+    this.onFilter()
+    this.setFormControlvalues()
   }
 
   initForm() {
@@ -55,7 +59,17 @@ export class GenericTableComponent {
         this.searchControls[column.key] = new FormControl(null);
       }
     });
-    this.onFilter()
+  }
+
+  setFormControlvalues() {
+    for (
+      const [key, value] of
+      Object.entries(this.queryParams)
+    ) {
+      if (value) {
+        this.searchControls[key]?.setValue(value)
+      }
+    }
   }
 
   onFilter() {
@@ -63,16 +77,21 @@ export class GenericTableComponent {
       const [key, value] of
       Object.entries(this.searchControls)
     ) {
-      value.valueChanges.subscribe(searchTerm => {
-        this.routingService.updateUrl(
-          this.pathName,
-          this.currentPage,
-          this.pageSize,
-          this.sortBy,
-          this.sortOrder,
-          { [key]: searchTerm }
-        )
-      })
+      value.valueChanges
+        .pipe(
+          debounceTime(500)
+        ).subscribe(searchTerm => {
+          this.searchTerms[key] = searchTerm;
+
+          this.routingService.updateUrl(
+            this.pathName,
+            this.currentPage,
+            this.pageSize,
+            this.sortBy,
+            this.sortOrder,
+            this.searchTerms
+          )
+        })
     }
   }
 
@@ -99,7 +118,8 @@ export class GenericTableComponent {
       this.currentPage,
       pageSize,
       this.sortBy,
-      this.sortOrder
+      this.sortOrder,
+      this.searchTerms
     )
   }
 
@@ -116,7 +136,8 @@ export class GenericTableComponent {
       this.currentPage,
       this.pageSize,
       this.sortBy,
-      this.sortOrder
+      this.sortOrder,
+      this.searchTerms
     )
   }
 }

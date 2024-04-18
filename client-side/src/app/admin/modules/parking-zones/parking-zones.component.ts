@@ -42,7 +42,7 @@ export class ParkingZonesComponent extends ModuleBase {
       {
         key: ParkingZoneColumnKey.Address,
         label: 'address',
-        searchable: SearchModes.Dropdown
+        searchable: SearchModes.Input
       },
       {
         key: ParkingZoneColumnKey.Available,

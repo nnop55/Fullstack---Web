@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +17,8 @@ export class RoutingService {
     pageSize: number,
     sortBy: string,
     sortOrder: string,
-    filters?: any
+    filters: any
   ) {
-    console.log(filters)
     const queryParams = { page, pageSize, sortBy, sortOrder, ...filters }
     this.router.navigate([url], { queryParams });
   }

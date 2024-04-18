@@ -18,6 +18,7 @@ export const AdminRoute: Routes = [
       {
         path: 'parking-history',
         loadChildren: () => import('./modules/parking-history/parking-history.routes').then(m => m.ParkingHistoryRoute),
+        data: { path: '/admin/parking-history' }
       },
       {
         path: '',

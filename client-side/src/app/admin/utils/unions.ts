@@ -20,7 +20,7 @@ export enum ParkingZoneColumnKey {
 }
 
 export enum ParkingHistoryColumnKey {
-    Id = 'history_id',
+    Id = 'id',
     UserId = 'user_id',
     CarId = 'car_id',
     Mark = 'mark',

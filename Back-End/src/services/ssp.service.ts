@@ -2,11 +2,9 @@
 
 class ServerSidePaging {
     public paging(queryParams: any, result: any[]): any {
-        const { page = 1, pageSize = 100000, sortBy = 'id', sortOrder = 'asc', priceFrom, priceTo, ...filters } = queryParams;
+        const { page = 1, pageSize = 100000, sortBy = 'id', sortOrder = 'asc', ...filters } = queryParams;
 
         let filteredResult = this.applyFilters(result, filters);
-        console.log(filteredResult)
-        filteredResult = this.applyPriceRangeFilter(filteredResult, priceFrom, priceTo);
 
         if (sortBy) {
             filteredResult = this.sortResult(filteredResult, sortBy as string, sortOrder as string);
@@ -20,23 +18,36 @@ class ServerSidePaging {
     private applyFilters(data: any[], filters: Record<string, any>): any[] {
         return data.filter(item => {
             return Object.entries(filters).every(([key, value]) => {
+                if (key.includes('From') || key.includes('To')) {
+                    return this.applyPriceRangeFilter(
+                        item,
+                        filters['priceFrom'],
+                        filters['priceTo']
+                    ) ?? data
+                }
                 if (typeof item[key] === 'string') {
                     return item[key].toLowerCase().includes((value as string).toLowerCase());
                 } else {
-                    return item[key] === value;
+                    const keyStr = item[key]?.toString()
+                    return keyStr === value || keyStr?.includes(value);
                 }
+
             });
         });
     }
 
-    private applyPriceRangeFilter(data: any[], priceFrom: any, priceTo: any): any[] {
-        if (priceFrom !== undefined && priceTo !== undefined) {
-            return data.filter(item => {
-                const itemPrice = Number(item['price']);
-                return itemPrice >= Number(priceFrom) && itemPrice <= Number(priceTo);
-            });
+    private applyPriceRangeFilter(item: any, priceFrom: any, priceTo: any) {
+        const itemPrice = Number(item['price']);
+        const validPriceFrom = priceFrom !== undefined && priceFrom !== '';
+        const validPriceTo = priceTo !== undefined && priceTo !== '';
+
+        if (validPriceFrom && validPriceTo) {
+            return itemPrice >= Number(priceFrom) && itemPrice <= Number(priceTo);
+        } else if (validPriceFrom) {
+            return itemPrice >= Number(priceFrom);
+        } else if (validPriceTo) {
+            return itemPrice <= Number(priceTo);
         }
-        return data;
     }
 
     private sortResult(data: any[], sortBy: string, sortOrder: string): any[] {

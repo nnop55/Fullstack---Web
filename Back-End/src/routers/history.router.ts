@@ -14,7 +14,7 @@ class HistoryRouter {
     }
 
     private initRoutes() {
-        this.router.get('/',
+        this.router.post('/',
             verifyToken,
             requireRole,
             asyncHandler((req: Request, res: Response) =>

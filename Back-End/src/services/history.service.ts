@@ -7,7 +7,7 @@ class HistoryService {
     public getHistories(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             setQuery(`SELECT 
-                        parking_history.id AS history_id,
+                        parking_history.id AS id,
                         cars.id AS car_id,
                         cars.mark, 
                         cars.type, 

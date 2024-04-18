@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ParkingHistoryColumnKey, SearchModes, TableColumn } from '../../utils/unions';
 import { ParkingHistoryService } from './parking-history.service';
-import { RoutingService } from '../../services/routing.service';
-import { Status } from '../../../shared/utils/unions';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ModuleBase } from '../../utils/module-base';
 
@@ -74,7 +72,7 @@ export class ParkingHistoryComponent extends ModuleBase {
       {
         key: ParkingHistoryColumnKey.Price,
         label: 'price',
-        searchable: SearchModes.Dropdown
+        searchable: SearchModes.FromTo
       },
       {
         key: ParkingHistoryColumnKey.Available,

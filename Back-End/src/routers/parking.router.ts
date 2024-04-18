@@ -21,7 +21,7 @@ class ParkingRouter {
         //     asyncHandler((req: Request, res: Response) =>
         //         ParkingController.pagingParkingZones(req, res))
         // );
-        this.router.get('/',
+        this.router.post('/',
             verifyToken,
             asyncHandler((req: Request, res: Response) =>
                 ParkingController.getParkingZones(req, res))
