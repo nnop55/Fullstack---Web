@@ -66,8 +66,8 @@ export class GenericTableComponent {
       const key = column.key
       if (column.searchable !== undefined && key) {
         if (column.searchable === SearchModes.FromTo) {
-          this.searchControls[key + 'From'] = new FormControl(this.queryParams[key + 'From'] ?? null);
-          this.searchControls[key + 'To'] = new FormControl(this.queryParams[key + 'To'] ?? null);
+          this.searchControls[`${key}From`] = new FormControl(this.queryParams[`${key}From`] ?? null);
+          this.searchControls[`${key}To`] = new FormControl(this.queryParams[`${key}To`] ?? null);
           return
         }
         this.searchControls[key] = new FormControl(this.queryParams[key] ?? null);
@@ -86,7 +86,6 @@ export class GenericTableComponent {
         ).subscribe(searchTerm => {
           this.searchTerms[key] = searchTerm;
           this.currentPage = 1
-
           this.updateUrl()
         })
     }
@@ -98,7 +97,6 @@ export class GenericTableComponent {
   ): void {
     this.pageSize = pageSize
     this.currentPage = page
-
     this.updateUrl()
   }
 
