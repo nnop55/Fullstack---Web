@@ -45,7 +45,7 @@ export class ModuleBase {
 
     let loadingTimer = setTimeout(() => {
       this.isLoading = true;
-    }, 1000);
+    }, 500);
 
     return new Observable(observer => {
       serviceName[method](params).subscribe({
