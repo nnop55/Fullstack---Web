@@ -45,35 +45,38 @@ export class GenericTableComponent {
   ngOnInit(): void {
     this.initForm()
     this.onFilter()
-    this.setFormControlvalues()
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['paginator']) {
+      this.paginator = changes['paginator'].currentValue
+      console.log(this.paginator)
+    }
+    if (changes['queryParams']) {
+      const newParams = changes['queryParams'].currentValue
+      this.sortBy = newParams['sortBy'] ?? 'id';
+      this.sortOrder = newParams['sortOrder'] ?? 'asc';
+      this.currentPage = parseInt(newParams['page']) || 1;
+      this.pageSize = parseInt(newParams['pageSize']) || 10;
+    }
   }
 
   initForm() {
     this.columns.forEach(column => {
-      if (column.searchable !== undefined && column.key) {
+      const key = column.key
+      if (column.searchable !== undefined && key) {
         if (column.searchable === SearchModes.FromTo) {
-          this.searchControls[column.key + 'From'] = new FormControl(null);
-          this.searchControls[column.key + 'To'] = new FormControl(null);
+          this.searchControls[key + 'From'] = new FormControl(this.queryParams[key + 'From'] ?? null);
+          this.searchControls[key + 'To'] = new FormControl(this.queryParams[key + 'To'] ?? null);
           return
         }
-        this.searchControls[column.key] = new FormControl(null);
+        this.searchControls[key] = new FormControl(this.queryParams[key] ?? null);
       }
     });
   }
 
-  setFormControlvalues() {
-    for (
-      const [key, value] of
-      Object.entries(this.queryParams)
-    ) {
-      if (value) {
-        this.searchControls[key]?.setValue(value)
-      }
-    }
-  }
-
   onFilter() {
-    let isFirstLoad = true
     for (
       const [key, value] of
       Object.entries(this.searchControls)
@@ -83,10 +86,7 @@ export class GenericTableComponent {
           debounceTime(500)
         ).subscribe(searchTerm => {
           this.searchTerms[key] = searchTerm;
-          if (!isFirstLoad) {
-            this.currentPage = 1
-          }
-          isFirstLoad = false
+          this.currentPage = 1
 
           this.routingService.updateUrl(
             this.pathName,
@@ -97,19 +97,6 @@ export class GenericTableComponent {
             this.searchTerms
           )
         })
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['paginator']) {
-      this.paginator = changes['paginator'].currentValue
-    }
-    if (changes['queryParams']) {
-      const newParams = changes['queryParams'].currentValue
-      this.sortBy = newParams['sortBy'] ?? 'id';
-      this.sortOrder = newParams['sortOrder'] ?? 'asc';
-      this.currentPage = parseInt(newParams['page']) || 1;
-      this.pageSize = parseInt(newParams['pageSize']) || 10;
     }
   }
 
