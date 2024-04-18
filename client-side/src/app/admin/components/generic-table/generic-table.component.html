@@ -72,7 +72,7 @@
     [pageSize]="pageSize"
     [totalPages]="paginator['totalPages']"
     [totalCount]="paginator['totalCount']"
-    (pageChange)="onPageChange($event)"
+    (pageChange)="onPageChange($event, pageSize)"
     (sizeChange)="onPageChange(currentPage, $event)"
   >
   </app-paging>

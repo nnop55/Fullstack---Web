@@ -51,7 +51,6 @@ export class GenericTableComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['paginator']) {
       this.paginator = changes['paginator'].currentValue
-      console.log(this.paginator)
     }
     if (changes['queryParams']) {
       const newParams = changes['queryParams'].currentValue
@@ -88,31 +87,19 @@ export class GenericTableComponent {
           this.searchTerms[key] = searchTerm;
           this.currentPage = 1
 
-          this.routingService.updateUrl(
-            this.pathName,
-            this.currentPage,
-            this.pageSize,
-            this.sortBy,
-            this.sortOrder,
-            this.searchTerms
-          )
+          this.updateUrl()
         })
     }
   }
 
   onPageChange(
     page: number,
-    pageSize: number = this.pageSize
+    pageSize: number
   ): void {
+    this.pageSize = pageSize
     this.currentPage = page
-    this.routingService.updateUrl(
-      this.pathName,
-      this.currentPage,
-      pageSize,
-      this.sortBy,
-      this.sortOrder,
-      this.searchTerms
-    )
+
+    this.updateUrl()
   }
 
   onSort(columnKey: string): void {
@@ -123,6 +110,10 @@ export class GenericTableComponent {
       this.sortOrder = 'asc';
     }
 
+    this.updateUrl()
+  }
+
+  updateUrl() {
     this.routingService.updateUrl(
       this.pathName,
       this.currentPage,
