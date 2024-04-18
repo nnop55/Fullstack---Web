@@ -77,7 +77,7 @@ export class ParkingHistoryComponent extends ModuleBase {
       {
         key: ParkingHistoryColumnKey.Available,
         label: 'available',
-        searchable: SearchModes.Input
+        searchable: SearchModes.Dropdown
       },
     ]
   }

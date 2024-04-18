@@ -47,7 +47,7 @@ export class ParkingZonesComponent extends ModuleBase {
       {
         key: ParkingZoneColumnKey.Available,
         label: 'available',
-        searchable: SearchModes.Input
+        searchable: SearchModes.Dropdown
       },
       {
         key: ParkingZoneColumnKey.CarId,
