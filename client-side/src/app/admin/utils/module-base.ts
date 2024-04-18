@@ -42,7 +42,11 @@ export class ModuleBase {
     method: any,
     params: any
   ) {
-    this.isLoading = true
+
+    let loadingTimer = setTimeout(() => {
+      this.isLoading = true;
+    }, 1000);
+
     return new Observable(observer => {
       serviceName[method](params).subscribe({
         next: (response: any) => {
@@ -50,11 +54,13 @@ export class ModuleBase {
             this.data = response.data.paginatedData;
             this.paginatorData = response.data.paginator;
           }
+          clearTimeout(loadingTimer);
           this.isLoading = false;
           observer.next(response);
           observer.complete();
         },
         error: (error: any) => {
+          clearTimeout(loadingTimer);
           this.isLoading = false;
           observer.error(error);
         }

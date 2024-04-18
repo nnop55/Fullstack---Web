@@ -73,6 +73,7 @@ export class GenericTableComponent {
   }
 
   onFilter() {
+    let isFirstLoad = true
     for (
       const [key, value] of
       Object.entries(this.searchControls)
@@ -82,6 +83,10 @@ export class GenericTableComponent {
           debounceTime(500)
         ).subscribe(searchTerm => {
           this.searchTerms[key] = searchTerm;
+          if (!isFirstLoad) {
+            this.currentPage = 1
+          }
+          isFirstLoad = false
 
           this.routingService.updateUrl(
             this.pathName,

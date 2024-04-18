@@ -32,7 +32,6 @@ export class PagingComponent {
   from!: number;
 
   ngOnInit(): void {
-    this.from = (this.pageSize * (this.currentPage - 1)) + 1
     this.pageSizeControl.setValue(this.pageSize)
 
     this.pageSizeControl
@@ -50,6 +49,9 @@ export class PagingComponent {
     }
     if (changes['totalCount']) {
       this.totalCount = changes['totalCount'].currentValue
+    }
+    if (changes['currentPage']) {
+      this.from = (this.pageSize * (this.currentPage - 1)) + 1
     }
   }
 

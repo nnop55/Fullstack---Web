@@ -52,8 +52,7 @@
       <td>
         <ng-container [skeleton]="true" [appLoading]="isLoading"></ng-container>
       </td>
-      } }
-
+      } }@else {
       <tbody>
         @for (item of tableData; track $index) {
         <tr>
@@ -65,6 +64,7 @@
         </tr>
         }
       </tbody>
+      }
     </table>
   </div>
   <app-paging
