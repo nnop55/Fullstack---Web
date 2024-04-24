@@ -20,14 +20,10 @@ export interface ValidationResult {
     message: string;
 }
 
-export interface IBcrypt {
-    compareSync(pass: string, hashedPass: string): boolean;
-    hashSync(pass: string, length: number): string;
-}
-
 export interface Car {
     type: string,
     mark: string,
+    model: string,
     licenseNumber: string
     userId?: number
 }
@@ -35,6 +31,7 @@ export interface Car {
 export interface CarRes {
     type: string,
     mark: string,
+    model: string,
     license_number: string
     user_id?: number
     zone_id?: number

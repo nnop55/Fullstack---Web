@@ -1,27 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { ParkingHistoryColumnKey, SearchModes, ITableColumn, IDropdown } from '../../utils/unions';
-import { ParkingHistoryService } from './parking-history.service';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ModuleBase } from '../../utils/module-base';
-import { ApiService } from '../../../core/services/api.service';
+import { CarsService } from './cars.service';
+import { CarColumnKey, IDropdown, ITableColumn, SearchModes } from '../../utils/unions';
 import { Status } from '../../../shared/utils/unions';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
-  selector: 'app-parking-history',
+  selector: 'app-cars',
   standalone: true,
   imports: [GenericTableComponent],
-  templateUrl: './parking-history.component.html',
-  styleUrl: './parking-history.component.scss'
+  templateUrl: './cars.component.html',
+  styleUrl: './cars.component.scss'
 })
-export class ParkingHistoryComponent extends ModuleBase {
+export class CarsComponent extends ModuleBase {
 
-  service: ParkingHistoryService = inject(ParkingHistoryService)
+  service: CarsService = inject(CarsService)
   apiService: ApiService = inject(ApiService)
-
-  availableDropdown: IDropdown[] = [
-    { label: "Free", value: 1 },
-    { label: "Busy", value: 0 }
-  ]
 
   markDropdown: IDropdown[] = []
 
@@ -31,10 +26,12 @@ export class ParkingHistoryComponent extends ModuleBase {
 
   typeDropdown: IDropdown[] = []
 
+  carModelsData: any[] = []
+
   ngOnInit(): void {
     super.loadTable(
       this.service,
-      'getParkingHistory'
+      'getCars'
     )
 
     this.getCarModels()
@@ -57,81 +54,51 @@ export class ParkingHistoryComponent extends ModuleBase {
   override getColumnSettings(): ITableColumn[] {
     return [
       {
-        key: ParkingHistoryColumnKey.Id,
+        key: CarColumnKey.Id,
         label: 'id',
         searchable: SearchModes.Input,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.UserId,
-        label: 'user id',
-        searchable: SearchModes.Input,
-        getVal: (value) => { return value }
-      },
-      {
-        key: ParkingHistoryColumnKey.CarId,
-        label: 'car id',
-        searchable: SearchModes.Input,
-        getVal: (value) => { return value }
-      },
-      {
-        key: ParkingHistoryColumnKey.Mark,
+        key: CarColumnKey.Mark,
         label: 'mark',
         searchable: SearchModes.Dropdown,
         dropdown: this.markDropdown,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.Model,
+        key: CarColumnKey.Model,
         label: 'model',
         searchable: SearchModes.Dropdown,
         dropdown: this.modelDropdown,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.Type,
+        key: CarColumnKey.Type,
         label: 'type',
         searchable: SearchModes.Dropdown,
         dropdown: this.typeDropdown,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.LicenseNumber,
+        key: CarColumnKey.LicenseNumber,
         label: 'license number',
         searchable: SearchModes.Input,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.ZoneId,
+        key: CarColumnKey.ZoneId,
         label: 'zone id',
         searchable: SearchModes.Input,
         getVal: (value) => { return value }
       },
       {
-        key: ParkingHistoryColumnKey.Name,
-        label: 'name',
+        key: CarColumnKey.UserId,
+        label: 'user id',
         searchable: SearchModes.Input,
         getVal: (value) => { return value }
-      },
-      {
-        key: ParkingHistoryColumnKey.Address,
-        label: 'address',
-        searchable: SearchModes.Input,
-        getVal: (value) => { return value }
-      },
-      {
-        key: ParkingHistoryColumnKey.Price,
-        label: 'price',
-        searchable: SearchModes.FromTo,
-        getVal: (value) => { return value }
-      },
-      {
-        key: ParkingHistoryColumnKey.Available,
-        label: 'available',
-        searchable: SearchModes.Dropdown,
-        dropdown: this.availableDropdown,
-        getVal: (value) => { return this.transformValue(this.availableDropdown, value) }
-      },
+      }
     ]
   }
+
 }

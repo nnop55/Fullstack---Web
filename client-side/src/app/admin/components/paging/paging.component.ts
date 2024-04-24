@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges, output } from '@angular/core';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { IDropdown } from '../../utils/unions';
 
 @Component({
   selector: 'app-paging',
@@ -15,21 +16,21 @@ export class PagingComponent {
   @Input() currentPage: number = 1;
   @Input() totalPages!: number;
   @Input() totalCount!: number;
+  @Input() from!: number;
+  @Input() to!: number;
   @Input() pageSize!: number;
 
   pageChange = output<number>()
   sizeChange = output<number>()
 
   pageSizeControl: FormControl = new FormControl(null)
-  pageSizeOptions = [
-    { label: 10, value: 10 },
-    { label: 15, value: 15 },
-    { label: 25, value: 25 },
-    { label: 50, value: 50 },
-    { label: 100, value: 100 }
+  pageSizeOptions: IDropdown[] = [
+    { label: "10", value: 10 },
+    { label: "15", value: 15 },
+    { label: "25", value: 25 },
+    { label: "50", value: 50 },
+    { label: "100", value: 100 }
   ]
-
-  from!: number;
 
   ngOnInit(): void {
     this.pageSizeControl.setValue(this.pageSize)
@@ -50,8 +51,11 @@ export class PagingComponent {
     if (changes['totalCount']) {
       this.totalCount = changes['totalCount'].currentValue
     }
-    if (changes['currentPage']) {
-      this.from = (this.pageSize * (this.currentPage - 1)) + 1
+    if (changes['from']) {
+      this.from = changes['from'].currentValue
+    }
+    if (changes['to']) {
+      this.to = changes['to'].currentValue
     }
   }
 

@@ -10,6 +10,7 @@ class HistoryService {
                         parking_history.id AS id,
                         cars.id AS car_id,
                         cars.mark, 
+                        cars.model, 
                         cars.type, 
                         cars.user_id,
                         cars.license_number, 

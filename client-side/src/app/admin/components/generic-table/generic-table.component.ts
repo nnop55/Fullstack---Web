@@ -6,7 +6,7 @@ import { LoadingDirective } from '../../../shared/directives/loading.directive';
 import { PagingComponent } from '../paging/paging.component';
 import { RoutingService } from '../../services/routing.service';
 import { ActivatedRoute } from '@angular/router';
-import { SearchModes, TableColumn } from '../../utils/unions';
+import { SearchModes, ITableColumn } from '../../utils/unions';
 import { debounceTime } from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ import { debounceTime } from 'rxjs';
 })
 export class GenericTableComponent {
 
-  @Input() columns: TableColumn[] = [];
+  @Input() columns: ITableColumn[] = [];
   @Input() path!: string;
   @Input() tableData!: any[];
   @Input() paginator: any = new Object();

@@ -1,7 +1,14 @@
-export interface TableColumn {
+export interface ITableColumn {
     key?: string;
     label?: string;
     searchable?: number;
+    dropdown?: IDropdown[];
+    getVal: (value: string) => {};
+}
+
+export interface IDropdown {
+    value: any;
+    label: string;
 }
 
 export enum SearchModes {
@@ -24,6 +31,7 @@ export enum ParkingHistoryColumnKey {
     UserId = 'user_id',
     CarId = 'car_id',
     Mark = 'mark',
+    Model = 'model',
     Type = 'type',
     LicenseNumber = 'license_number',
     ZoneId = 'zone_id',
@@ -31,4 +39,14 @@ export enum ParkingHistoryColumnKey {
     Address = 'address',
     Price = 'price',
     Available = 'available',
+}
+
+export enum CarColumnKey {
+    Id = 'id',
+    UserId = 'user_id',
+    Mark = 'mark',
+    Model = 'model',
+    Type = 'type',
+    LicenseNumber = 'license_number',
+    ZoneId = 'zone_id',
 }

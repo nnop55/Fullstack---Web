@@ -2,60 +2,36 @@ import ParkingController from "../controllers/parking.controller";
 import { Router } from "express";
 import { verifyToken } from "../middleware/token.middleware";
 import { requireRole } from "../middleware/role.middleware";
-import { Request, Response } from 'express';
 import asyncHandler from "../middleware/async-handler.middleware";
 import { checkParkingZone } from "../middleware/parking.middleware";
 
-class ParkingRouter {
-    private router: Router;
 
-    constructor() {
-        this.router = Router();
-        this.initRoutes();
-    }
+const parkingRouter: Router = Router()
 
-    private initRoutes() {
-        // this.router.get('/',
-        //     verifyToken,
-        //     requireRole,
-        //     asyncHandler((req: Request, res: Response) =>
-        //         ParkingController.pagingParkingZones(req, res))
-        // );
-        this.router.post('/',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                ParkingController.getParkingZones(req, res))
-        );
-        this.router.post('/add',
-            verifyToken,
-            requireRole,
-            asyncHandler((req: Request, res: Response) =>
-                ParkingController.insertParkingZones(req, res))
-        );
-        this.router.put('/edit/:zoneId',
-            verifyToken,
-            requireRole,
-            asyncHandler((req: Request, res: Response) =>
-                ParkingController.editParkingZones(req, res))
-        );
-        this.router.put('/:carId/occupie/:zoneId',
-            verifyToken,
-            checkParkingZone,
-            asyncHandler((req: Request, res: Response) =>
-                ParkingController.occupieParking(req, res))
-        );
-        this.router.put('/:carId/leave/:zoneId',
-            verifyToken,
-            checkParkingZone,
-            asyncHandler((req: Request, res: Response) =>
-                ParkingController.leaveParking(req, res))
-        );
-    }
+parkingRouter.post('/',
+    verifyToken,
+    asyncHandler(ParkingController.getParkingZones)
+);
+parkingRouter.post('/add',
+    verifyToken,
+    requireRole,
+    asyncHandler(ParkingController.insertParkingZones)
+);
+parkingRouter.put('/edit/:zoneId',
+    verifyToken,
+    requireRole,
+    asyncHandler(ParkingController.editParkingZones)
+);
+parkingRouter.put('/:carId/occupie/:zoneId',
+    verifyToken,
+    checkParkingZone,
+    asyncHandler(ParkingController.occupieParking)
+);
+parkingRouter.put('/:carId/leave/:zoneId',
+    verifyToken,
+    checkParkingZone,
+    asyncHandler(ParkingController.leaveParking)
+);
 
-    public getRouter(): Router {
-        return this.router;
-    }
 
-}
-
-export default new ParkingRouter();
+export default parkingRouter;

@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, SimpleChanges, forwardRef } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, SimpleChanges, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -26,10 +26,11 @@ export class DropdownComponent implements ControlValueAccessor {
   selectedOption: any;
   showOptions: boolean = false;
 
+  elRef: ElementRef = inject(ElementRef)
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
-    const element = event.target as HTMLElement;
-    if (!element.closest('.custom-dropdown')) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
       this.showOptions = false;
     }
   }

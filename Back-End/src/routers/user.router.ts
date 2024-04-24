@@ -6,46 +6,27 @@ import asyncHandler from "../middleware/async-handler.middleware";
 import { validationMiddleware } from "../middleware/validator.middleware";
 import { EditUserDto } from "../dtos/edit-user.dto";
 
-class AuthRouter {
-    private router: Router;
+const userRouter: Router = Router()
 
-    constructor() {
-        this.router = Router();
-        this.initRoutes();
-    }
+userRouter.get('/roles',
+    asyncHandler(UserController.getUserRoles)
+);
+userRouter.get('/',
+    verifyToken,
+    asyncHandler(UserController.getUsers)
+);
+userRouter.get('/:userId',
+    verifyToken,
+    asyncHandler(UserController.getUserById)
+);
+userRouter.post('/logout',
+    verifyToken,
+    asyncHandler(UserController.logout)
+);
+userRouter.put('/edit/:userId',
+    validationMiddleware(EditUserDto),
+    verifyToken,
+    asyncHandler(UserController.editUser)
+);
 
-    private initRoutes() {
-        this.router.get('/roles',
-            asyncHandler((req: Request, res: Response) =>
-                UserController.getUserRoles(req, res))
-        );
-        this.router.get('/',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                UserController.getUsers(req, res))
-        );
-        this.router.get('/:userId',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                UserController.getUserById(req, res))
-        );
-        this.router.post('/logout',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                UserController.logout(req, res))
-        );
-        this.router.put('/edit/:userId',
-            verifyToken,
-            validationMiddleware(EditUserDto),
-            asyncHandler((req: Request, res: Response) =>
-                UserController.editUser(req, res))
-        );
-    }
-
-    public getRouter(): Router {
-        return this.router;
-    }
-
-}
-
-export default new AuthRouter();
+export default userRouter

@@ -1,53 +1,38 @@
 import { Router } from "express";
 import { validationMiddleware } from "../middleware/validator.middleware";
 import { verifyToken } from "../middleware/token.middleware";
-import { Request, Response } from 'express';
 import asyncHandler from "../middleware/async-handler.middleware";
 import CarController from "../controllers/car.controller";
 import { CarDto } from "../dtos/car.dto";
 
 
-class CarRouter {
-    private router: Router;
+const carRouter: Router = Router();
 
-    constructor() {
-        this.router = Router();
-        this.initRoutes();
-    }
+carRouter.get('/:carId',
+    verifyToken,
+    asyncHandler(CarController.getCarById)
+);
+carRouter.post('/',
+    verifyToken,
+    asyncHandler(CarController.getCars)
+);
+carRouter.get('/models/all',
+    verifyToken,
+    asyncHandler(CarController.getCarModels)
+);
+carRouter.post('/add',
+    validationMiddleware(CarDto),
+    verifyToken,
+    asyncHandler(CarController.addCar)
+);
+carRouter.put('/edit/:carId',
+    verifyToken,
+    asyncHandler(CarController.editCar)
+);
+carRouter.delete('/delete/:carId',
+    verifyToken,
+    asyncHandler(CarController.deleteCar)
+);
 
-    private initRoutes() {
-        this.router.get('/:carId',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                CarController.getCarById(req, res))
-        );
-        this.router.get('/',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                CarController.getCars(req, res))
-        );
-        this.router.post('/add',
-            validationMiddleware(CarDto),
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                CarController.addCar(req, res))
-        );
-        this.router.put('/edit/:carId',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                CarController.editCar(req, res))
-        );
-        this.router.delete('/delete/:carId',
-            verifyToken,
-            asyncHandler((req: Request, res: Response) =>
-                CarController.deleteCar(req, res))
-        );
-    }
 
-    public getRouter(): Router {
-        return this.router;
-    }
-
-}
-
-export default new CarRouter();
+export default carRouter;

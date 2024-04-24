@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import CarService from '../services/car.service';
+import ServerSidePaging from "../services/ssp.service";
+import { CarMakes, CarModels, CarTypes } from '../utils/car-enum';
 
 
 class CarController {
@@ -7,15 +9,15 @@ class CarController {
     constructor() { }
 
     public async addCar(req: Request, res: Response): Promise<void> {
-        const { mark, type, licenseNumber } = req.body;
+        const { mark, model, type, licenseNumber } = req.body;
         const userId = (req as any).user['id'];
-        await CarService.insertCar({ mark, type, licenseNumber, userId })
-        res.status(201).json({ code: 1, data: { mark, type, licenseNumber } })
+        await CarService.insertCar({ mark, model, type, licenseNumber, userId })
+        res.status(201).json({ code: 1, data: { mark, model, type, licenseNumber } })
     }
 
     public async editCar(req: Request, res: Response): Promise<void> {
         const carId = parseInt(req.params.carId)
-        const { mark, type, licenseNumber } = req.body
+        const { mark, model, type, licenseNumber } = req.body
         const user = (req as any).user;
         const car = await CarService.findCarById(carId)
 
@@ -32,6 +34,7 @@ class CarController {
         await CarService.updateCarById(
             carId,
             mark ?? car['mark'],
+            model ?? car['model'],
             type ?? car['type'],
             licenseNumber ?? car['license_number']
         )
@@ -65,8 +68,23 @@ class CarController {
     }
 
     public async getCars(req: Request, res: Response): Promise<void> {
-        const result = await CarService.getAllCar()
-        res.status(200).json({ code: 1, data: result });
+        const data = await CarService.getAllCar()
+        const result = ServerSidePaging.paging(req.body, data)
+        res.status(200).json({ code: 1, data: { ...result } });
+    }
+
+    public async getCarModels(req: Request, res: Response): Promise<void> {
+        let marks = [];
+        let types = [];
+
+        for (const item of Object.values(CarMakes)) {
+            marks.push({ label: item, value: item })
+        }
+
+        for (const item of Object.values(CarTypes)) {
+            types.push({ label: item, value: item })
+        }
+        res.status(200).json({ code: 1, data: { marks, models: CarModels, types } });
     }
 }
 

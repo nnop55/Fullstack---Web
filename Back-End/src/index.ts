@@ -3,62 +3,57 @@ import { connectDB } from './services/database.service';
 import { restrictAccess } from './middleware/access.middleware';
 import cors from 'cors';
 
-import CarRouter from './routers/car.router';
-import ParkingRouter from './routers/parking.router';
-import AuthRouter from './routers/auth.router';
-import HistoryRouter from './routers/history.router';
-import UserRouter from './routers/user.router';
+import carRouter from './routers/car.router';
+import parkingRouter from './routers/parking.router';
+import authRouter from './routers/auth.router';
+import historyRouter from './routers/history.router';
+import userRouter from './routers/user.router';
 
 
-class Index {
-    private app: Express;
+const app: Express = express();
 
-    constructor() {
-        this.app = express();
-        this.app.use(restrictAccess)
-        this.app.use(cors());
-        this.app.options('*', cors({
-            allowedHeaders: ['Content-Type', 'Authorization']
-        }));
 
-        this.setupMiddleware();
-        this.setupRoutes();
-        this.setupErrorHandling();
+app.use(restrictAccess)
+app.use(cors());
+app.options('*', cors({
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-        const PORT = process.env.PORT || 3000;
-        this.startServer(PORT);
-    }
+setupMiddleware();
+setupRoutes();
+setupErrorHandling();
 
-    private setupMiddleware() {
-        this.app.use(express.json());
-    }
+const PORT = process.env.PORT || 3000;
+startServer(PORT);
 
-    private setupRoutes() {
-        this.app.use('/api/auth', AuthRouter.getRouter());
-        this.app.use('/api/user', UserRouter.getRouter());
-        this.app.use('/api/car', CarRouter.getRouter());
-        this.app.use('/api/parking', ParkingRouter.getRouter());
-        this.app.use('/api/history', HistoryRouter.getRouter());
-    }
 
-    private setupErrorHandling() {
-        this.app.all("*", (req, res) => {
-            res.status(404).send("Not Found");
-        });
-    }
-
-    private startServer(port: number | string) {
-        connectDB()
-            .then(() => {
-                this.app.listen(port, () => {
-                    console.log(`Server is running on port ${port}`);
-                });
-            })
-            .catch(err => {
-                console.error('Error connecting to database:', err);
-                process.exit(1);
-            });
-    }
+function setupMiddleware() {
+    app.use(express.json());
 }
 
-new Index();
+function setupRoutes() {
+    app.use('/api/auth', authRouter);
+    app.use('/api/user', userRouter);
+    app.use('/api/car', carRouter);
+    app.use('/api/parking', parkingRouter);
+    app.use('/api/history', historyRouter);
+}
+
+function setupErrorHandling() {
+    app.all("*", (req, res) => {
+        res.status(404).send("Not Found");
+    });
+}
+
+function startServer(port: number | string) {
+    connectDB()
+        .then(() => {
+            app.listen(port, () => {
+                console.log(`Server is running on port ${port}`);
+            });
+        })
+        .catch(err => {
+            console.error('Error connecting to database:', err);
+            process.exit(1);
+        });
+}

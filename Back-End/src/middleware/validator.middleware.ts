@@ -11,6 +11,11 @@ async function validateRequestDto<T extends object>(dtoClass: ClassType<T>, body
     const errors = await validate(dtoInstance);
 
     if (errors.length > 0) {
+        const isModelError = errors.map(o => o.property === 'model')
+        if (isModelError) {
+            return errors.map(o => `${o.value} is not a valid model for ${body.mark}`)
+        }
+
         return errors.map(error => Object.values(error.constraints || {}).join('; '));
     }
 

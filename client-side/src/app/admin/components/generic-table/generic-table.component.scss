@@ -24,6 +24,10 @@ section {
       user-select: none;
     }
 
+    .empty {
+      min-height: 250px;
+    }
+
     th,
     td {
       padding: 12px;
@@ -44,8 +48,6 @@ section {
       }
       .icon {
         font-size: 12px;
-        // top: -2px;
-        // position: relative;
         display: none;
       }
 

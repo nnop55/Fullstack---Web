@@ -11,8 +11,15 @@ class ServerSidePaging {
         }
 
         const { paginatedData, totalCount, totalPages } = this.paginate(filteredResult, page, pageSize);
+        const paginatorInfo = this.paginatorInfo(parseInt(pageSize), parseInt(page), totalCount, totalPages)
 
-        return { paginatedData, paginator: { totalCount, totalPages } };
+        return { paginatedData, paginator: { totalCount, totalPages, ...paginatorInfo } };
+    }
+
+    private paginatorInfo(pageSize: number, page: number, totalCount: number, totalPages: number) {
+        const from = (pageSize * (page - 1)) + 1;
+        const to = page !== totalPages ? (from + pageSize - 1) : totalCount
+        return { from, to }
     }
 
     private applyFilters(data: any[], filters: Record<string, any>): any[] {

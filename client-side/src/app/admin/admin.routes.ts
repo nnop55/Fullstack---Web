@@ -11,6 +11,10 @@ export const AdminRoute: Routes = [
     loadComponent: () => import('./components/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     children: [
       {
+        path: '',
+        loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.DashboardRoutes),
+      },
+      {
         path: 'parking-zones',
         loadChildren: () => import('./modules/parking-zones/parking-zones.routes').then(m => m.ParkingZonesRoute),
         data: { path: '/admin/parking-zones' }
@@ -21,8 +25,9 @@ export const AdminRoute: Routes = [
         data: { path: '/admin/parking-history' }
       },
       {
-        path: '',
-        loadChildren: () => import('./modules/dashboard/dashboard.routes').then(m => m.DashboardRoutes),
+        path: 'cars',
+        loadChildren: () => import('./modules/cars/cars.routes').then(m => m.CarsRoutes),
+        data: { path: '/admin/cars' }
       },
     ]
   },

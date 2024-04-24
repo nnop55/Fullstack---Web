@@ -23,15 +23,16 @@
                 [formControl]="searchControls[column.key!]"
               ></app-text-input>
             </div>
-            } @case (SearchModes.Dropdown) {
+            } @case (SearchModes.Dropdown) { @if(column.dropdown &&
+            column.dropdown.length > 0){
             <div class="search-input">
               <app-dropdown
                 [placeholder]="'Search'"
                 [formControl]="searchControls[column.key!]"
-                [options]="[1, 0]"
+                [options]="column.dropdown"
               ></app-dropdown>
             </div>
-            }@case (SearchModes.FromTo) {
+            } }@case (SearchModes.FromTo) {
             <div class="search-input from-to">
               <app-text-input
                 [placeholder]="'From'"
@@ -58,10 +59,12 @@
         <tr>
           @for (column of columns; track $index) {
           <td>
-            {{ item[column.key!] }}
+            {{ column.getVal(item[column.key!]) }}
           </td>
           }
         </tr>
+        }@empty {
+        <div class="empty">Empty</div>
         }
       </tbody>
       }
@@ -72,6 +75,8 @@
     [pageSize]="pageSize"
     [totalPages]="paginator['totalPages']"
     [totalCount]="paginator['totalCount']"
+    [from]="paginator['from']"
+    [to]="paginator['to']"
     (pageChange)="onPageChange($event, pageSize)"
     (sizeChange)="onPageChange(currentPage, $event)"
   >

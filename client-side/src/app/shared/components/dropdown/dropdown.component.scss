@@ -79,6 +79,8 @@
     border: 2px solid $light-blue;
     border-top: none;
     border-radius: 0 0 5px 5px;
+    max-height: 150px;
+    overflow: auto;
 
     .item {
       padding: 10px;

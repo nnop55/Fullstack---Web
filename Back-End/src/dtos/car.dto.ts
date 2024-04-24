@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsIn, IsNotEmpty, IsString } from "class-validator";
+import { CarMakes, CarModels } from "../utils/car-enum";
+import { IsValidModel } from "../utils/custom-validator";
 
 export class CarDto {
     @IsNotEmpty()
@@ -6,10 +8,18 @@ export class CarDto {
     type!: string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsIn(Object.values(CarMakes))
     mark!: string;
+
+    @IsNotEmpty()
+    @IsValidModel()
+    model!: string;
 
     @IsNotEmpty()
     @IsString()
     licenseNumber!: string;
+
+    constructor(mark: string) {
+        this.mark = mark
+    }
 }

@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 import AuthService from '../services/auth.service';
 import { TokenService } from '../services/token.service';
-import { IBcrypt } from '../utils/interfaces';
 import { getToken } from '../utils/token';
-import bcrypt from "bcrypt"
+import { comparePasswords, hashPassword } from '../utils/bcrypt';
 
 class AuthController {
 
-    constructor(private bcrypt: IBcrypt) { }
+    constructor() { }
 
     public async login(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body;
+
         const user = await AuthService.findByEmail(email);
 
-        if (!user || !this.bcrypt.compareSync(password, user.password)) {
+        if (!user || !comparePasswords(password, user.password)) {
             res.status(400).json({ code: 2, error: 'Invalid email or password' });
             return;
         }
@@ -25,7 +25,7 @@ class AuthController {
 
     public async register(req: Request, res: Response): Promise<void> {
         const { fullName, password, email, role } = req.body;
-        const hashedPassword = this.bcrypt.hashSync(password, 10);
+        const hashedPassword = hashPassword(password);
         const user = await AuthService.findByEmail(email);
 
         if (user) {
@@ -86,11 +86,11 @@ class AuthController {
             return
         }
 
-        const hashedPassword = this.bcrypt.hashSync(password, 10);
+        const hashedPassword = hashPassword(password);
         await AuthService.changePassword(user.email, hashedPassword)
         res.status(200).json({ code: 1, message: 'Successfully changed' });
     }
 
 }
 
-export default new AuthController(bcrypt);
+export default new AuthController();

@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { RoutingService } from "../services/routing.service";
-import { TableColumn } from "./unions";
+import { IDropdown, ITableColumn } from "./unions";
 import { Status } from "../../shared/utils/unions";
 import { Observable, Subject, switchMap, take, takeUntil } from "rxjs";
 
@@ -56,20 +56,27 @@ export class ModuleBase {
           }
           clearTimeout(loadingTimer);
           this.isLoading = false;
+
           observer.next(response);
           observer.complete();
         },
         error: (error: any) => {
           clearTimeout(loadingTimer);
           this.isLoading = false;
+
           observer.error(error);
         }
       });
     });
+
   }
 
-  getColumnSettings(): TableColumn[] {
+  getColumnSettings(): ITableColumn[] {
     return [];
+  }
+
+  transformValue(data: IDropdown[], value: string) {
+    return data.filter(o => o.value == value)[0]['label']
   }
 
   ngOnDestroy() {

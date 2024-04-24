@@ -20,9 +20,9 @@ class CarService {
 
     public insertCar(car: Car): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            setQuery(`INSERT INTO cars (type, mark, license_number, user_id) 
-                        VALUES (?, ?, ?, ?)`,
-                [car['type'], car['mark'], car['licenseNumber'], car['userId']], (err: any, result: any) => {
+            setQuery(`INSERT INTO cars (type, mark, model, license_number, user_id) 
+                        VALUES (?, ?, ?, ?, ?)`,
+                [car['type'], car['mark'], car['model'], car['licenseNumber'], car['userId']], (err: any, result: any) => {
                     if (err) {
                         console.error('Error inserting car:', err);
                         reject(err)
@@ -49,7 +49,7 @@ class CarService {
         })
     }
 
-    public getAllCar(): Promise<void> {
+    public getAllCar(): Promise<any> {
         return new Promise<void>((resolve, reject) => {
             setQuery('SELECT * FROM cars', [],
                 (err, result) => {
@@ -62,13 +62,13 @@ class CarService {
         })
     }
 
-    public updateCarById(id: number, mark: string, type: string, licenseNumber: string): Promise<void> {
+    public updateCarById(id: number, mark: string, model: string, type: string, licenseNumber: string): Promise<void> {
         return new Promise((resolve, reject) => {
             setQuery(`UPDATE cars SET 
-                    mark = ?, type = ?, 
+                    mark = ?, model = ? type = ?, 
                     license_number = ? 
                     WHERE id = ?`,
-                [mark, type, licenseNumber, id], (err: any, result: any) => {
+                [mark, model, type, licenseNumber, id], (err: any, result: any) => {
                     if (err) {
                         reject(err);
                         return;

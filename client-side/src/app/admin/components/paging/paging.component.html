@@ -1,11 +1,9 @@
 <section>
   <div class="info">
     <h5>
-      {{ from }} - @if (currentPage !== totalPages) {
-      {{ from + pageSize - 1 }}
-      }@else {
-      {{ totalCount }}
-      } of {{ totalCount }}
+      {{ from }} -       
+      {{ to }}
+       of {{ totalCount }}
     </h5>
 
     <app-dropdown
