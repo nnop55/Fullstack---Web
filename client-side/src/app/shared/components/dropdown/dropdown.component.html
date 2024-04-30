@@ -17,6 +17,8 @@
     <div class="item" (click)="selectOption(option)">
       {{ option.label }}
     </div>
+    }@empty {
+    <div class="item">Empty</div>
     }
   </article>
   }

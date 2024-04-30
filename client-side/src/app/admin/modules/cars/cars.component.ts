@@ -5,6 +5,7 @@ import { CarsService } from './cars.service';
 import { CarColumnKey, IDropdown, ITableColumn, SearchModes } from '../../utils/unions';
 import { Status } from '../../../shared/utils/unions';
 import { ApiService } from '../../../core/services/api.service';
+import { CarModelService } from '../../services/car-model.service';
 
 @Component({
   selector: 'app-cars',
@@ -16,31 +17,28 @@ import { ApiService } from '../../../core/services/api.service';
 export class CarsComponent extends ModuleBase {
 
   service: CarsService = inject(CarsService)
-  apiService: ApiService = inject(ApiService)
 
   markDropdown: IDropdown[] = []
-
-  modelDropdown: IDropdown[] = [
-    { label: "test", value: 1 },
-  ]
-
+  modelDropdown: IDropdown[] = []
   typeDropdown: IDropdown[] = []
 
-  carModelsData: any[] = []
-
   ngOnInit(): void {
+    this.getCarModels()
+
     super.loadTable(
       this.service,
       'getCars'
     )
 
-    this.getCarModels()
+    this.carModelService.dropdown$.subscribe(data => {
+      this.modelDropdown = data
+    })
   }
 
   getCarModels() {
     this.isLoading = true
-    this.apiService.getCarModels().subscribe({
-      next: (response: any) => {
+    this.carModelService.getCarModels().subscribe({
+      next: (response) => {
         if (response.code === Status.success) {
           this.markDropdown = response.data.marks
           this.typeDropdown = response.data.types

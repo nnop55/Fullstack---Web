@@ -14,8 +14,6 @@ export class ApiService {
   getUserRoles(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}user/roles`)
   }
-
-  getCarModels(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}car/models/all`)
-  }
 }
+
+

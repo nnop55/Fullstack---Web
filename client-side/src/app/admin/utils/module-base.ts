@@ -3,6 +3,7 @@ import { RoutingService } from "../services/routing.service";
 import { IDropdown, ITableColumn } from "./unions";
 import { Status } from "../../shared/utils/unions";
 import { Observable, Subject, switchMap, take, takeUntil } from "rxjs";
+import { CarModelService } from "../services/car-model.service";
 
 @Injectable()
 export class ModuleBase {
@@ -14,6 +15,7 @@ export class ModuleBase {
   private destroy$ = new Subject<boolean>();
 
   routingService: RoutingService = inject(RoutingService)
+  carModelService: CarModelService = inject(CarModelService)
 
   loadTable(serviceName: any,
     method: any) {
@@ -24,13 +26,13 @@ export class ModuleBase {
         if (Object.keys(params).length > 0)
           this.queryParams = params
 
-        const dataObservable = this.getData(serviceName, method, this.queryParams);
+        const data$ = this.getData(serviceName, method, this.queryParams);
 
         if (isFirstLoad) {
           isFirstLoad = false;
-          return dataObservable.pipe(take(1));
+          return data$.pipe(take(1));
         } else {
-          return dataObservable;
+          return data$;
         }
       }),
       takeUntil(this.destroy$)).subscribe();
@@ -54,6 +56,12 @@ export class ModuleBase {
             this.data = response.data.paginatedData;
             this.paginatorData = response.data.paginator;
           }
+
+          const mark = params['mark'];
+          if (mark) {
+            this.carModelService.fillModelDropdown(mark)
+          }
+
           clearTimeout(loadingTimer);
           this.isLoading = false;
 

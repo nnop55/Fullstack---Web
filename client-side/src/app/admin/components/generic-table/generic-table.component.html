@@ -32,6 +32,13 @@
                 [options]="column.dropdown"
               ></app-dropdown>
             </div>
+            }@else{
+            <div class="search-input">
+              <app-dropdown
+                [placeholder]="'Search'"
+                [formControl]="searchControls[column.key!]"
+              ></app-dropdown>
+            </div>
             } }@case (SearchModes.FromTo) {
             <div class="search-input from-to">
               <app-text-input

@@ -70,7 +70,13 @@ export class GenericTableComponent {
           this.searchControls[`${key}To`] = new FormControl(this.queryParams[`${key}To`] ?? null);
           return
         }
-        this.searchControls[key] = new FormControl(this.queryParams[key] ?? null);
+        this.queryParams[key] ? (
+          this.searchControls[key] = new FormControl(this.queryParams[key]),
+          this.searchTerms[key] = this.queryParams[key]
+        ) : (
+          this.searchControls[key] = new FormControl(null)
+        )
+
       }
     });
   }
@@ -84,6 +90,10 @@ export class GenericTableComponent {
         .pipe(
           debounceTime(500)
         ).subscribe(searchTerm => {
+          if (key === 'mark') {
+            this.searchControls['model'].setValue(null)
+          }
+
           this.searchTerms[key] = searchTerm;
           this.currentPage = 1
           this.updateUrl()

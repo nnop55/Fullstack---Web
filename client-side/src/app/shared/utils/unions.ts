@@ -1,4 +1,5 @@
 import { FormControl } from "@angular/forms"
+import { IDropdown } from "../../admin/utils/unions"
 
 export enum Role {
     user,
@@ -45,3 +46,18 @@ export type PasswordForm = {
 }
 
 export type RouteMode = 'in' | 'up'
+
+
+
+export interface IApi<T> {
+    data: T,
+    code: number,
+    message?: string,
+    error?: string,
+}
+
+export interface CarModelRes {
+    marks: IDropdown[],
+    models: any,
+    types: IDropdown[]
+}

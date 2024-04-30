@@ -3,8 +3,8 @@ import { ParkingHistoryColumnKey, SearchModes, ITableColumn, IDropdown } from '.
 import { ParkingHistoryService } from './parking-history.service';
 import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
 import { ModuleBase } from '../../utils/module-base';
-import { ApiService } from '../../../core/services/api.service';
 import { Status } from '../../../shared/utils/unions';
+import { CarModelService } from '../../services/car-model.service';
 
 @Component({
   selector: 'app-parking-history',
@@ -16,7 +16,6 @@ import { Status } from '../../../shared/utils/unions';
 export class ParkingHistoryComponent extends ModuleBase {
 
   service: ParkingHistoryService = inject(ParkingHistoryService)
-  apiService: ApiService = inject(ApiService)
 
   availableDropdown: IDropdown[] = [
     { label: "Free", value: 1 },
@@ -24,33 +23,33 @@ export class ParkingHistoryComponent extends ModuleBase {
   ]
 
   markDropdown: IDropdown[] = []
-
-  modelDropdown: IDropdown[] = [
-    { label: "test", value: 1 },
-  ]
-
+  modelDropdown: IDropdown[] = []
   typeDropdown: IDropdown[] = []
 
   ngOnInit(): void {
+    this.getCarModels()
+
     super.loadTable(
       this.service,
       'getParkingHistory'
     )
 
-    this.getCarModels()
+    this.carModelService.dropdown$.subscribe(data => {
+      this.modelDropdown = data
+    })
   }
 
   getCarModels() {
     this.isLoading = true
-    this.apiService.getCarModels().subscribe({
-      next: (response: any) => {
+    this.carModelService.getCarModels().subscribe({
+      next: (response) => {
         if (response.code === Status.success) {
           this.markDropdown = response.data.marks
           this.typeDropdown = response.data.types
         }
         this.isLoading = false
       },
-      error: (error: any) => this.isLoading = false
+      error: (error) => this.isLoading = false
     })
   }
 
