@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { Observable, Subject, map } from 'rxjs';
 import { Role, Status } from '../../shared/utils/unions';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,9 @@ export class AuthService {
 
   private baseUrl: string = environment.baseUrl;
 
-  private unauthorizedSubject = new Subject<void>();
-  unauthorized$ = this.unauthorizedSubject.asObservable();
+  unauthorizedSignal: WritableSignal<boolean> = signal<boolean>(true);
+  private immutableUnauthorizedSignal: Signal<boolean> = computed(this.unauthorizedSignal);
+  unauthorized$ = toObservable(this.immutableUnauthorizedSignal);
 
   constructor(
     private http: HttpClient,
@@ -24,7 +26,7 @@ export class AuthService {
   ) { }
 
   emitUnauthorizedEvent() {
-    this.unauthorizedSubject.next();
+    this.unauthorizedSignal.set(false);
   }
 
   login(params: any): Observable<any> {

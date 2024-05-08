@@ -1,11 +1,14 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  #storageSubject = signal<{ [key: string]: string }>({});
-  storageSubject = computed(this.#storageSubject);
+  storageSignal: WritableSignal<{ [key: string]: string }> = signal<{ [key: string]: string }>({});
+  private immutableStorageSignal: Signal<{ [key: string]: string }> = computed(this.storageSignal);
+
+  storage$ = toObservable(this.immutableStorageSignal);
 
   constructor() { }
 
@@ -15,7 +18,7 @@ export class LocalStorageService {
   }
 
   set(key: string, value: any) {
-    this.#storageSubject.set({ [key]: value });
+    this.storageSignal.set({ [key]: value });
     localStorage.setItem(key, JSON.stringify(value));
   }
 

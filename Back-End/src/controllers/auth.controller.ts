@@ -20,7 +20,7 @@ class AuthController {
 
         const accessToken = getToken({ id: user.id, email: user.email });
         await TokenService.insertTokenInstance(accessToken, user.id)
-        res.status(201).json({ code: 1, data: { accessToken, role: user.role } });
+        res.status(201).json({ code: 1, data: { accessToken, role: user.role }, message: "Success" });
     }
 
     public async register(req: Request, res: Response): Promise<void> {

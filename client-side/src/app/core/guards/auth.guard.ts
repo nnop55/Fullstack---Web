@@ -13,9 +13,11 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false
   }
 
-  authService.unauthorized$.subscribe(() => {
-    ls.remove(AuthService.jwtKey)
-    not()
+  authService.unauthorized$.subscribe((authorized) => {
+    if (!authorized) {
+      ls.remove(AuthService.jwtKey)
+      not()
+    }
   });
 
   if (!authService.getBearerToken()) {
