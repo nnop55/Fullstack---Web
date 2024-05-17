@@ -63,4 +63,10 @@ export class DropdownComponent implements ControlValueAccessor {
     this.showOptions = false;
   }
 
+  resetDropdown() {
+    this.selectedOption = null;
+    this.onChange(null);
+    this.onTouched();
+  }
+
 }

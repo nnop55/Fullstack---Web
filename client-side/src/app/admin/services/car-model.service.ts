@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { CarModelRes, IApi } from '../../shared/utils/unions';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IDropdown } from '../utils/unions';
-import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +12,8 @@ export class CarModelService {
 
   private baseUrl: string = environment.baseUrl;
 
-  private dropdown: Subject<IDropdown[]> = new Subject<IDropdown[]>()
-  dropdown$ = this.dropdown.asObservable()
+  private dropdownSig: WritableSignal<IDropdown[]> = signal<IDropdown[]>([]);
+  getDropdownData: Signal<IDropdown[]> = computed(this.dropdownSig);
 
   modelsByMark: any = new Object();
 
@@ -36,9 +35,12 @@ export class CarModelService {
         data.push({ label: item, value: item })
       }
 
-      this.dropdown.next(data)
-
+      this.dropdownSig.set(data)
     }
 
+  }
+
+  clearModelDropdown() {
+    this.dropdownSig.set([])
   }
 }

@@ -5,7 +5,20 @@
     }@else if (defaultValue && !selectedOption) {
     <span>{{ defaultValue }}</span>
     }
-    <img class="icon" src="../../../../assets/icons/arrow-pointer.svg" />
+
+    <div class="icons">
+      @if(!defaultValue && selectedOption){
+      <img
+        (click)="resetDropdown()"
+        class="clear-icon"
+        src="../../../../assets/icons/clear.svg"
+      />
+      }
+      <img
+        class="pointer-icon"
+        src="../../../../assets/icons/arrow-pointer.svg"
+      />
+    </div>
   </div>
   @if(showLabel){
   <label [class.active]="selectedOption">

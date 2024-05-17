@@ -17,6 +17,7 @@ export class LoadingDirective {
   @Input() spinnerSize: number = 1;
   @Input() isBlur: boolean = true;
   @Input() skeleton: boolean = false;
+  @Input() rowCount: number = 5;
   @Input() set appLoading(condition: boolean) {
     if (condition) {
       this.showLoadingComponent();
@@ -29,6 +30,7 @@ export class LoadingDirective {
     switch (this.skeleton) {
       case true:
         this.skeletonLoadingComponentRef = this.vcRef.createComponent(SkeletonLoadingComponent);
+        this.skeletonLoadingComponentRef.setInput('rowCount', this.rowCount)
         break;
       case false:
         this.loadingComponentRef = this.vcRef.createComponent(LoadingComponent);

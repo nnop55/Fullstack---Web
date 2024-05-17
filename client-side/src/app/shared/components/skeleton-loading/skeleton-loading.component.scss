@@ -4,14 +4,22 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
 
   .skeleton-row {
-    background: linear-gradient(90deg, $dark 25%, $dark-hover 50%, $dark 75%);
-    background-size: 200% 100%;
-    animation: gradientShimmer 1.5s infinite linear;
     width: 100%;
-    height: 30px;
+    height: 43.55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .skeleton-item {
+      background: linear-gradient(90deg, $dark 25%, $dark-hover 50%, $dark 75%);
+      background-size: 200% 100%;
+      animation: gradientShimmer 1.5s infinite linear;
+      height: 10px;
+      border-radius: 10px;
+      width: 100%;
+    }
   }
 }
 

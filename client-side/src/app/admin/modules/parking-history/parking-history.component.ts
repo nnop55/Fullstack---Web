@@ -23,7 +23,6 @@ export class ParkingHistoryComponent extends ModuleBase {
   ]
 
   markDropdown: IDropdown[] = []
-  modelDropdown: IDropdown[] = []
   typeDropdown: IDropdown[] = []
 
   ngOnInit(): void {
@@ -33,10 +32,6 @@ export class ParkingHistoryComponent extends ModuleBase {
       this.service,
       'getParkingHistory'
     )
-
-    this.carModelService.dropdown$.subscribe(data => {
-      this.modelDropdown = data
-    })
   }
 
   getCarModels() {
@@ -84,7 +79,7 @@ export class ParkingHistoryComponent extends ModuleBase {
         key: ParkingHistoryColumnKey.Model,
         label: 'model',
         searchable: SearchModes.Dropdown,
-        dropdown: this.modelDropdown,
+        dropdown: this.carModelService.getDropdownData(),
         getVal: (value) => { return value }
       },
       {

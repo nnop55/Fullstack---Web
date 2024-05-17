@@ -13,10 +13,13 @@
       min-width: 56px;
       padding: 1px 5px 1px;
 
-      img {
+      .icons {
         right: 6px;
         top: 5px;
-        width: 18px;
+
+        img {
+          width: 18px;
+        }
       }
 
       span {
@@ -44,7 +47,7 @@
       color: $light-blue;
     }
 
-    .icon {
+    .pointer-icon {
       transform: rotate(180deg) !important;
     }
   }
@@ -61,11 +64,15 @@
     cursor: pointer;
     min-height: 51px;
 
-    .icon {
+    .icons {
       position: absolute;
-      right: 15px;
+      right: 10px;
       top: 15px;
-      transition: 200ms;
+
+      .pointer-icon,
+      .clear-icon {
+        transition: 200ms;
+      }
     }
   }
 

@@ -19,7 +19,6 @@ export class CarsComponent extends ModuleBase {
   service: CarsService = inject(CarsService)
 
   markDropdown: IDropdown[] = []
-  modelDropdown: IDropdown[] = []
   typeDropdown: IDropdown[] = []
 
   ngOnInit(): void {
@@ -29,10 +28,6 @@ export class CarsComponent extends ModuleBase {
       this.service,
       'getCars'
     )
-
-    this.carModelService.dropdown$.subscribe(data => {
-      this.modelDropdown = data
-    })
   }
 
   getCarModels() {
@@ -68,7 +63,7 @@ export class CarsComponent extends ModuleBase {
         key: CarColumnKey.Model,
         label: 'model',
         searchable: SearchModes.Dropdown,
-        dropdown: this.modelDropdown,
+        dropdown: this.carModelService.getDropdownData(),
         getVal: (value) => { return value }
       },
       {

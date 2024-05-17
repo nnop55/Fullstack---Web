@@ -55,14 +55,16 @@
           }
         </tr>
       </thead>
-
-      @if(isLoading){ @for (column of columns; track $index) {
-      <td>
-        <ng-container [skeleton]="true" [appLoading]="isLoading"></ng-container>
-      </td>
-      } }@else {
       <tbody>
-        @for (item of tableData; track $index) {
+        @if(isLoading){ @for (column of columns; track $index) {
+        <td>
+          <ng-container
+            [skeleton]="true"
+            [rowCount]="pageSize"
+            [appLoading]="isLoading"
+          ></ng-container>
+        </td>
+        } }@else { @for (item of tableData; track $index) {
         <tr>
           @for (column of columns; track $index) {
           <td>
@@ -72,9 +74,8 @@
         </tr>
         }@empty {
         <div class="empty">Empty</div>
-        }
+        } }
       </tbody>
-      }
     </table>
   </div>
   <app-paging

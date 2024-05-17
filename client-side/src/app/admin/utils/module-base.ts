@@ -1,9 +1,10 @@
-import { Injectable, inject } from "@angular/core";
+import { DestroyRef, Injectable, inject } from "@angular/core";
 import { RoutingService } from "../services/routing.service";
 import { IDropdown, ITableColumn } from "./unions";
 import { Status } from "../../shared/utils/unions";
-import { Observable, Subject, switchMap, take, takeUntil } from "rxjs";
+import { Observable, switchMap, take } from "rxjs";
 import { CarModelService } from "../services/car-model.service";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Injectable()
 export class ModuleBase {
@@ -12,7 +13,7 @@ export class ModuleBase {
   queryParams: any = { page: 1, pageSize: 10, sortBy: 'id', sortOrder: 'asc' };
   isLoading: boolean = false
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = inject(DestroyRef);
 
   routingService: RoutingService = inject(RoutingService)
   carModelService: CarModelService = inject(CarModelService)
@@ -35,9 +36,8 @@ export class ModuleBase {
           return data$;
         }
       }),
-      takeUntil(this.destroy$)).subscribe();
+      takeUntilDestroyed(this.destroy$)).subscribe();
   }
-
 
   private getData(
     serviceName: any,
@@ -57,10 +57,7 @@ export class ModuleBase {
             this.paginatorData = response.data.paginator;
           }
 
-          const mark = params['mark'];
-          if (mark) {
-            this.carModelService.fillModelDropdown(mark)
-          }
+          this.fillOrClearModelDropdown(params)
 
           clearTimeout(loadingTimer);
           this.isLoading = false;
@@ -79,16 +76,17 @@ export class ModuleBase {
 
   }
 
+  fillOrClearModelDropdown(params: any) {
+    const mark = params['mark'];
+    mark ? this.carModelService.fillModelDropdown(mark) :
+      this.carModelService.clearModelDropdown()
+  }
+
   getColumnSettings(): ITableColumn[] {
     return [];
   }
 
   transformValue(data: IDropdown[], value: string) {
     return data.filter(o => o.value == value)[0]['label']
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe()
   }
 }
