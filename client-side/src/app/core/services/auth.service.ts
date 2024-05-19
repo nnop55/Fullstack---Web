@@ -15,9 +15,9 @@ export class AuthService {
 
   private baseUrl: string = environment.baseUrl;
 
-  unauthorizedSignal: WritableSignal<boolean> = signal<boolean>(true);
-  private immutableUnauthorizedSignal: Signal<boolean> = computed(this.unauthorizedSignal);
-  unauthorized$ = toObservable(this.immutableUnauthorizedSignal);
+  private unauthorizedSubject: Subject<void> = new Subject<void>();
+  unauthorized$: Observable<void> = this.unauthorizedSubject.asObservable();
+
 
   constructor(
     private http: HttpClient,
@@ -26,7 +26,7 @@ export class AuthService {
   ) { }
 
   emitUnauthorizedEvent() {
-    this.unauthorizedSignal.set(false);
+    this.unauthorizedSubject.next();
   }
 
   login(params: any): Observable<any> {
