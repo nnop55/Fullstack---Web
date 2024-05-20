@@ -76,7 +76,9 @@ function transporterVerify() {
 
 }
 
-transporterVerify()
+if (process.env.NODE_ENV !== 'test') {
+    transporterVerify();
+}
 
 
 export function sentMail(email: string, verifyCode: string) {
