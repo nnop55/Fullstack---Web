@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { CarModelRes, IApi } from '../../shared/utils/unions';
 import { Observable, map } from 'rxjs';
@@ -17,7 +17,7 @@ export class CarModelService {
 
   modelsByMark: any = new Object();
 
-  constructor(private http: HttpClient) { }
+  private http: HttpClient = inject(HttpClient)
 
   getCarModels(): Observable<IApi<CarModelRes>> {
     return this.http.get<IApi<CarModelRes>>(`${this.baseUrl}car/models/all`)

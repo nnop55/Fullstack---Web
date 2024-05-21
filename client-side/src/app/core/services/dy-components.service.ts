@@ -9,8 +9,6 @@ export class DyComponentsService {
 
   private passwordStepsModalRef!: ComponentRef<PasswordStepsModalComponent>
 
-  constructor() { }
-
   showMessage(message: string, vcRef: ViewContainerRef, isError?: boolean) {
     vcRef.clear()
     const ref = vcRef.createComponent(SnackbarComponent)

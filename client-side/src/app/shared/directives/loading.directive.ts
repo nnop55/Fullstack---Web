@@ -1,4 +1,4 @@
-import { ComponentRef, Directive, Input, ViewContainerRef } from '@angular/core';
+import { ComponentRef, Directive, Input, ViewContainerRef, inject } from '@angular/core';
 import { LoadingComponent } from '../components/loading/loading.component';
 import { SkeletonLoadingComponent } from '../components/skeleton-loading/skeleton-loading.component';
 
@@ -10,9 +10,7 @@ export class LoadingDirective {
   private loadingComponentRef!: ComponentRef<LoadingComponent>;
   private skeletonLoadingComponentRef!: ComponentRef<SkeletonLoadingComponent>;
 
-  constructor(
-    private vcRef: ViewContainerRef
-  ) { }
+  private vcRef: ViewContainerRef = inject(ViewContainerRef)
 
   @Input() spinnerSize: number = 1;
   @Input() isBlur: boolean = true;

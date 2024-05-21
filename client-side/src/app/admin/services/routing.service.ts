@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, take } from 'rxjs';
 
@@ -6,11 +6,8 @@ import { Observable, map, take } from 'rxjs';
   providedIn: 'root'
 })
 export class RoutingService {
-
-  constructor(
-    private router: Router,
-    private acRoute: ActivatedRoute
-  ) { }
+  private router: Router = inject(Router)
+  private acRoute: ActivatedRoute = inject(ActivatedRoute)
 
   updateUrl(url: string,
     page: number,

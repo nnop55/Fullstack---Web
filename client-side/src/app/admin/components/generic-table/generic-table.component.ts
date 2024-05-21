@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from '../../../shared/components/text-input/text-input.component';
@@ -35,14 +35,11 @@ export class GenericTableComponent {
   searchControls: { [key: string]: FormControl } = {};
   SearchModes = SearchModes
 
-  constructor(
-    private routingService: RoutingService,
-    private acRoute: ActivatedRoute
-  ) {
-    this.pathName = this.acRoute.snapshot.data['path']
-  }
+  private routingService: RoutingService = inject(RoutingService)
+  private acRoute: ActivatedRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
+    this.pathName = this.acRoute.snapshot.data['path']
     this.initForm()
     this.onFilter()
   }

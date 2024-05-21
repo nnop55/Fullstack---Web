@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef, inject, output } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { FormHelper } from '../../../core/functions/form-helper';
 import { regex } from '../../utils/regex';
 import { Steps, EmailForm, CodeForm, PasswordForm, Status } from '../../utils/unions';
 import { ButtonComponent } from '../button/button.component';
@@ -8,11 +7,12 @@ import { TextInputComponent } from '../text-input/text-input.component';
 import { StepperComponent } from '../stepper/stepper.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { DyComponentsService } from '../../../core/services/dy-components.service';
+import { ValidationDirective } from '../../directives/validation.directive';
 
 @Component({
   selector: 'app-password-steps-modal',
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, StepperComponent],
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, StepperComponent, ValidationDirective],
   templateUrl: './password-steps-modal.component.html',
   styleUrl: './password-steps-modal.component.scss'
 })
@@ -32,6 +32,7 @@ export class PasswordStepsModalComponent {
   passwordForm!: FormGroup;
 
   forms: { fn: () => void, form: FormGroup }[] = [];
+  isBtnLoading: boolean = false;
 
   stepperOptions = [
     { level: 1, title: "1", clickable: true },
@@ -45,10 +46,6 @@ export class PasswordStepsModalComponent {
 
   onCloseClick(): void {
     this.closeClicked.emit();
-  }
-
-  hasError(control: string, pattern: string[] = []) {
-    return FormHelper.hasError(this.formItem['form'], control, pattern)
   }
 
   initForms() {
@@ -90,9 +87,11 @@ export class PasswordStepsModalComponent {
           this.dyService.showMessage(response.message, this.vcRef)
           this.step++;
         }
+        this.isBtnLoading = false;
       },
       error: (error) => {
         this.dyService.showMessage(error?.error?.error, this.vcRef, true)
+        this.isBtnLoading = false;
       }
     })
   }
@@ -107,9 +106,12 @@ export class PasswordStepsModalComponent {
           this.dyService.showMessage(response.message, this.vcRef)
           this.step++;
         }
+        this.isBtnLoading = false;
       },
       error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
+        this.isBtnLoading = false;
+
         if (error.error.code == Status.expire) {
           this.step--;
           this.resetForm(1);
@@ -138,18 +140,20 @@ export class PasswordStepsModalComponent {
           this.dyService.showMessage(response.message, this.vcRef)
           this.onCloseClick()
         }
+        this.isBtnLoading = false;
       },
       error: (error) => {
         this.dyService.showMessage(error.error.error, this.vcRef, true)
+        this.isBtnLoading = false;
       }
     })
   }
 
   submitForm(form: FormGroup) {
     if (form.invalid) {
-      FormHelper.markAllDirty(form)
       return
     }
+    this.isBtnLoading = true;
 
     this.formItem.fn()
   }

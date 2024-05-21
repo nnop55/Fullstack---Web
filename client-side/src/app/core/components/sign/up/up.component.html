@@ -2,19 +2,23 @@
   <ng-container *appLoading="isLoading"></ng-container>
 
   <h2>Create new account</h2>
-  <form (ngSubmit)="submitForm(form)" [formGroup]="form">
+  <form
+    (ngSubmit)="submitForm(form)"
+    [formGroup]="form"
+    *validate="{form}; let errors"
+  >
     <div class="form-item">
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
-        [className]="hasError('email', ['email']) && 'error'"
+        [className]="errors?.['email'] && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
       <app-text-input
         [placeholder]="'Full name'"
         formControlName="fullName"
-        [className]="hasError('fullName') && 'error'"
+        [className]="errors?.['fullName'] && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -22,7 +26,7 @@
         [placeholder]="'Role'"
         formControlName="role"
         [options]="options"
-        [className]="hasError('role') && 'error'"
+        [className]="errors?.['role'] && 'error'"
       ></app-dropdown>
     </div>
     <div class="form-item">
@@ -31,7 +35,7 @@
         formControlName="password"
         [inpType]="'password'"
         [showEye]="true"
-        [className]="hasError('password', ['pattern']) && 'error'"
+        [className]="errors?.['password'] && 'error'"
       ></app-text-input>
     </div>
     <div class="form-item">
@@ -40,7 +44,7 @@
         formControlName="confirmPassword"
         [inpType]="'password'"
         [showEye]="true"
-        [className]="hasError('confirmPassword', ['pattern']) && 'error'"
+        [className]="errors?.['confirmPassword'] && 'error'"
       ></app-text-input>
     </div>
 

@@ -6,16 +6,16 @@ import { DropdownComponent } from '../../../../shared/components/dropdown/dropdo
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { LoadingDirective } from '../../../../shared/directives/loading.directive';
 import { RegisterForm, Status } from '../../../../shared/utils/unions';
-import { FormHelper } from '../../../functions/form-helper';
 import { regex } from '../../../../shared/utils/regex';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { DyComponentsService } from '../../../services/dy-components.service';
+import { ValidationDirective } from '../../../../shared/directives/validation.directive';
 
 @Component({
   selector: 'app-up',
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink, LoadingDirective],
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, DropdownComponent, RouterLink, LoadingDirective, ValidationDirective],
   templateUrl: './up.component.html',
   styleUrl: './up.component.scss'
 })
@@ -59,13 +59,8 @@ export class UpComponent {
     })
   }
 
-  hasError(control: string, pattern: string[] = []) {
-    return FormHelper.hasError(this.form, control, pattern)
-  }
-
   submitForm(form: FormGroup) {
     if (form.invalid) {
-      FormHelper.markAllDirty(form)
       return
     }
 

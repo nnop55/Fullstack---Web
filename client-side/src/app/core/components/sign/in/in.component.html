@@ -1,19 +1,24 @@
 <section>
   <h2>Sign in to your account</h2>
 
-  <form (ngSubmit)="submitForm(form)" [formGroup]="form">
+  <form
+    (ngSubmit)="submitForm(form)"
+    [formGroup]="form"
+    *validate="{form}; let errors"
+  >
     <div class="form-item">
       <app-text-input
         [placeholder]="'E-mail'"
         formControlName="email"
-        [className]="hasError('email', ['email']) && 'error'"
-      ></app-text-input>
+        [className]="errors?.['email'] ? 'error' : ''"
+      >
+      </app-text-input>
     </div>
     <div class="form-item">
       <app-text-input
         [placeholder]="'Password'"
         formControlName="password"
-        [className]="hasError('password') && 'error'"
+        [className]="errors?.['password'] && 'error'"
         [inpType]="'password'"
         [showEye]="true"
       ></app-text-input>

@@ -1,4 +1,4 @@
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Observable, Subject, map } from 'rxjs';
 import { Role, Status } from '../../shared/utils/unions';
 import { environment } from '../../../environments/environment.development';
@@ -18,12 +18,9 @@ export class AuthService {
   private unauthorizedSubject: Subject<void> = new Subject<void>();
   unauthorized$: Observable<void> = this.unauthorizedSubject.asObservable();
 
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private ls: LocalStorageService
-  ) { }
+  private http: HttpClient = inject(HttpClient)
+  private router: Router = inject(Router)
+  private ls: LocalStorageService = inject(LocalStorageService)
 
   emitUnauthorizedEvent() {
     this.unauthorizedSubject.next();

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ParkingHistoryService {
   private baseUrl: string = environment.baseUrl
-
-  constructor(private http: HttpClient) { }
+  private http: HttpClient = inject(HttpClient)
 
   getParkingHistory(queryParams: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}history/`, queryParams)

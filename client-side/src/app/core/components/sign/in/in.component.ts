@@ -1,19 +1,19 @@
 import { Component, ViewContainerRef, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { LoadingDirective } from '../../../../shared/directives/loading.directive';
 import { LoginForm, Status } from '../../../../shared/utils/unions';
-import { FormHelper } from '../../../functions/form-helper';
 import { regex } from '../../../../shared/utils/regex';
 import { AuthService } from '../../../services/auth.service';
 import { DyComponentsService } from '../../../services/dy-components.service';
+import { ValidationDirective } from '../../../../shared/directives/validation.directive';
 
 @Component({
   selector: 'app-in',
   standalone: true,
-  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink, LoadingDirective],
+  imports: [ButtonComponent, TextInputComponent, ReactiveFormsModule, RouterLink, LoadingDirective, ValidationDirective],
   templateUrl: './in.component.html',
   styleUrl: './in.component.scss'
 })
@@ -22,6 +22,7 @@ export class InComponent {
   auth: AuthService = inject(AuthService)
   dyService: DyComponentsService = inject(DyComponentsService)
   vcRef: ViewContainerRef = inject(ViewContainerRef)
+
 
   isBtnLoading: boolean = false;
 
@@ -40,13 +41,8 @@ export class InComponent {
     this.dyService.openPasswordStepsModal(this.vcRef)
   }
 
-  hasError(control: string, pattern: string[] = []) {
-    return FormHelper.hasError(this.form, control, pattern)
-  }
-
   submitForm(form: FormGroup) {
     if (form.invalid) {
-      FormHelper.markAllDirty(form)
       return
     }
 

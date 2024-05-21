@@ -10,8 +10,6 @@ export class LocalStorageService {
 
   storage$ = toObservable(this.immutableStorageSignal);
 
-  constructor() { }
-
   get(key: string) {
     const value = JSON.parse(localStorage.getItem(key)!)
     return value ?? null
