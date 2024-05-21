@@ -37,7 +37,6 @@ export class ValidationDirective {
     }
 
     this.handleOnSubmit()
-
   }
 
   check(form: FormGroup, isSubmit: boolean = false) {

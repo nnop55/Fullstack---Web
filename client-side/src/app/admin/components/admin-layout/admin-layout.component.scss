@@ -5,58 +5,101 @@
   user-select: none;
 }
 
-header {
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  width: 100%;
-  min-height: 60px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  background-color: $dark;
-  display: flex;
-  align-items: center;
-
-  .header {
-    width: 100%;
+main {
+  &.sidebar-opened {
+    .header {
+      margin-left: clamp(230px, 20%, 20%);
+    }
+    .sidebar-container {
+      margin-left: 0;
+    }
   }
 
-  .icon {
-    margin-left: 0px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+  header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    width: 100%;
+    min-height: 60px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background-color: $dark;
+    display: flex;
+    align-items: center;
+
+    .header {
+      width: 100%;
+    }
+
+    .icon {
+      margin-left: 0px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .sidebar-container {
+    height: 100vh;
+    position: fixed;
+    background-color: $dark;
+    top: 0;
+    z-index: 1000;
+    width: 20%;
+    margin-left: -30%;
+    min-width: 230px;
+
+    .routers {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 1rem;
+      padding: 6rem 2rem;
+
+      .router-item {
+        padding: 5px;
+        cursor: pointer;
+        border-bottom: 1px solid;
+        background: #ffffff12;
+        border-radius: 3px 3px 0px 0px;
+        text-decoration: none;
+        color: $gray;
+
+        &:hover,
+        &.active {
+          border-bottom-color: $light-blue;
+        }
+      }
+    }
+  }
+
+  .admin-section {
+    margin: 6rem auto;
+    padding-inline: 4rem;
   }
 }
 
-.sidenav-container {
-  height: 100vh;
-  position: fixed;
-  background-color: $dark;
-  top: 0;
-  z-index: 1000;
+@media screen and (max-width: 800px) {
+  .sidebar-container {
+    width: 40% !important;
+    margin-left: -80% !important;
 
-  .routers {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 1rem;
-    padding: 6rem 2rem;
+    .sidebar-opened & {
+      margin-left: 0 !important;
+    }
+  }
 
-    .router-item {
-      padding: 5px;
-      cursor: pointer;
-      border-bottom: 1px solid;
-      background: #ffffff12;
-      border-radius: 3px 3px 0px 0px;
-      text-decoration: none;
-      color: $gray;
+  .sidebar-opened {
+    .header {
+      margin-left: clamp(230px, 40%, 40%) !important;
+    }
+  }
 
-      &:hover,
-      &.active {
-        border-bottom-color: $light-blue;
-      }
+  .admin-section {
+    padding-inline: 2rem !important;
+    .sidebar-opened & {
+      margin-left: 0 !important;
     }
   }
 }

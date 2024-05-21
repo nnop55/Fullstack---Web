@@ -1,48 +1,61 @@
-<header>
-  <div class="header">
-    <button
-      class="icon"
-      (click)="toggleSidenav()"
-      [style.marginLeft]="sidenavSize"
-    >
-      <img src="../../../../assets/icons/burger.svg" alt="" />
-    </button>
-  </div>
-</header>
-<section
-  class="sidenav-container"
-  [ngStyle]="{
-    width: sidenavSize,
-    left: isOpen ? '0' : this.sizes('-40%', '-20%')
+<main
+  [ngClass]="{
+    'sidebar-opened': isOpen
   }"
 >
-  <div class="routers">
-    <a
-      class="router-item"
-      routerLink="/admin"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Dashboard
-    </a>
-    <a
-      class="router-item"
-      routerLink="/admin/parking-history"
-      routerLinkActive="active"
-    >
-      Parking History
-    </a>
-    <a
-      class="router-item"
-      routerLink="/admin/parking-zones"
-      routerLinkActive="active"
-    >
-      Parking Zones
-    </a>
-    <a class="router-item" routerLink="/admin/cars" routerLinkActive="active">
-      Cars
-    </a>
-  </div>
-</section>
+  <header>
+    <div class="header">
+      <button class="icon" (click)="toggleSidebar()">
+        <img src="../../../../assets/icons/burger.svg" alt="" />
+      </button>
+    </div>
+  </header>
+  <section class="sidebar-container">
+    <div class="routers">
+      <a
+        class="router-item"
+        routerLink="/admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="onClick()"
+      >
+        Dashboard
+      </a>
+      <a
+        class="router-item"
+        routerLink="/admin/parking-history"
+        routerLinkActive="active"
+        (click)="onClick()"
+      >
+        Parking History
+      </a>
+      <a
+        class="router-item"
+        routerLink="/admin/parking-zones"
+        routerLinkActive="active"
+        (click)="onClick()"
+      >
+        Parking Zones
+      </a>
+      <a
+        class="router-item"
+        routerLink="/admin/cars"
+        routerLinkActive="active"
+        (click)="onClick()"
+      >
+        Cars
+      </a>
+    </div>
+  </section>
 
-<router-outlet></router-outlet>
+  <section
+    class="admin-section"
+    [ngStyle]="{
+      'margin-left': isOpen ? 'clamp(230px, 20%, 20%)' : '0'
+    }"
+  >
+    <app-navigation-panel></app-navigation-panel>
+
+    <router-outlet></router-outlet>
+  </section>
+</main>
