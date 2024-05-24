@@ -1,16 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
+import { TableComponent } from '../../components/table/table.component';
 import { ModuleBase } from '../../utils/module-base';
 import { CarsService } from './cars.service';
 import { CarColumnKey, IDropdown, ITableColumn, SearchModes } from '../../utils/unions';
 import { Status } from '../../../shared/utils/unions';
-import { ApiService } from '../../../core/services/api.service';
-import { CarModelService } from '../../services/car-model.service';
 
 @Component({
   selector: 'app-cars',
   standalone: true,
-  imports: [GenericTableComponent],
+  imports: [TableComponent],
   templateUrl: './cars.component.html',
   styleUrl: './cars.component.scss'
 })

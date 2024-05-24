@@ -1,15 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { ParkingHistoryColumnKey, SearchModes, ITableColumn, IDropdown } from '../../utils/unions';
 import { ParkingHistoryService } from './parking-history.service';
-import { GenericTableComponent } from '../../components/generic-table/generic-table.component';
+import { TableComponent } from '../../components/table/table.component';
 import { ModuleBase } from '../../utils/module-base';
 import { Status } from '../../../shared/utils/unions';
-import { CarModelService } from '../../services/car-model.service';
 
 @Component({
   selector: 'app-parking-history',
   standalone: true,
-  imports: [GenericTableComponent],
+  imports: [TableComponent],
   templateUrl: './parking-history.component.html',
   styleUrl: './parking-history.component.scss'
 })

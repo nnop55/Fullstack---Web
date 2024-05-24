@@ -64,13 +64,27 @@
             [appLoading]="isLoading"
           ></ng-container>
         </td>
-        } }@else { @for (item of tableData; track $index) {
+        } }@else { @for (item of tableData;let rowIndex = $index; track rowIndex
+        ) {
         <tr>
           @for (column of columns; track $index) {
           <td>
-            {{ column.getVal(item[column.key!]) }}
+            <div>
+              {{ column.getVal(item[column.key!]) }}
+            </div>
           </td>
-          }
+
+          @if( $index === columns.length - 1){
+          <div class="action-icons">
+            @if(editable){
+            <img src="../../../../assets/icons/edit.svg" alt="" />
+
+            } @if(erasable){
+            <img src="../../../../assets/icons/delete.svg" alt="" />
+
+            }
+          </div>
+          } }
         </tr>
         }@empty {
         <div class="empty">Empty</div>

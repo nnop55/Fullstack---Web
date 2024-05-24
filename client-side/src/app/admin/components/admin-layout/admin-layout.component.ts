@@ -29,7 +29,8 @@ export class AdminLayoutComponent {
 
   onClick() {
     if (this.isMobile) {
-      this.isOpen = false
+      this.isOpen = false;
+      this.ls.set('sidebarIsOpened', this.isOpen)
     }
   }
 

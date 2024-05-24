@@ -1,8 +1,10 @@
-<app-generic-table
+<app-table
   [columns]="getColumnSettings()"
   [tableData]="data"
   [paginator]="paginatorData"
   [queryParams]="queryParams"
   [isLoading]="isLoading"
+  [editable]="true"
+  [erasable]="true"
 >
-</app-generic-table>
+</app-table>

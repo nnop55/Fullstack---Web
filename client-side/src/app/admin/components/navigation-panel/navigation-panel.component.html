@@ -1,1 +1,13 @@
-<p>navigation-panel works!</p>
+<div class="panel-container">
+  @for(route of panelData; track $index){ @if($index !== 0){
+  <img src="../../../../assets/icons/arrow-pointer.svg" />
+  }
+  <a
+    [routerLink]="route.url"
+    [ngClass]="{
+      active: $index === panelData.length - 1
+    }"
+    >{{ route.title }}</a
+  >
+  }
+</div>

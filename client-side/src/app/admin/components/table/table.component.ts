@@ -8,15 +8,16 @@ import { RoutingService } from '../../services/routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { SearchModes, ITableColumn } from '../../utils/unions';
 import { debounceTime } from 'rxjs';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-generic-table',
+  selector: 'app-table',
   standalone: true,
-  imports: [PagingComponent, LoadingDirective, TextInputComponent, DropdownComponent, ReactiveFormsModule],
-  templateUrl: './generic-table.component.html',
-  styleUrl: './generic-table.component.scss'
+  imports: [PagingComponent, LoadingDirective, TextInputComponent, DropdownComponent, ReactiveFormsModule, NgClass],
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.scss'
 })
-export class GenericTableComponent {
+export class TableComponent {
 
   @Input() columns: ITableColumn[] = [];
   @Input() path!: string;
@@ -24,6 +25,8 @@ export class GenericTableComponent {
   @Input() paginator: any = new Object();
   @Input() queryParams: any = new Object();
   @Input() isLoading: boolean = false;
+  @Input() editable: boolean = false;
+  @Input() erasable: boolean = false;
 
   sortBy: string = 'id';
   sortOrder: string = 'asc';
@@ -43,7 +46,6 @@ export class GenericTableComponent {
     this.initForm()
     this.onFilter()
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['paginator']) {

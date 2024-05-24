@@ -60,11 +60,18 @@ main {
       .router-item {
         padding: 5px;
         cursor: pointer;
-        border-bottom: 1px solid;
+        border-bottom: 2px solid;
         background: #ffffff12;
         border-radius: 3px 3px 0px 0px;
         text-decoration: none;
         color: $gray;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        > p {
+          margin: 0;
+        }
 
         &:hover,
         &.active {

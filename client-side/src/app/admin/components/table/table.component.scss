@@ -58,8 +58,26 @@ section {
       color: $gray;
     }
 
+    .action-icons {
+      position: sticky;
+      right: 10px;
+      margin-top: 12px;
+      display: flex !important;
+      gap: 10px;
+      width: 50px;
+      > img {
+        cursor: pointer;
+        display: none;
+      }
+    }
+
     tbody tr:hover {
-      background-color: $dark-hover;
+      // background-color: $dark-hover;
+      .action-icons {
+        > img {
+          display: block !important;
+        }
+      }
     }
 
     .search-input {
@@ -67,6 +85,15 @@ section {
         display: flex;
         gap: 10px;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .action-icons {
+    position: relative !important;
+    > img {
+      display: block !important;
     }
   }
 }
