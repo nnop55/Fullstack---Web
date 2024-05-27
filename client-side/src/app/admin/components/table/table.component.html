@@ -77,10 +77,18 @@
           @if( $index === columns.length - 1){
           <div class="action-icons">
             @if(editable){
-            <img src="../../../../assets/icons/edit.svg" alt="" />
+            <img
+              (click)="editRow(item.id)"
+              src="../../../../assets/icons/edit.svg"
+              alt=""
+            />
 
             } @if(erasable){
-            <img src="../../../../assets/icons/delete.svg" alt="" />
+            <img
+              (click)="deleteRow(item.id)"
+              src="../../../../assets/icons/delete.svg"
+              alt=""
+            />
 
             }
           </div>

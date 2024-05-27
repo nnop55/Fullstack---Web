@@ -13,4 +13,12 @@ export class ParkingZonesService {
   getParkingZones(queryParams: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}parking/`, queryParams)
   }
+
+  getParkingZoneById(zoneId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}parking/${zoneId}`)
+  }
+
+  editParkingZones(params: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}parking/edit/${params.id}`, params)
+  }
 }

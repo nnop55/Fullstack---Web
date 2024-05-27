@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, SimpleChanges, inject, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { TextInputComponent } from '../../../shared/components/text-input/text-input.component';
@@ -19,7 +19,7 @@ import { NgClass } from '@angular/common';
 })
 export class TableComponent {
 
-  @Input() columns: ITableColumn[] = [];
+  @Input({ required: true }) columns: ITableColumn[] = [];
   @Input() path!: string;
   @Input() tableData!: any[];
   @Input() paginator: any = new Object();
@@ -27,6 +27,9 @@ export class TableComponent {
   @Input() isLoading: boolean = false;
   @Input() editable: boolean = false;
   @Input() erasable: boolean = false;
+
+  editRecord = output<number>()
+  deleteRecord = output<number>()
 
   sortBy: string = 'id';
   sortOrder: string = 'asc';
@@ -129,5 +132,13 @@ export class TableComponent {
       this.sortOrder,
       this.searchTerms
     )
+  }
+
+  editRow(id: number) {
+    this.editRecord.emit(id)
+  }
+
+  deleteRow(id: number) {
+    this.deleteRecord.emit(id)
   }
 }

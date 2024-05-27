@@ -9,5 +9,9 @@ export const ParkingZonesRoute: Routes = [
     {
         path: '',
         loadComponent: () => import('./parking-zones.component').then(m => m.ParkingZonesComponent),
+    },
+    {
+        path: 'edit/:zoneId',
+        loadComponent: () => import('./parking-zone-inner/parking-zone-inner.component').then(m => m.ParkingZoneInnerComponent),
     }
 ]

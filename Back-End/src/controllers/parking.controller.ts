@@ -15,6 +15,12 @@ class ParkingController {
         res.status(200).json({ code: 1, data: { ...result } })
     }
 
+    public async getParkingZoneById(req: Request, res: Response): Promise<void> {
+        const zoneId = parseInt(req.params.zoneId)
+        const data = await ParkingService.findZoneById(zoneId)
+        res.status(200).json({ code: 1, data })
+    }
+
     public async insertParkingZones(req: Request, res: Response): Promise<void> {
         const { name, address, price } = req.body;
         await ParkingService.insertZone({ name, address, price })

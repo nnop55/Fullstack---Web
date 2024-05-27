@@ -12,6 +12,10 @@ parkingRouter.post('/',
     verifyToken,
     asyncHandler(ParkingController.getParkingZones)
 );
+parkingRouter.get('/:zoneId',
+    verifyToken,
+    asyncHandler(ParkingController.getParkingZoneById)
+);
 parkingRouter.post('/add',
     verifyToken,
     requireRole,
