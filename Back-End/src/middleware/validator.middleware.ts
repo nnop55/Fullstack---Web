@@ -3,34 +3,25 @@ import { ClassType } from 'class-transformer-validator';
 import { validate } from 'class-validator';
 
 
-async function validateRequestDto<T extends object>(dtoClass: ClassType<T>, body: any): Promise<T | string[]> {
-    const dtoInstance = new dtoClass();
-
-    Object.assign(dtoInstance, body);
-
-    const errors = await validate(dtoInstance);
-
-    if (errors.length > 0) {
-        const isModelError = errors.map(o => o.property === 'model')
-        if (isModelError) {
-            return errors.map(o => `${o.value} is not a valid model for ${body.mark}`)
-        }
-
-        return errors.map(error => Object.values(error.constraints || {}).join('; '));
-    }
-
-    return dtoInstance;
-}
-
-export function validationMiddleware<T extends object>(dtoClass: ClassType<T>): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+export function validationMiddleware<T extends object>(dtoClass: ClassType<T>) {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const validationResultOrErrors = await validateRequestDto(dtoClass, req.body);
+        const dtoInstance = new dtoClass()
+        Object.assign(dtoInstance, req.body);
 
-        if (Array.isArray(validationResultOrErrors)) {
-            res.status(400).json({ code: 2, error: 'Validation failed', errors: validationResultOrErrors });
-            return;
+        const errors = await validate(dtoInstance)
+
+        if (errors.length > 0) {
+            const errorMessage =
+                errors.map(error => Object.values(error.constraints!)).join(', ');
+
+            return res.status(400).json(
+                {
+                    code: 2,
+                    error: 'Validation failed',
+                    errors: errorMessage
+                }
+            )
         }
-
         next();
     };
 }
