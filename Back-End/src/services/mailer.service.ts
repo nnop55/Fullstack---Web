@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import { MailerPass } from "../config/config";
+import { MailerPass, MailerUser } from "../config/config";
 
 const htmlEmailTemplate = (code: string) => {
     return (
@@ -60,7 +60,7 @@ const htmlEmailTemplate = (code: string) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'appchat194@gmail.com',
+        user: MailerUser,
         pass: MailerPass
     }
 });
@@ -83,7 +83,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 export function sentMail(email: string, verifyCode: string) {
     const mailOptions = {
-        from: 'appchat194@gmail.com',
+        from: MailerUser,
         to: email,
         subject: 'Verify code from parking application',
         html: htmlEmailTemplate(verifyCode)
